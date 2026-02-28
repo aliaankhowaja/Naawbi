@@ -1,14 +1,15 @@
 % ==============================================================
 %  Naawbi LMS --- CS3009 Software Engineering (Spring 2026)
-%  Deliverable 1  |  Team Ibwaan
+%  Deliverable 1 — Project Information (Requirements + Sprint 1)
 % ==============================================================
-\documentclass[12pt, a4paper]{article}
+\documentclass[11pt, legalpaper]{article}
 
 % ── Packages ──────────────────────────────────────────────────
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=28pt]{geometry}
+\usepackage{textcomp}
+\usepackage[top=2.2cm, bottom=2.2cm, left=2.2cm, right=2.2cm, headheight=28pt]{geometry}
 \usepackage{microtype}
 \usepackage{setspace}
 \usepackage{parskip}
@@ -17,18 +18,11 @@
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{booktabs}
-\usepackage{longtable}
 \usepackage{array}
 \usepackage{tabularx}
-\usepackage{multicol}
 \usepackage{enumitem}
-\usepackage{mdframed}
 \usepackage{xcolor}
 \usepackage{hyperref}
-\usepackage{marvosym}
-% Provide a simple GitHub placeholder icon
-\newcommand{\faGithub}{\raisebox{-0.1ex}{\Keyboard}}
-\usepackage{soul}
 \usepackage{float}
 \usepackage{caption}
 \usepackage[most]{tcolorbox}
@@ -36,12 +30,9 @@
 % ── Colours ───────────────────────────────────────────────────
 \definecolor{primary}{HTML}{1A237E}   % deep indigo
 \definecolor{accent}{HTML}{283593}    % slightly lighter indigo
-\definecolor{light}{HTML}{E8EAF6}     % very light indigo tint
 \definecolor{rule}{HTML}{5C6BC0}      % mid indigo for rules
 \definecolor{muted}{HTML}{546E7A}     % blue-grey for captions
-\definecolor{rowalt}{HTML}{F3F4FA}    % alternating table row
 \definecolor{boxbg}{HTML}{EEF0FB}     % info box background
-\definecolor{success}{HTML}{1B5E20}   % deep green
 
 % ── Hyperref setup ────────────────────────────────────────────
 \hypersetup{
@@ -49,11 +40,16 @@
     linkcolor    = primary,
     urlcolor     = accent,
     citecolor    = primary,
-    pdftitle     = {Naawbi LMS — Deliverable 1},
+    pdftitle     = {Naawbi LMS — Deliverable 1 (Project Information)},
     pdfauthor    = {Team Ibwaan},
     pdfsubject   = {CS3009 Software Engineering Spring 2026},
     pdfkeywords  = {LMS, Software Engineering, Naawbi, Ibwaan},
 }
+
+% ── Spacing (reduced but still readable) ──────────────────────
+\setstretch{1.18}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
 
 % ── Section formatting ────────────────────────────────────────
 \titleformat{\section}
@@ -69,21 +65,21 @@
   {\normalsize\bfseries\color{accent}}
   {\thesubsubsection}{1em}{}
 
-\titlespacing*{\section}{0pt}{1.6ex plus .5ex minus .2ex}{0.8ex}
-\titlespacing*{\subsection}{0pt}{1.0ex plus .3ex minus .1ex}{0.4ex}
+\titlespacing*{\section}{0pt}{1.2ex plus .4ex minus .2ex}{0.7ex}
+\titlespacing*{\subsection}{0pt}{0.9ex plus .3ex minus .1ex}{0.35ex}
 
 % ── Header / Footer ───────────────────────────────────────────
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{rule}\leaders\hrule height \headrulewidth\hfill}}
-\fancyhead[L]{\small\color{muted}\textbf{Naawbi LMS} — Deliverable 1}
+\fancyhead[L]{\small\color{muted}\textbf{Naawbi LMS} — Project Information}
 \fancyhead[R]{\small\color{muted}CS3009 Spring 2026}
 \fancyfoot[C]{\small\color{muted}\thepage}
 
 % ── List styling ──────────────────────────────────────────────
-\setlist[itemize]{leftmargin=1.5em, itemsep=2pt, topsep=4pt}
-\setlist[enumerate]{leftmargin=1.5em, itemsep=2pt, topsep=4pt}
+\setlist[itemize]{leftmargin=1.5em, itemsep=1.5pt, topsep=3pt}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=1.5pt, topsep=3pt}
 
 % ── Graceful image fallback ───────────────────────────────────
 % Usage: \imgOrPlaceholder[width=...]{path}{caption text}
@@ -93,7 +89,7 @@
   }{%
     \begin{center}%
     \fboxsep=8pt\fbox{\parbox{0.7\textwidth}{\centering\color{muted}%
-      \textit{[Placeholder --- image not yet available]}\\[4pt]%
+      \textit{[Placeholder — image not yet available]}\\[4pt]%
       \footnotesize #3}}%
     \end{center}%
   }%
@@ -102,17 +98,7 @@
 % ── Custom environments ───────────────────────────────────────
 \tcbuselibrary{skins, breakable}
 
-\newtcolorbox{infobox}[1][]{
-  enhanced, breakable,
-  colback=boxbg, colframe=rule,
-  arc=4pt, boxrule=0.8pt,
-  leftrule=4pt,
-  title=#1,
-  fonttitle=\bfseries\color{primary},
-  #1
-}
-
-\newtcolorbox{userstory}[1][]{
+\newtcolorbox{userstory}[1][] {
   enhanced, breakable,
   colback=white, colframe=rule!40,
   arc=3pt, boxrule=0.5pt,
@@ -120,9 +106,7 @@
   #1
 }
 
-% ──────────────────────────────────────────────────────────────
 \begin{document}
-\onehalfspacing
 
 % ═══════════════════════════════════════════════════════════════
 %  TITLE PAGE
@@ -130,55 +114,48 @@
 \begin{titlepage}
   \centering
 
-  \vspace*{2.5cm}
+  \vspace*{1.6cm}
 
-  % University & course
   {\small\scshape\color{muted} National University of Computer and Emerging Sciences}\\[0.4em]
-  {\small\color{muted} CS3009 --- Software Engineering \quad|\quad Spring 2026}
+  {\small\color{muted} CS3009 — Software Engineering \quad|\quad Spring 2026}
 
-  \vspace{1.5cm}
-  {\color{rule}\hrule height 1.5pt}
-  \vspace{1.5cm}
+  \vspace{1.0cm}
+  {\color{rule}\hrule height 1.2pt}
+  \vspace{1.0cm}
 
-  % Project title
-  {\fontsize{56}{62}\selectfont\bfseries\color{primary} Naawbi}\\[0.6em]
+  {\fontsize{44}{50}\selectfont\bfseries\color{primary} Project Information}\\[0.5em]
+  {\Large\color{muted} Deliverable 1}
+
+  \vspace{0.9cm}
+  {\color{rule!40}\rule{6cm}{0.6pt}}
+  \vspace{1.0cm}
+
+  {\fontsize{56}{62}\selectfont\bfseries\color{primary} Naawbi}\\[0.3em]
   {\Large\color{muted} Learning Management System}
 
   \vspace{1.2cm}
-  {\color{rule!40}\rule{5cm}{0.6pt}}
-  \vspace{1.2cm}
 
-  {\LARGE\bfseries\color{primary} Deliverable 1}\\[0.4em]
-  {\normalsize\color{muted} Requirements \& Sprint 1 Documentation}
-
-  \vspace{2cm}
-
-  % Team metadata
   \begin{tabular}{r@{\quad}l}
-    {\color{muted}\small Team Name}       & {\bfseries Ibwaan} \\[5pt]
-    {\color{muted}\small Team Lead}       & {\bfseries Ibraheem Farooq} \\[5pt]
+    {\color{muted}\small Team Name}       & {\bfseries Ibwaan} \\[4pt]
+    {\color{muted}\small Team Lead}       & {\bfseries Ibraheem Farooq} \\[4pt]
     {\color{muted}\small Members}         & 23i-0708 \textbar\ Ali Aan Khowaja \\
                                           & 23i-0816 \textbar\ Ibraheem Farooq \\
-                                          & 23i-0819 \textbar\ Wajih-Ur-Raza Asif \\[5pt]
-    {\color{muted}\small Submission Date} & 28 February 2026 \\[5pt]
+                                          & 23i-0819 \textbar\ Wajih-Ur-Raza Asif \\[4pt]
+    {\color{muted}\small Submission Date} & 28 February 2026 \\[4pt]
     {\color{muted}\small Repository}      & \href{https://github.com/aliaankhowaja/Naawbi}{github.com/aliaankhowaja/Naawbi} \\
   \end{tabular}
 
   \vfill
+
   {\color{rule!40}\hrule height 0.5pt}
-  \vspace{0.6cm}
+  \vspace{0.5cm}
   {\footnotesize\color{muted}
     \href{https://github.com/ibbi1020}{ibbi1020}\enspace\textbullet\enspace
     \href{https://github.com/wajih-rathore}{wajih-rathore}\enspace\textbullet\enspace
     \href{https://github.com/aliaankhowaja}{aliaankhowaja}
   }
-  \vspace{0.8cm}
+  \vspace{0.6cm}
 \end{titlepage}
-\nopagecolor
-
-% ── Table of Contents ─────────────────────────────────────────
-\tableofcontents
-\newpage
 
 % ═══════════════════════════════════════════════════════════════
 %  SECTION 1 — INTRODUCTION
@@ -218,164 +195,6 @@ and performance. The key differentiators are:
   \item \textbf{Grading} — rubric-driven grading for assignments.
   \item \textbf{Analytics Dashboard} — performance, progress, and deadline
         dashboards for both students and faculty.
-\end{itemize}
-
-% ═══════════════════════════════════════════════════════════════
-%  PROJECT TEAM INFORMATION
-% ═══════════════════════════════════════════════════════════════
-\section{Project Team Information}
-
-\begin{minipage}[c]{0.65\linewidth}
-  \begin{tabular}{r@{\quad}l}
-    \textbf{Team Name}    & Ibwaan \\
-    \textbf{Project Name} & Naawbi \\
-    \textbf{Team Lead}    & Ibraheem Farooq \\
-  \end{tabular}
-\end{minipage}%
-\begin{minipage}[c]{0.3\linewidth}
-  \raggedleft
-  \includegraphics[height=2cm]{assets/ibwaan_team_logo.png}
-\end{minipage}
-
-\vspace{0.5cm}
-
-% ── Role Table ────────────────────────────────────────────────
-\subsection{Team Roles}
-
-\begin{center}
-\begin{tabularx}{0.9\linewidth}{>{\bfseries}l l X}
-  \toprule
-  Member & Role(s) & GitHub \\
-  \midrule
-  Ibraheem Farooq     & PM, Scrum Master          & \href{https://github.com/ibbi1020}{github.com/ibbi1020} \\[4pt]
-  Wajih-Ur-Raza Asif  & Requirements Architect, Tester & \href{https://github.com/wajih-rathore}{github.com/wajih-rathore} \\[4pt]
-  Ali Aan             & Developer, UI Designer    & \href{https://github.com/aliaankhowaja}{github.com/aliaankhowaja} \\
-  \bottomrule
-\end{tabularx}
-\end{center}
-
-% ── Member Bios ───────────────────────────────────────────────
-\subsection{Member Biographies}
-
-\medskip
-
-% ---- Ibraheem Farooq ----------------------------------------
-\noindent
-\begin{minipage}[t]{0.30\linewidth}
-  \vspace{0pt}
-  \imgOrPlaceholder[width=\linewidth]{assets/ibraheem_photo.png}{Photo}
-\end{minipage}%
-\hspace{1em}%
-\begin{minipage}[t]{0.73\linewidth}
-  \vspace{0pt}
-  {\bfseries\color{primary} Ibraheem Farooq}\\[-2pt]
-  {\small\color{muted} PM / Scrum Master}\\[4pt]
-  A Computer Science major based in Islamabad who transitioned from designing
-  posters and brand identities to UX and product design. His technical background
-  provides a unique perspective on bridging digital experiences that balance user
-  needs with technical viability. Passionate about solving real problems through
-  thoughtful design and clean, intuitive interfaces.
-\end{minipage}
-
-\medskip\noindent\color{rule!25}\hrule\color{black}\medskip
-
-% ---- Wajih-Ur-Raza Asif -------------------------------------
-\noindent
-\begin{minipage}[t]{0.30\linewidth}
-  \vspace{0pt}
-  \imgOrPlaceholder[width=\linewidth]{assets/wajih_photo.jpeg}{Photo}
-\end{minipage}%
-\hspace{1em}%
-\begin{minipage}[t]{0.73\linewidth}
-  \vspace{0pt}
-  {\bfseries\color{primary} Wajih-Ur-Raza Asif}\\[-2pt]
-  {\small\color{muted} Requirements Architect / Tester}\\[4pt]
-  A software engineer focused on building practical systems that solve real
-  operational problems. His background spans end-to-end projects across different
-  technologies, with a strong interest in automation, AI-driven workflows, and
-  scalable system design. Currently expanding his understanding of enterprise
-  technology and systems that make processes more efficient and reliable.
-\end{minipage}
-
-\medskip\noindent\color{rule!25}\hrule\color{black}\medskip
-
-% ---- Ali Aan ------------------------------------------------
-\noindent
-\begin{minipage}[t]{0.30\linewidth}
-  \vspace{0pt}
-  \imgOrPlaceholder[width=\linewidth]{assets/ali_photo.png}{Photo}
-\end{minipage}%
-\hspace{1em}%
-\begin{minipage}[t]{0.73\linewidth}
-  \vspace{0pt}
-  {\bfseries\color{primary} Ali Aan}\\[-2pt]
-  {\small\color{muted} Developer / UI Designer}\\[4pt]
-  An AI Engineer driven by a simple goal: building applications that work at
-  scale. His expertise lies at the intersection of high-performance backend
-  architecture and agentic systems. He specialises in designing and deploying
-  scalable infrastructures that power intelligent applications. Beyond the code,
-  he is a robotics enthusiast passionate about bringing new ideas to life.
-\end{minipage}
-
-% ── Team Agreement ────────────────────────────────────────────
-\subsection{Team Agreement}
-
-\subsubsection*{Communication}
-\begin{itemize}
-  \item \textbf{WhatsApp} --- primary channel for daily coordination; respond within 1 hour.
-  \item \textbf{In-person} --- preferred when on campus.
-  \item \textbf{Google Meet} --- for remote meetings.
-  \item Urgent issues: tag the team and respond within 20 minutes.
-  \item If unavailable: post an async update in WhatsApp within 24 hours.
-\end{itemize}
-
-\subsubsection*{Meetings}
-\begin{itemize}
-  \item Mandatory: Sprint Planning, Sprint Review, Sprint Retrospective.
-  \item Regular check-ins: 4$\times$ per week (in-person or Google Meet).
-  \item Absence: notify team 24 hours in advance and share an async update.
-  \item Every meeting ends with: decisions + action items + owners.
-  \item Notes: rotating assigned person.
-\end{itemize}
-
-\subsubsection*{Meeting Preparation}
-\begin{itemize}
-  \item \textbf{Sprint Planning:} review backlog, propose task breakdowns.
-  \item \textbf{Review:} prepare demo flow + screenshots.
-  \item \textbf{Retrospective:} each member prepares (1)~what went well,
-        (2)~what did not, (3)~what to change.
-\end{itemize}
-
-\subsubsection*{Version Control}
-\begin{itemize}
-  \item Small, atomic commits; new branch per ticket.
-  \item PR required before merging; do not commit secrets, credentials, or large binaries.
-  \item Commit message format: \texttt{feat:}, \texttt{fix:}, \texttt{docs:}, \texttt{chore:}
-\end{itemize}
-
-\subsubsection*{Division of Work}
-\begin{tabularx}{\linewidth}{>{}l X}
-  \toprule
-  \textbf{Owner} & \textbf{Responsibility} \\
-  \midrule
-  Wajih     & Requirement ownership: user stories, structured specs, and consistency checks. \\[3pt]
-  Ali       & UI ownership and feature implementation. \\[3pt]
-  Ibraheem  & Coordination, sprint tracking, packaging, and final submission. \\
-  \bottomrule
-\end{tabularx}
-
-\medskip
-\noindent\textbf{Contingency Plan.}
-If a member becomes unavailable or falls behind, the team will re-scope to the
-minimum required deliverable content, redistribute work immediately, and
-prioritise required artefacts. The PM/SM will update the board, assign new owners,
-and schedule an urgent meeting to unblock progress.
-
-\subsubsection*{Submission Protocol}
-\begin{itemize}
-  \item \textbf{Submission owner:} Wajih.
-  \item \textbf{Internal review:} Ibraheem and Ali.
-  \item \textbf{Internal cutoff:} finalise 24 hours before the deadline.
 \end{itemize}
 
 % ═══════════════════════════════════════════════════════════════
@@ -852,7 +671,6 @@ selected for Sprint 1:
 %  SECTION 8 — NON-FUNCTIONAL REQUIREMENTS
 % ═══════════════════════════════════════════════════════════════
 \section{Non-Functional Requirements (NFR) Specification}
-\label{sec:nfr}
 
 \begin{center}
 \begin{tabularx}{\linewidth}{>{\bfseries\color{primary}}l X}
@@ -908,7 +726,6 @@ selected for Sprint 1:
 %  SECTION 10 — WORK DIVISION
 % ═══════════════════════════════════════════════════════════════
 \section{Work Division}
-\label{sec:workdiv}
 
 \subsubsection*{Ibraheem Farooq \normalfont\small\color{muted}(PM / Scrum Master)}
 \begin{itemize}
@@ -931,5 +748,4 @@ selected for Sprint 1:
   \item Produces Iteration 1 screenshots and demo-ready flows.
 \end{itemize}
 
-% ──────────────────────────────────────────────────────────────
 \end{document}
