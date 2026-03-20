@@ -12,7 +12,7 @@ public class DB {
     private Connection connection;
     private final String url = "jdbc:postgresql://localhost:5432/naawbi";
     private final String user = "postgres";
-    private final String password = "password";
+    private final String password = "postgres";
 
     private DB() {
         try {
@@ -70,5 +70,28 @@ public class DB {
         }
     }
 
-    private void createTables(){}
+    public void createTables() {
+        String userTable = "CREATE TABLE IF NOT EXISTS users ("
+                + "id SERIAL PRIMARY KEY,"
+                + "username VARCHAR(50) UNIQUE NOT NULL,"
+                + "password VARCHAR(100) NOT NULL,"
+                + "email VARCHAR(100) UNIQUE NOT NULL"
+                + ");";
+
+        String courseTable = "CREATE TABLE IF NOT EXISTS courses ("
+                + "id SERIAL PRIMARY KEY,"
+                + "course_name VARCHAR(100) NOT NULL,"
+                + "course_code VARCHAR(20) UNIQUE NOT NULL,"
+                + "description TEXT,"
+                + "created_by INTEGER REFERENCES users(id),"
+                + "is_active BOOLEAN DEFAULT FALSE"
+                + ");";
+
+        try (Statement statement = getConnection().createStatement()) {
+            statement.execute(userTable);
+            statement.execute(courseTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

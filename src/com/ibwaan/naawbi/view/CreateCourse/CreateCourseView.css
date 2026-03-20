@@ -1,0 +1,368 @@
+/* =============================================
+   CreateCourseView.css
+   All colors derived from ViewConstants via
+   JavaFX looked-up color variables injected
+   by CreateCourseController.initialize()
+   =============================================
+   Looked-up color map:
+     -vc-primary    → ViewConstants.PRIMARY_COLOR    #4b5d4f  (forest green)
+     -vc-secondary  → ViewConstants.SECONDARY_COLOR  #e7e1d5  (warm linen)
+     -vc-accent     → ViewConstants.ACCENT_COLOR     #db7706  (amber)
+     -vc-background → ViewConstants.BACKGROUND_COLOR #f9f7f1  (cream)
+     -vc-text       → ViewConstants.TEXT_COLOR       #1f1f1e  (near-black)
+   ============================================= */
+
+/* ------- Root / Background ------- */
+.root-pane {
+    -fx-background-color: transparent;
+}
+
+.background-pane {
+    -fx-background-color: -vc-background;
+    -fx-min-width: 1920;
+    -fx-min-height: 1080;
+    -fx-pref-width: 1920;
+    -fx-pref-height: 1080;
+}
+
+/* ------- Decorative accents ------- */
+.accent-circle-1 {
+    -fx-fill: radial-gradient(center 50% 50%, radius 50%,
+        derive(-vc-primary, 80%) 0%, transparent 70%);
+}
+
+.accent-circle-2 {
+    -fx-fill: radial-gradient(center 50% 50%, radius 50%,
+        derive(-vc-accent, 60%) 0%, transparent 70%);
+}
+
+.accent-bar {
+    -fx-fill: -vc-accent;
+    -fx-arc-width: 4;
+    -fx-arc-height: 4;
+    -fx-opacity: 0.6;
+}
+
+.accent-bar-h {
+    -fx-fill: -vc-primary;
+    -fx-arc-width: 4;
+    -fx-arc-height: 4;
+    -fx-opacity: 0.35;
+}
+
+/* ------- Left Panel ------- */
+.left-panel {
+    -fx-padding: 72 56 72 72;
+    -fx-background-color: -vc-secondary;
+}
+
+.app-logo {
+    -fx-font-family: "Courier New";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-accent;
+    -fx-opacity: 0.9;
+}
+
+.logo-underline {
+    -fx-fill: -vc-accent;
+    -fx-arc-width: 3;
+    -fx-arc-height: 3;
+}
+
+.hero-headline {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 44px;
+    -fx-font-style: italic;
+    -fx-text-fill: -vc-text;
+    -fx-line-spacing: 4;
+}
+
+.hero-subtext {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 15px;
+    -fx-text-fill: derive(-vc-text, 40%);
+    -fx-line-spacing: 3;
+}
+
+/* Steps */
+.steps-box {
+    -fx-padding: 28 0 0 0;
+}
+
+.step-dot-active {
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-max-width: 30;
+    -fx-max-height: 30;
+    -fx-background-color: -vc-primary;
+    -fx-background-radius: 50%;
+}
+
+.step-dot {
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-max-width: 30;
+    -fx-max-height: 30;
+    -fx-background-color: -vc-background;
+    -fx-background-radius: 50%;
+    -fx-border-color: derive(-vc-primary, 50%);
+    -fx-border-radius: 50%;
+    -fx-border-width: 1.5;
+}
+
+.step-num {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-background;
+}
+
+.step-num-inactive {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: derive(-vc-primary, 40%);
+}
+
+.step-label-active {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: -vc-text;
+    -fx-font-weight: bold;
+}
+
+.step-label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: derive(-vc-primary, 30%);
+}
+
+/* ------- Panel divider ------- */
+.panel-divider {
+    -fx-background-color: derive(-vc-secondary, -15%);
+    -fx-min-width: 1;
+    -fx-max-width: 1;
+}
+
+/* ------- Right Panel ------- */
+.right-panel {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.form-container {
+    -fx-background-color: -vc-background;
+    -fx-background-radius: 20;
+    -fx-border-color: derive(-vc-secondary, -10%);
+    -fx-border-radius: 20;
+    -fx-border-width: 1.5;
+    /* Removed drop shadow for flat look */
+    -fx-max-width: 680;
+    -fx-pref-width: 680;
+}
+
+/* Form header */
+.form-header {
+    -fx-padding: 44 48 28 48;
+}
+
+.form-title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 26px;
+    -fx-text-fill: -vc-text;
+    -fx-font-weight: bold;
+}
+
+.form-subtitle {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: derive(-vc-text, 45%);
+    -fx-wrap-text: true;
+    -fx-max-width: 520;
+}
+
+/* Dividers */
+.form-divider {
+    -fx-background-color: derive(-vc-secondary, -12%);
+}
+
+/* Form body */
+.form-body {
+    -fx-padding: 36 48 36 48;
+}
+
+/* Field labels */
+.field-label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-primary;
+}
+
+.required-mark {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: derive(-vc-accent, -10%);
+}
+
+.optional-badge {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 11px;
+    -fx-text-fill: -vc-accent;
+    -fx-background-color: derive(-vc-accent, 75%);
+    -fx-background-radius: 6;
+    -fx-padding: 2 8 2 8;
+}
+
+/* Text fields */
+.text-field-modern {
+    -fx-background-color: -vc-secondary;
+    -fx-background-radius: 10;
+    -fx-border-color: derive(-vc-secondary, -18%);
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-padding: 13 16 13 16;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: -vc-text;
+    -fx-prompt-text-fill: derive(-vc-text, 60%);
+}
+
+.text-field-modern:focused {
+    -fx-border-color: -vc-accent;
+    -fx-effect: dropshadow(gaussian, derive(-vc-accent, 20%), 12, 0, 0, 0);
+}
+
+/* Text areas */
+.text-area-modern {
+    -fx-background-color: -vc-secondary;
+    -fx-background-radius: 10;
+    -fx-border-color: derive(-vc-secondary, -18%);
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: -vc-text;
+    -fx-prompt-text-fill: derive(-vc-text, 60%);
+}
+
+.text-area-modern .content {
+    -fx-background-color: -vc-secondary;
+    -fx-background-radius: 10;
+    -fx-padding: 10 14 10 14;
+}
+
+.text-area-modern:focused {
+    -fx-border-color: -vc-accent;
+    -fx-effect: dropshadow(gaussian, derive(-vc-accent, 20%), 12, 0, 0, 0);
+}
+
+.syllabus-area .content {
+    -fx-padding: 10 14 10 14;
+}
+
+/* Validation */
+.field-error {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-accent, -20%);
+}
+
+.global-error {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: derive(-vc-accent, -20%);
+}
+
+/* Toggle row */
+.toggle-row {
+    -fx-background-color: -vc-secondary;
+    -fx-background-radius: 10;
+    -fx-border-color: derive(-vc-secondary, -18%);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 16 18 16 18;
+}
+
+.modern-checkbox {
+    -fx-mark-color: -vc-background;
+}
+
+.modern-checkbox:selected .box {
+    -fx-background-color: -vc-primary;
+    -fx-border-color: -vc-primary;
+}
+
+.modern-checkbox .box {
+    -fx-background-color: -vc-background;
+    -fx-border-color: derive(-vc-primary, 30%);
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-border-width: 1.5;
+}
+
+.toggle-label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: -vc-text;
+    -fx-font-weight: bold;
+}
+
+.toggle-sublabel {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-text, 45%);
+}
+
+/* ------- Action Row ------- */
+.form-actions {
+    -fx-padding: 24 48 36 48;
+}
+
+/* Primary button */
+.btn-primary {
+    -fx-background-color: -vc-accent;
+    -fx-background-radius: 10;
+    -fx-text-fill: -vc-background;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 13 28 13 28;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.btn-primary:hover {
+    -fx-background-color: derive(-vc-accent, -10%);
+    -fx-effect: dropshadow(gaussian, derive(-vc-accent, 10%), 16, 0, 0, 3);
+}
+
+.btn-primary:pressed {
+    -fx-background-color: derive(-vc-accent, -20%);
+    -fx-effect: none;
+}
+
+/* Secondary button */
+.btn-secondary {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-text-fill: derive(-vc-text, 35%);
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-padding: 13 22 13 22;
+    -fx-cursor: hand;
+    -fx-border-color: derive(-vc-secondary, -20%);
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: -vc-secondary;
+    -fx-text-fill: -vc-text;
+    -fx-border-color: derive(-vc-secondary, -30%);
+}
+
+.btn-secondary:pressed {
+    -fx-background-color: derive(-vc-secondary, -5%);
+}

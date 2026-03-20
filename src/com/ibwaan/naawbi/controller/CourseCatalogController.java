@@ -30,27 +30,33 @@ import java.util.ResourceBundle;
  * Controller for CourseCatalogView.fxml
  *
  * Responsibilities:
- *  1. Inject ViewConstants color variables onto rootPane so all -vc-*
- *     CSS looked-up colors cascade throughout the scene (same pattern
- *     as CreateCourseController).
- *  2. Wire up the course card selection: highlight the selected card
- *     and (in a real implementation) swap the Course Home panel content.
- *  3. Wire the search field for live catalog filtering.
- *  4. Dynamically load courses from the database.
+ * 1. Inject ViewConstants color variables onto rootPane so all -vc-*
+ * CSS looked-up colors cascade throughout the scene (same pattern
+ * as CreateCourseController).
+ * 2. Wire up the course card selection: highlight the selected card
+ * and (in a real implementation) swap the Course Home panel content.
+ * 3. Wire the search field for live catalog filtering.
+ * 4. Dynamically load courses from the database.
  */
 public class CourseCatalogController implements Initializable {
 
     /* ── Root (color injection) ─────────────────────── */
-    @FXML private StackPane rootPane;
+    @FXML
+    private StackPane rootPane;
 
     /* ── Catalog ────────────────────────────────────── */
-    @FXML private Label     courseCountLabel;
-    @FXML private Button    createCourseBtn;
-    @FXML private TextField searchField;
-    @FXML private VBox      courseListContainer;
+    @FXML
+    private Label courseCountLabel;
+    @FXML
+    private Button createCourseBtn;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private VBox courseListContainer;
 
     /* ── Stream ─────────────────────────────────────── */
-    @FXML private VBox streamContainer;
+    @FXML
+    private VBox streamContainer;
 
     /* ── Lifecycle ───────────────────────────────────── */
 
@@ -91,7 +97,7 @@ public class CourseCatalogController implements Initializable {
         // Accent bar
         HBox accent = new HBox();
         accent.getStyleClass().addAll("course-card-accent", "course-accent-primary");
-        
+
         // Body
         VBox body = new VBox();
         body.getStyleClass().add("course-card-body");
@@ -126,13 +132,13 @@ public class CourseCatalogController implements Initializable {
         HBox stats = new HBox();
         stats.setSpacing(12);
         stats.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        
+
         Label pendingStat = new Label("📋  0 pending");
         pendingStat.getStyleClass().add("course-stat");
-        
+
         Label newStat = new Label("🔔  0 new");
         newStat.getStyleClass().add("course-stat");
-        
+
         stats.getChildren().addAll(pendingStat, newStat);
 
         body.getChildren().addAll(header, nameLabel, metaLabel, stats);
@@ -148,17 +154,16 @@ public class CourseCatalogController implements Initializable {
      */
     private void injectColorConstants() {
         String style = String.format(
-            "-vc-primary:    %s;" +
-            "-vc-secondary:  %s;" +
-            "-vc-accent:     %s;" +
-            "-vc-background: %s;" +
-            "-vc-text:       %s;",
-            ViewConstants.PRIMARY_COLOR,
-            ViewConstants.SECONDARY_COLOR,
-            ViewConstants.ACCENT_COLOR,
-            ViewConstants.BACKGROUND_COLOR,
-            ViewConstants.TEXT_COLOR
-        );
+                "-vc-primary:    %s;" +
+                        "-vc-secondary:  %s;" +
+                        "-vc-accent:     %s;" +
+                        "-vc-background: %s;" +
+                        "-vc-text:       %s;",
+                ViewConstants.PRIMARY_COLOR,
+                ViewConstants.SECONDARY_COLOR,
+                ViewConstants.ACCENT_COLOR,
+                ViewConstants.BACKGROUND_COLOR,
+                ViewConstants.TEXT_COLOR);
         rootPane.setStyle(style);
     }
 
@@ -170,7 +175,8 @@ public class CourseCatalogController implements Initializable {
         searchField.textProperty().addListener((obs, oldVal, query) -> {
             String q = query == null ? "" : query.trim().toLowerCase();
             for (Node node : courseListContainer.getChildren()) {
-                if (!(node instanceof VBox card)) continue;
+                if (!(node instanceof VBox card))
+                    continue;
                 if (q.isBlank()) {
                     card.setVisible(true);
                     card.setManaged(true);
@@ -212,7 +218,8 @@ public class CourseCatalogController implements Initializable {
     @FXML
     private void handleNavigateToCreate(ActionEvent event) {
         try {
-            Parent createRoot = FXMLLoader.load(getClass().getResource("/com/ibwaan/naawbi/view/CreateCourse/CreateCourseView.fxml"));
+            Parent createRoot = FXMLLoader
+                    .load(getClass().getResource("/com/ibwaan/naawbi/view/CreateCourse/CreateCourseView.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle("Naawbi - Create Course");
             stage.getScene().setRoot(createRoot);
@@ -247,7 +254,7 @@ public class CourseCatalogController implements Initializable {
 
         // TODO: load the corresponding course's stream data into streamContainer
         // courseService.getCourse(courseId).thenAccept(course -> {
-        //     Platform.runLater(() -> streamController.populate(course));
+        // Platform.runLater(() -> streamController.populate(course));
         // });
         System.out.println("Course selected: " + event.getSource());
     }

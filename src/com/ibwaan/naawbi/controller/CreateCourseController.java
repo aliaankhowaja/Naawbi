@@ -19,25 +19,33 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-
 public class CreateCourseController implements Initializable {
 
     /* ── Root node (for color injection) ────────────────── */
-    @FXML private StackPane rootPane;
+    @FXML
+    private StackPane rootPane;
 
     /* ── Form fields ─────────────────────────────────────── */
-    @FXML private TextField  courseNameField;
-    @FXML private TextField  courseCodeField;
-    @FXML private TextArea   descriptionField;
-    @FXML private CheckBox   visibilityToggle;
+    @FXML
+    private TextField courseNameField;
+    @FXML
+    private TextField courseCodeField;
+    @FXML
+    private TextArea descriptionField;
+    @FXML
+    private CheckBox visibilityToggle;
 
     /* ── Validation labels ───────────────────────────────── */
-    @FXML private Label courseNameError;
-    @FXML private Label globalError;
+    @FXML
+    private Label courseNameError;
+    @FXML
+    private Label globalError;
 
     /* ── Buttons ─────────────────────────────────────────── */
-    @FXML private Button createBtn;
-    @FXML private Button cancelBtn;
+    @FXML
+    private Button createBtn;
+    @FXML
+    private Button cancelBtn;
 
     /* ── Lifecycle ───────────────────────────────────────── */
 
@@ -47,34 +55,33 @@ public class CreateCourseController implements Initializable {
 
         // Clear validation state as the user types
         courseNameField.textProperty().addListener(
-            (obs, oldVal, newVal) -> hideError(courseNameError)
-        );
+                (obs, oldVal, newVal) -> hideError(courseNameError));
     }
 
     private void injectColorConstants() {
         String style = String.format(
-            "-vc-primary:    %s;" +
-            "-vc-secondary:  %s;" +
-            "-vc-accent:     %s;" +
-            "-vc-background: %s;" +
-            "-vc-text:       %s;",
-            ViewConstants.PRIMARY_COLOR,
-            ViewConstants.SECONDARY_COLOR,
-            ViewConstants.ACCENT_COLOR,
-            ViewConstants.BACKGROUND_COLOR,
-            ViewConstants.TEXT_COLOR
-        );
+                "-vc-primary:    %s;" +
+                        "-vc-secondary:  %s;" +
+                        "-vc-accent:     %s;" +
+                        "-vc-background: %s;" +
+                        "-vc-text:       %s;",
+                ViewConstants.PRIMARY_COLOR,
+                ViewConstants.SECONDARY_COLOR,
+                ViewConstants.ACCENT_COLOR,
+                ViewConstants.BACKGROUND_COLOR,
+                ViewConstants.TEXT_COLOR);
         rootPane.setStyle(style);
     }
 
     @FXML
     private void handleCreate(ActionEvent event) {
-        if (!validate()) return;
+        if (!validate())
+            return;
 
-        String name        = courseNameField.getText().trim();
-        String code        = courseCodeField.getText().trim();
+        String name = courseNameField.getText().trim();
+        String code = courseCodeField.getText().trim();
         String description = descriptionField.getText().trim();
-        boolean publish    = visibilityToggle.isSelected();
+        boolean publish = visibilityToggle.isSelected();
 
         Course newCourse = new Course(name, code, description, publish);
 
@@ -95,7 +102,6 @@ public class CreateCourseController implements Initializable {
     private void handleCancel(ActionEvent event) {
         navigateToCatalog(event);
     }
-
 
     private boolean validate() {
         boolean valid = true;
@@ -121,7 +127,8 @@ public class CreateCourseController implements Initializable {
 
     private void navigateToCatalog(ActionEvent event) {
         try {
-            Parent catalogRoot = FXMLLoader.load(getClass().getResource("/com/ibwaan/naawbi/view/CourseCatalog/CourseCatalogView.fxml"));
+            Parent catalogRoot = FXMLLoader
+                    .load(getClass().getResource("/com/ibwaan/naawbi/view/CourseCatalog/CourseCatalogView.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle("Naawbi - Course Catalog");
             stage.getScene().setRoot(catalogRoot);

@@ -25,11 +25,10 @@ public class Course {
         try (ResultSet rs = DB.getInstance().executeQuery(query)) {
             while (rs.next()) {
                 courses.add(new Course(
-                    rs.getString("course_name"),
-                    rs.getString("course_code"),
-                    rs.getString("description"),
-                    rs.getBoolean("is_active")
-                ));
+                        rs.getString("course_name"),
+                        rs.getString("course_code"),
+                        rs.getString("description"),
+                        rs.getBoolean("is_active")));
             }
         }
         return courses;
@@ -42,18 +41,41 @@ public class Course {
             pstmt.setString(2, code);
             pstmt.setString(3, description);
             pstmt.setBoolean(4, active);
-            
+
             return pstmt.executeUpdate() > 0;
         }
     }
 
     // Getters and Setters
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
