@@ -1,0 +1,751 @@
+% ==============================================================
+%  Naawbi LMS --- CS3009 Software Engineering (Spring 2026)
+%  Deliverable 1 — Project Information (Requirements + Sprint 1)
+% ==============================================================
+\documentclass[11pt, legalpaper]{article}
+
+% ── Packages ──────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage[top=2.2cm, bottom=2.2cm, left=2.2cm, right=2.2cm, headheight=28pt]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{caption}
+\usepackage[most]{tcolorbox}
+
+% ── Colours ───────────────────────────────────────────────────
+\definecolor{primary}{HTML}{1A237E}   % deep indigo
+\definecolor{accent}{HTML}{283593}    % slightly lighter indigo
+\definecolor{rule}{HTML}{5C6BC0}      % mid indigo for rules
+\definecolor{muted}{HTML}{546E7A}     % blue-grey for captions
+\definecolor{boxbg}{HTML}{EEF0FB}     % info box background
+
+% ── Hyperref setup ────────────────────────────────────────────
+\hypersetup{
+    colorlinks   = true,
+    linkcolor    = primary,
+    urlcolor     = accent,
+    citecolor    = primary,
+    pdftitle     = {Naawbi LMS — Deliverable 1 (Project Information)},
+    pdfauthor    = {Team Ibwaan},
+    pdfsubject   = {CS3009 Software Engineering Spring 2026},
+    pdfkeywords  = {LMS, Software Engineering, Naawbi, Ibwaan},
+}
+
+% ── Spacing (reduced but still readable) ──────────────────────
+\setstretch{1.18}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+
+% ── Section formatting ────────────────────────────────────────
+\titleformat{\section}
+  {\Large\bfseries\color{primary}}
+  {\thesection}{1em}{}
+  [\color{rule}\titlerule]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{accent}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{accent}}
+  {\thesubsubsection}{1em}{}
+
+\titlespacing*{\section}{0pt}{1.2ex plus .4ex minus .2ex}{0.7ex}
+\titlespacing*{\subsection}{0pt}{0.9ex plus .3ex minus .1ex}{0.35ex}
+
+% ── Header / Footer ───────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rule}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\small\color{muted}\textbf{Naawbi LMS} — Project Information}
+\fancyhead[R]{\small\color{muted}CS3009 Spring 2026}
+\fancyfoot[C]{\small\color{muted}\thepage}
+
+% ── List styling ──────────────────────────────────────────────
+\setlist[itemize]{leftmargin=1.5em, itemsep=1.5pt, topsep=3pt}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=1.5pt, topsep=3pt}
+
+% ── Graceful image fallback ───────────────────────────────────
+% Usage: \imgOrPlaceholder[width=...]{path}{caption text}
+\newcommand{\imgOrPlaceholder}[3][width=0.85\textwidth]{%
+  \IfFileExists{#2}{%
+    \includegraphics[#1]{#2}%
+  }{%
+    \begin{center}%
+    \fboxsep=8pt\fbox{\parbox{0.7\textwidth}{\centering\color{muted}%
+      \textit{[Placeholder — image not yet available]}\\[4pt]%
+      \footnotesize #3}}%
+    \end{center}%
+  }%
+}
+
+% ── Custom environments ───────────────────────────────────────
+\tcbuselibrary{skins, breakable}
+
+\newtcolorbox{userstory}[1][] {
+  enhanced, breakable,
+  colback=white, colframe=rule!40,
+  arc=3pt, boxrule=0.5pt,
+  top=4pt, bottom=4pt, left=8pt, right=8pt,
+  #1
+}
+
+\begin{document}
+
+% ═══════════════════════════════════════════════════════════════
+%  TITLE PAGE
+% ═══════════════════════════════════════════════════════════════
+\begin{titlepage}
+  \centering
+
+  \vspace*{1.6cm}
+
+  {\small\scshape\color{muted} National University of Computer and Emerging Sciences}\\[0.4em]
+  {\small\color{muted} CS3009 — Software Engineering \quad|\quad Spring 2026}
+
+  \vspace{1.0cm}
+  {\color{rule}\hrule height 1.2pt}
+  \vspace{1.0cm}
+
+  {\fontsize{44}{50}\selectfont\bfseries\color{primary} Project Information}\\[0.5em]
+  {\Large\color{muted} Deliverable 1}
+
+  \vspace{0.9cm}
+  {\color{rule!40}\rule{6cm}{0.6pt}}
+  \vspace{1.0cm}
+
+  {\fontsize{56}{62}\selectfont\bfseries\color{primary} Naawbi}\\[0.3em]
+  {\Large\color{muted} Learning Management System}
+
+  \vspace{1.2cm}
+
+  \begin{tabular}{r@{\quad}l}
+    {\color{muted}\small Team Name}       & {\bfseries Ibwaan} \\[4pt]
+    {\color{muted}\small Team Lead}       & {\bfseries Ibraheem Farooq} \\[4pt]
+    {\color{muted}\small Members}         & 23i-0708 \textbar\ Ali Aan Khowaja \\
+                                          & 23i-0816 \textbar\ Ibraheem Farooq \\
+                                          & 23i-0819 \textbar\ Wajih-Ur-Raza Asif \\[4pt]
+    {\color{muted}\small Submission Date} & 28 February 2026 \\[4pt]
+    {\color{muted}\small Repository}      & \href{https://github.com/aliaankhowaja/Naawbi}{github.com/aliaankhowaja/Naawbi} \\
+  \end{tabular}
+
+  \vfill
+
+  {\color{rule!40}\hrule height 0.5pt}
+  \vspace{0.5cm}
+  {\footnotesize\color{muted}
+    \href{https://github.com/ibbi1020}{ibbi1020}\enspace\textbullet\enspace
+    \href{https://github.com/wajih-rathore}{wajih-rathore}\enspace\textbullet\enspace
+    \href{https://github.com/aliaankhowaja}{aliaankhowaja}
+  }
+  \vspace{0.6cm}
+\end{titlepage}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 1 — INTRODUCTION
+% ═══════════════════════════════════════════════════════════════
+\section{Introduction}
+
+\subsection{Context}
+This project is a university Software Engineering team project to build a Learning
+Management System (LMS). The system will implement standard SE practices
+(requirements, design, implementation, testing, and documentation) and deliver a
+working product with an MVP scope plus selected extensions.
+
+\subsection{Problem Statement}
+Current course management for small-to-mid scale classes often suffers from
+fragmented tools for announcements, content, submissions, grading, and learner
+progress visibility. Students lack a clear, data-driven view of performance and
+deadlines. Instructors need a single workflow to publish content, collect
+submissions, grade with rubrics, and monitor class progress.
+
+\subsection{Goals}
+\begin{itemize}
+  \item Deliver a usable LMS that supports the end-to-end workflow for a course:
+        \textbf{content} $\rightarrow$ \textbf{assignments} $\rightarrow$
+        \textbf{submissions} $\rightarrow$ \textbf{grading}.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 2 — PROJECT VISION
+% ═══════════════════════════════════════════════════════════════
+\section{Project Vision}
+
+Build a clean, reliable, course-centric LMS that instructors can use to manage
+learning materials and evaluations, and that students can use to track progress
+and performance. The key differentiators are:
+
+\begin{itemize}
+  \item \textbf{Grading} — rubric-driven grading for assignments.
+  \item \textbf{Analytics Dashboard} — performance, progress, and deadline
+        dashboards for both students and faculty.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 3 — INTENDED USE OF THE SYSTEM
+% ═══════════════════════════════════════════════════════════════
+\section{Intended Use of the System}
+
+\subsection{Stakeholders}
+
+\subsubsection*{Students}
+\begin{itemize}
+  \item View enrolled courses, announcements, and deadlines.
+  \item Submit assignments.
+  \item View grades and instructor comments.
+  \item Use the analytics dashboard to understand:
+    \begin{itemize}
+      \item current standing and grade breakdown;
+      \item missing/late work;
+      \item upcoming deadlines and workload.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{Instructors}
+\begin{itemize}
+  \item Create and manage courses.
+  \item Create assignments with due dates and submission rules.
+  \item Grade submissions and provide feedback.
+  \item View course-level insights (basic analytics):
+    \begin{itemize}
+      \item submission rates;
+      \item grade distributions;
+      \item at-risk indicators.
+    \end{itemize}
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 4 — FEATURES / OVERALL FUNCTIONALITY
+% ═══════════════════════════════════════════════════════════════
+\section{Features and Overall Functionality}
+
+\subsection{What the System Will Do}
+
+\subsubsection{Authentication and Role-Based Access Control (RBAC)}
+\begin{itemize}
+  \item User self-registration with role selection (Student or Instructor).
+  \item Login and logout.
+  \item Roles: Instructor, Student (optional: Teaching Assistant).
+  \item Access control enforced across all features.
+\end{itemize}
+
+\subsubsection{Course Enrollment and Management}
+\begin{itemize}
+  \item Course creation (instructor).
+  \item Course catalogue/listing.
+  \item Enrollment workflow: students enroll using a randomly generated,
+        unique code per class.
+  \item Course home: stream of announcements and assignments, similar to
+        Google Classroom.
+\end{itemize}
+
+\subsubsection{Announcements and Course Material}
+\begin{itemize}
+  \item Instructors post announcements visible to enrolled students.
+  \item Announcement feed per course.
+  \item File-based course material upload and distribution.
+\end{itemize}
+
+\subsubsection{Assignments and Submissions}
+Assignments are a sub-category of announcements with the added functionality
+of file upload and resubmission rules (similar to Google Classroom).
+\begin{itemize}
+  \item Instructors create assignments with title, description, due date/time,
+        and late policy.
+  \item Students submit via file upload with configurable resubmission rules
+        (e.g., allowed until due date).
+  \item Threaded comments within assignments.
+  \item Submission tracking: timestamped submissions with status
+        (\emph{submitted / late / missing}).
+\end{itemize}
+
+\subsubsection{Grading, Feedback, and Gradebook}
+\begin{itemize}
+  \item Instructor grading interface: view submissions, assign scores, add
+        comments.
+  \item Gradebook:
+    \begin{itemize}
+      \item Instructor view — all students and graded items.
+      \item Student view — personal grades and feedback.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{To-Do List and Deadlines \texorpdfstring{\normalfont\small(Key Extension)}{}}
+A simple list within the course catalogue section providing student-facing
+insights:
+\begin{itemize}
+  \item \textbf{Completion/progress indicators:} submitted vs.\ missing items.
+  \item \textbf{Deadline awareness:} upcoming due dates and late/missed items.
+\end{itemize}
+
+\subsection{How the System Helps Users}
+\begin{itemize}
+  \item Consolidates course operations (content, announcements, assessments,
+        grading) into one unified workflow.
+  \item Reduces instructor workload through rubric reuse.
+  \item Provides traceability for evaluation: all actions are recorded and
+        auditable (who submitted what and when; who graded what and when).
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 5 — USER STORIES
+% ═══════════════════════════════════════════════════════════════
+\section{User Stories}
+
+\subsection{Authentication and Role-Based Access Control (RBAC)}
+\begin{enumerate}[label=\textbf{US\,\arabic*}]
+  \item As a \emph{User} (Student/Instructor), I want to log in securely so
+        that I can access my account and authorised system features.
+  \item As a \emph{User}, I want to log out of my account so that my session
+        is secure when I am not using the system.
+  \item As a \emph{User}, I want to select my role (Student or Instructor)
+        during registration so that I can use the platform appropriately.
+  \item As a \emph{User}, I want role-based access control to be enforced
+        across all features so that individuals can only perform actions
+        permitted by their chosen role.
+\end{enumerate}
+
+\subsection{Course Enrollment and Management}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=5]
+  \item As an \emph{Instructor}, I want to create a new course so that I have
+        a dedicated space to manage learning materials and track student
+        progress.
+  \item As a \emph{User}, I want to view a course catalogue/listing so that I
+        can see the available courses in the system.
+  \item As an \emph{Instructor}, I want the system to generate a unique random
+        code for my course so that I can share it securely with my target
+        students.
+  \item As a \emph{Student}, I want to enroll in a course using a unique class
+        code so that I can self-register for the classes I am supposed to take.
+  \item As a \emph{Student}, I want to view a course home page that displays
+        announcements and upcoming items so that I am immediately aware of
+        current course activities.
+\end{enumerate}
+
+\subsection{Announcements and Course Material}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=10]
+  \item As an \emph{Instructor}, I want to post announcements so that I can
+        broadcast important updates or instructions to all enrolled students.
+  \item As a \emph{Student}, I want to see an announcement feed for my course
+        so that I never miss critical information from my instructor.
+  \item As an \emph{Instructor}, I want to upload and publish course materials
+        so that my students have access to the necessary learning resources.
+  \item As a \emph{Student}, I want to access and download course materials so
+        that I can study and complete my assignments.
+\end{enumerate}
+
+\subsection{Assignments and Submissions}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=14]
+  \item As an \emph{Instructor}, I want to create assignments with a title,
+        description, and due date/time so that expectations are clear to
+        students.
+  \item As an \emph{Instructor}, I want to define late policies and
+        resubmission rules so that I can enforce grading standards.
+  \item As a \emph{Student}, I want to submit my assignments via file upload
+        so that I can turn in my completed work electronically.
+  \item As an \emph{Instructor}, I want the system to timestamp all
+        submissions so that I can accurately determine their status (submitted,
+        late, missing).
+  \item As a \emph{Student}, I want to see the status of my submissions (e.g.,
+        submitted on time, late, missing) so that I know my work has been
+        received.
+\end{enumerate}
+
+\subsection{Grading, Feedback, and Gradebook}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=19]
+  \item As an \emph{Instructor}, I want to view a list of student submissions
+        for an assignment so that I can review them efficiently.
+  \item As an \emph{Instructor}, I want to assign scores and add comments to
+        student submissions so that I can provide them with constructive
+        feedback.
+  \item As an \emph{Instructor}, I want to view a comprehensive gradebook of
+        all students and their graded items so that I can monitor the overall
+        performance of the class.
+  \item As a \emph{Student}, I want to view my personal gradebook with scores
+        and instructor feedback so that I can track my academic standing and
+        progress.
+\end{enumerate}
+
+\subsection{To-Do List and Deadlines \texorpdfstring{\normalfont\small(Key Extension)}{}}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=23]
+  \item As a \emph{Student}, I want to view a to-do list within my course
+        catalogue section so that I have complete visibility over my progress
+        (submitted vs.\ missing items).
+  \item As a \emph{Student}, I want the system to highlight upcoming due dates
+        and late/missed items so that I can effectively manage my deadlines and
+        prioritise my workload.
+\end{enumerate}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 6 — STRUCTURED SPECIFICATIONS
+% ═══════════════════════════════════════════════════════════════
+\section{Structured Specifications for All User Stories}
+\label{sec:specs}
+
+\subsection{Authentication and Role-Based Access Control (RBAC)}
+
+\begin{userstory}
+  \textbf{US\,1 \& US\,2 — Secure Login and Logout}\\[4pt]
+  \textit{Roles:} Student, Instructor\\[2pt]
+  \textit{Description:} Users must be able to authenticate themselves to
+  access the system safely, and end their session when finished.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item System presents a login form requiring email and password.
+    \item System authenticates credentials against the database.
+    \item Successful login redirects to the user's respective dashboard.
+    \item System provides a visible logout button that terminates the session
+          and redirects to the login page.
+  \end{itemize}
+\end{userstory}
+
+\begin{userstory}
+  \textbf{US\,3 \& US\,4 — Registration and Role Enforcement}\\[4pt]
+  \textit{Roles:} Student, Instructor\\[2pt]
+  \textit{Description:} Users can register an account, select their role,
+  and the system consistently enforces access restrictions based on this
+  role.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Registration page includes a required field to select ``Student'' or
+          ``Instructor'' role.
+    \item Students attempting to access instructor-only routes (e.g., course
+          creation, grading) receive an ``Access Denied'' error.
+    \item Instructors cannot access student-only views if not enrolled as a
+          student.
+  \end{itemize}
+\end{userstory}
+
+\subsection{Course Enrollment and Management}
+
+\begin{userstory}
+  \textbf{US\,5 — Course Creation}\\[4pt]
+  \textit{Roles:} Instructor\\[2pt]
+  \textit{Description:} Instructors can create courses to manage their
+  classes.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Instructor can access a ``Create Course'' form.
+    \item Form requires Course Name and optional description/syllabus.
+    \item Upon creation, the course is added to the instructor's dashboard.
+  \end{itemize}
+\end{userstory}
+
+\begin{userstory}
+  \textbf{US\,6 \& US\,9 — Course Catalogue and Home Page}\\[4pt]
+  \textit{Roles:} Student, Instructor\\[2pt]
+  \textit{Description:} Users can view a list of their courses and access a
+  centralised course home page featuring announcements and upcoming
+  items.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Dashboard displays all active courses the user is enrolled in or
+          teaching.
+    \item Clicking a course opens the Course Home with a feed of recent
+          announcements, latest assignments, and immediate deadlines (similar
+          to Google Classroom's Stream).
+  \end{itemize}
+\end{userstory}
+
+\begin{userstory}
+  \textbf{US\,7 \& US\,8 — Unique Class Code Enrollment}\\[4pt]
+  \textit{Roles:} Student, Instructor\\[2pt]
+  \textit{Description:} The system generates a unique join code for courses,
+  which students use to self-enroll.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Upon course creation, a unique alphanumeric code is automatically
+          generated.
+    \item Instructor's course settings page clearly displays the join code.
+    \item Student dashboard has a ``Join Course'' button accepting a valid
+          class code as input.
+    \item Entering a valid code adds the student to the course roster
+          immediately.
+  \end{itemize}
+\end{userstory}
+
+\subsection{Announcements and Course Material}
+
+\begin{userstory}
+  \textbf{US\,10 \& US\,11 — Course Announcements}\\[4pt]
+  \textit{Roles:} Student, Instructor\\[2pt]
+  \textit{Description:} Instructors publish text/media updates that populate
+  a centralised feed for students.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Instructors have an input box on the Course Home to post an
+          announcement.
+    \item Announcements support basic text formatting.
+    \item Upon posting, the announcement is instantly visible on the Course
+          Home feed for all students in the course.
+  \end{itemize}
+\end{userstory}
+
+\begin{userstory}
+  \textbf{US\,12 \& US\,13 — Course Material Distribution}\\[4pt]
+  \textit{Roles:} Student, Instructor\\[2pt]
+  \textit{Description:} Instructors upload relevant class materials for
+  student retrieval.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Instructors can attach files (PDFs, docs, links) to posts or a
+          dedicated ``Materials'' section.
+    \item Students can view or download the attached files without errors.
+  \end{itemize}
+\end{userstory}
+
+\subsection{Assignments and Submissions}
+
+\begin{userstory}
+  \textbf{US\,14 \& US\,15 — Assignment Creation and Policies}\\[4pt]
+  \textit{Roles:} Instructor\\[2pt]
+  \textit{Description:} Instructors define tasks with explicit instructions,
+  deadlines, and submission rules.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Instructor can create an assignment specifying Title, Description,
+          Total Points, Due Date, and Due Time.
+    \item Instructor can toggle late submission permissions (e.g., ``Allow
+          late turn-ins'' vs.\ ``Hard deadline'').
+    \item Assignment appears in the course feed and on students' To-Do lists
+          once published.
+  \end{itemize}
+\end{userstory}
+
+\begin{userstory}
+  \textbf{US\,16, US\,17 \& US\,18 — Assignment Submissions and Tracking}\\[4pt]
+  \textit{Roles:} Student, Instructor\\[2pt]
+  \textit{Description:} Students submit files, and the system records the
+  exact turn-in timestamp, comment history, and completion status.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Students have a dedicated ``Submit'' area within each assignment to
+          upload files.
+    \item System records the exact server time of the upload.
+    \item Submissions are automatically tagged as:\
+      \begin{itemize}
+        \item \textbf{Submitted} — if before deadline;
+        \item \textbf{Late} — if after deadline (provided late policy allows);
+        \item \textbf{Missing} — if deadline passed with no upload.
+      \end{itemize}
+    \item Students can unsubmit/resubmit if the deadline has not passed and
+          instructor settings allow it.
+    \item Both students and instructors can leave threaded or inline comments
+          on an assignment.
+  \end{itemize}
+\end{userstory}
+
+\subsection{Grading, Feedback, and Gradebook}
+
+\begin{userstory}
+  \textbf{US\,19 \& US\,20 — Instructor Grading Interface}\\[4pt]
+  \textit{Roles:} Instructor\\[2pt]
+  \textit{Description:} Instructors evaluate student submissions, assign
+  numeric scores, and leave qualitative comments.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Instructors can open a list of all enrolled students for a specific
+          assignment.
+    \item Instructors can quickly view or download associated submission files.
+    \item Instructors can input a numeric grade (up to the maximum defined
+          points) and a text comment.
+    \item Grades and feedback are saved and immediately reflected for the
+          respective student.
+  \end{itemize}
+\end{userstory}
+
+\begin{userstory}
+  \textbf{US\,21 \& US\,22 — Comprehensive Gradebook Visibility}\\[4pt]
+  \textit{Roles:} Student, Instructor\\[2pt]
+  \textit{Description:} Instructors see a macro-view of class performance,
+  while students see their individual progress.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Instructor sees a grid/table where rows are students and columns are
+          assignments, with total grades calculated.
+    \item Students access a personal ``Grades'' tab showing all their graded
+          assignments, earned points, and instructor feedback in one list.
+  \end{itemize}
+\end{userstory}
+
+\subsection{To-Do List and Deadlines \texorpdfstring{\normalfont\small(Key Extension)}{}}
+
+\begin{userstory}
+  \textbf{US\,23 \& US\,24 — Student Progress Tracking}\\[4pt]
+  \textit{Roles:} Student\\[2pt]
+  \textit{Description:} Students receive automated insights into their
+  workload, deadlines, and missing work.\\[4pt]
+  \textit{Acceptance Criteria:}
+  \begin{itemize}
+    \item Student dashboard features a ``To-Do'' section outlining all pending
+          assignments across all enrolled courses.
+    \item The ``To-Do'' list is sorted chronologically by approaching
+          deadlines.
+    \item Passed deadlines without submissions are prominently labelled as
+          ``Missing''.
+    \item Items are automatically removed from the active To-Do list once
+          submitted by the student.
+  \end{itemize}
+\end{userstory}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 7 — SCRUM BOARD
+% ═══════════════════════════════════════════════════════════════
+\section{Scrum Board}
+
+\subsection{Sprint 1 Module}
+
+\begin{center}
+\begin{tabularx}{0.8\linewidth}{lX}
+  \toprule
+  \textbf{Module Name} & Course Management \\
+  \textbf{Sprint Goal} & Implement core course management features to get the ball rolling. \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Sprint 1 Selected User Stories}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.85\textwidth]{assets/sprint1_user_stories.png}{Sprint 1 User Stories}
+  \caption{Sprint 1 Selected User Stories (GitHub Projects screenshot)}
+\end{figure}
+
+\subsection{Four Structured Specifications (Sprint 1)}
+
+The following structured specifications from Section~\ref{sec:specs} are
+selected for Sprint 1:
+\begin{enumerate}
+  \item \textbf{US\,1 \& US\,2:} Secure Login and Logout
+  \item \textbf{US\,3 \& US\,4:} Registration and Role Enforcement
+  \item \textbf{US\,5:} Course Creation
+  \item \textbf{US\,7 \& US\,8:} Unique Class Code Enrollment
+\end{enumerate}
+
+\subsection{Scrum Board Snapshots (GitHub Projects)}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.9\textwidth]{assets/github_project_start.png}{GitHub Projects Start}
+  \caption{GitHub Projects Board — Start of Sprint 1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.9\textwidth]{assets/github_project_mid.png}{GitHub Projects Mid}
+  \caption{GitHub Projects Board — Mid-Sprint}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.9\textwidth]{assets/github_project_end.png}{GitHub Projects End}
+  \caption{GitHub Projects Board — End of Sprint 1}
+\end{figure}
+
+\subsection{Sprint 1 Product Burn-Down Chart}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.85\textwidth]{assets/sprint1_burndown_chart.png}{Burndown Chart}
+  \caption{Sprint 1 Burn-Down Chart}
+\end{figure}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 8 — NON-FUNCTIONAL REQUIREMENTS
+% ═══════════════════════════════════════════════════════════════
+\section{Non-Functional Requirements (NFR) Specification}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{>{\bfseries\color{primary}}l X}
+  \toprule
+  NFR Category & Requirement \\
+  \midrule
+  Performance
+    & Primary pages (course home, module list, gradebook summary) load within
+      2–3 seconds under normal class sizes (\texttildelow 200 students, a few
+      courses) on typical lab hardware. \\[6pt]
+  Security
+    & RBAC enforced so students cannot access other students' private
+      grades/submissions. User inputs are validated and sanitised to prevent
+      common web vulnerabilities. \\[6pt]
+  Reliability
+    & Submissions are not lost once acknowledged. Errors are handled
+      gracefully with actionable error messages. \\[6pt]
+  Usability
+    & Consistent UI across modules (common navigation and layout). Clear
+      status indicators for submissions (\emph{submitted / late / missing}). \\[6pt]
+  Maintainability
+    & Layered architecture (controller / service / repository). Unit tests for
+      core business logic; at least basic integration tests for critical
+      flows. \\[6pt]
+  Scalability
+    & Supports multiple courses and concurrent users typical of a
+      department-scale deployment (not enterprise scale). \\[6pt]
+  Auditability
+    & Important events (logins, submissions, grading updates, enrollment
+      changes) are logged for traceability. \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 9 — ITERATION 1 IMPLEMENTATION SCREENSHOTS
+% ═══════════════════════════════════════════════════════════════
+\section{Iteration 1 Implementation Screenshots}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{assets/iteration1_ss1.png}
+  \caption{Iteration 1 — Screenshot 1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{assets/iteration1_ss2.png}
+  \caption{Iteration 1 — Screenshot 2}
+\end{figure}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 10 — WORK DIVISION
+% ═══════════════════════════════════════════════════════════════
+\section{Work Division}
+
+\subsubsection*{Ibraheem Farooq \normalfont\small\color{muted}(PM / Scrum Master)}
+\begin{itemize}
+  \item Sprint planning, sprint tracking, and team coordination.
+  \item Maintains delivery checklist for required artefacts and final submission packaging.
+  \item Oversees branch/PR merge discipline and release readiness.
+\end{itemize}
+
+\subsubsection*{Wajih-Ur-Raza Asif \normalfont\small\color{muted}(Requirements Architect)}
+\begin{itemize}
+  \item Requirements ownership: user stories, structured specifications, and consistency checks.
+  \item Verifies Sprint 1 scope alignment with requirements and acceptance criteria.
+  \item Supports validation of deliverable completeness.
+\end{itemize}
+
+\subsubsection*{Ali Aan \normalfont\small\color{muted}(Developer / UI Designer)}
+\begin{itemize}
+  \item Development ownership for Sprint 1 scope (feature implementation).
+  \item UI design ownership and implementation of user-facing screens.
+  \item Produces Iteration 1 screenshots and demo-ready flows.
+\end{itemize}
+
+\end{document}
