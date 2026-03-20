@@ -1,0 +1,667 @@
+/* =============================================
+   CourseCatalogView.css
+   All colors derived from ViewConstants via
+   JavaFX looked-up color variables injected
+   by CourseCatalogController.initialize()
+   =============================================
+   Looked-up color map:
+     -vc-primary    → #4b5d4f  (forest green)
+     -vc-secondary  → #e7e1d5  (warm linen)
+     -vc-accent     → #db7706  (amber)
+     -vc-background → #f9f7f1  (cream)
+     -vc-text       → #1f1f1e  (near-black)
+   ============================================= */
+
+/* ── Root ──────────────────────────────────── */
+.root-pane {
+    -fx-background-color: transparent;
+}
+
+/* ══════════════════════════════════════════════
+   SIDEBAR
+   ══════════════════════════════════════════════ */
+.sidebar {
+    -fx-min-width: 72;
+    -fx-max-width: 72;
+    -fx-pref-width: 72;
+    -fx-background-color: -vc-primary;
+    -fx-padding: 0 0 20 0;
+}
+
+.sidebar-logo {
+    -fx-padding: 20 0 20 0;
+    -fx-min-height: 72;
+}
+
+.sidebar-logo-mark {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-background;
+}
+
+.nav-item {
+    -fx-padding: 10 0 10 0;
+    -fx-min-width: 72;
+    -fx-max-width: 72;
+    -fx-cursor: hand;
+    -fx-opacity: 0.55;
+}
+
+.nav-item-active {
+    -fx-opacity: 1.0;
+    -fx-background-color: derive(-vc-primary, -15%);
+    -fx-border-color: -vc-accent;
+    -fx-border-width: 0 0 0 3;
+}
+
+.nav-icon {
+    -fx-font-size: 17px;
+    -fx-text-fill: -vc-background;
+}
+
+.nav-label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 10px;
+    -fx-text-fill: -vc-background;
+}
+
+.sidebar-avatar-wrap {
+    -fx-padding: 12 0 0 0;
+}
+
+.sidebar-avatar {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-primary;
+    -fx-background-color: -vc-background;
+    -fx-background-radius: 50%;
+    -fx-min-width: 36;
+    -fx-max-width: 36;
+    -fx-min-height: 36;
+    -fx-max-height: 36;
+    -fx-alignment: CENTER;
+}
+
+/* ══════════════════════════════════════════════
+   CATALOG PANEL  (left)
+   ══════════════════════════════════════════════ */
+.catalog-panel {
+    -fx-background-color: -vc-secondary;
+}
+
+.catalog-header {
+    -fx-padding: 28 24 16 24;
+}
+
+.catalog-title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.semester-badge {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 11px;
+    -fx-text-fill: -vc-accent;
+    -fx-background-color: derive(-vc-accent, 72%);
+    -fx-background-radius: 6;
+    -fx-padding: 3 10 3 10;
+}
+
+.catalog-subtitle {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-text, 45%);
+}
+
+/* Search */
+.search-bar-wrap {
+    -fx-padding: 0 16 12 16;
+    -fx-background-color: -vc-secondary;
+}
+
+.search-icon {
+    -fx-font-size: 18px;
+    -fx-text-fill: derive(-vc-text, 50%);
+}
+
+.search-field {
+    -fx-background-color: -vc-background;
+    -fx-background-radius: 8;
+    -fx-border-color: derive(-vc-secondary, -20%);
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-padding: 9 12 9 12;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: -vc-text;
+    -fx-prompt-text-fill: derive(-vc-text, 55%);
+}
+
+.search-field:focused {
+    -fx-border-color: -vc-accent;
+}
+
+/* Chips */
+.chip-row {
+    -fx-padding: 0 16 14 16;
+    -fx-background-color: -vc-secondary;
+}
+
+.chip {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-text, 35%);
+    -fx-background-color: -vc-background;
+    -fx-background-radius: 20;
+    -fx-border-color: derive(-vc-secondary, -20%);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-padding: 5 14 5 14;
+    -fx-cursor: hand;
+}
+
+.chip-active {
+    -fx-background-color: -vc-primary;
+    -fx-text-fill: -vc-background;
+    -fx-border-color: -vc-primary;
+}
+
+/* Dividers */
+.panel-divider-h {
+    -fx-background-color: derive(-vc-secondary, -18%);
+}
+
+.panel-divider-v {
+    -fx-background-color: derive(-vc-secondary, -15%);
+}
+
+/* Scroll */
+.catalog-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-width: 0;
+}
+
+.catalog-scroll>.viewport {
+    -fx-background-color: transparent;
+}
+
+.course-list {
+    -fx-background-color: transparent;
+    -fx-padding: 4 0 4 0;
+}
+
+/* ── Course Cards ──────────────────────────── */
+.course-card {
+    -fx-background-color: -vc-secondary;
+    -fx-cursor: hand;
+}
+
+.course-card:hover {
+    -fx-background-color: derive(-vc-secondary, -6%);
+}
+
+.course-card-selected {
+    -fx-background-color: -vc-background;
+}
+
+.course-card-selected:hover {
+    -fx-background-color: -vc-background;
+}
+
+.course-card-accent {
+    -fx-min-height: 4;
+    -fx-max-height: 4;
+    -fx-pref-height: 4;
+}
+
+.course-accent-green {
+    -fx-background-color: #4b8c5a;
+}
+
+.course-accent-amber {
+    -fx-background-color: #db7706;
+}
+
+.course-accent-blue {
+    -fx-background-color: #3b7fc4;
+}
+
+.course-accent-rose {
+    -fx-background-color: #c45b5b;
+}
+
+.course-accent-teal {
+    -fx-background-color: #3b9e8c;
+}
+
+.course-accent-purple {
+    -fx-background-color: #7b5ec4;
+}
+
+.course-card-body {
+    -fx-padding: 16 20 16 20;
+}
+
+.course-code-tag {
+    -fx-font-family: "Courier New";
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-primary;
+    -fx-background-color: derive(-vc-primary, 75%);
+    -fx-background-radius: 5;
+    -fx-padding: 2 8 2 8;
+}
+
+.course-code-lg {
+    -fx-font-size: 13px;
+    -fx-padding: 3 10 3 10;
+}
+
+.role-badge {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 11px;
+    -fx-background-radius: 5;
+    -fx-padding: 2 8 2 8;
+    -fx-text-fill: -vc-text;
+    /* Default text color */
+}
+
+.role-teaching {
+    -fx-text-fill: #4b5d4f !important;
+    -fx-background-color: derive(#4b5d4f, 78%);
+}
+
+.role-enrolled {
+    -fx-text-fill: #3b7fc4 !important;
+    -fx-background-color: derive(#3b7fc4, 75%);
+}
+
+.course-card-name {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.course-card-meta {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-text, 45%);
+}
+
+.course-stat {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 11px;
+    -fx-text-fill: derive(-vc-text, 35%);
+}
+
+/* ══════════════════════════════════════════════
+   COURSE HOME  (right)
+   ══════════════════════════════════════════════ */
+.home-panel {
+    -fx-background-color: -vc-background;
+}
+
+/* Header banner */
+.home-header {
+    -fx-background-color: -vc-background;
+    -fx-padding: 24 32 0 32;
+    -fx-border-color: transparent transparent derive(-vc-secondary, -15%) transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.home-course-title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.home-course-meta {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: derive(-vc-text, 40%);
+}
+
+/* Tab bar */
+.tab-bar {
+    -fx-padding: 16 0 0 0;
+}
+
+.tab-item {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: derive(-vc-text, 40%);
+    -fx-padding: 8 20 10 20;
+    -fx-cursor: hand;
+}
+
+.tab-active {
+    -fx-text-fill: -vc-primary;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent transparent -vc-primary transparent;
+    -fx-border-width: 0 0 2.5 0;
+}
+
+.tab-item:hover {
+    -fx-text-fill: -vc-text;
+    -fx-background-color: derive(-vc-secondary, 5%);
+    -fx-background-radius: 6 6 0 0;
+}
+
+/* ── Stream feed ─────────────────────────── */
+.stream-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-width: 0;
+}
+
+.stream-scroll>.viewport {
+    -fx-background-color: transparent;
+}
+
+.stream-feed {
+    -fx-padding: 28 32 28 32;
+    -fx-background-color: transparent;
+}
+
+/* Stream cards */
+.stream-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: derive(-vc-secondary, -12%);
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+}
+
+.stream-card-header {
+    -fx-padding: 18 20 14 20;
+}
+
+.stream-card-divider {
+    -fx-background-color: derive(-vc-secondary, -10%);
+}
+
+.stream-card-body {
+    -fx-padding: 16 20 16 20;
+}
+
+.stream-card-footer {
+    -fx-padding: 12 20 14 20;
+    -fx-background-color: derive(-vc-secondary, 20%);
+    -fx-background-radius: 0 0 14 14;
+}
+
+/* Avatar */
+.avatar {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-min-width: 38;
+    -fx-max-width: 38;
+    -fx-min-height: 38;
+    -fx-max-height: 38;
+    -fx-background-radius: 50%;
+    -fx-alignment: CENTER;
+}
+
+.avatar-primary {
+    -fx-text-fill: white;
+    -fx-background-color: -vc-primary;
+}
+
+.avatar-secondary {
+    -fx-text-fill: white;
+    -fx-background-color: #3b7fc4;
+}
+
+/* Stream meta */
+.stream-author {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.stream-timestamp {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-text, 50%);
+}
+
+.stream-type-badge {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 11px;
+    -fx-background-radius: 6;
+    -fx-padding: 4 10 4 10;
+}
+
+.badge-announce {
+    -fx-text-fill: -vc-primary;
+    -fx-background-color: derive(-vc-primary, 75%);
+}
+
+.badge-assign {
+    -fx-text-fill: #3b7fc4;
+    -fx-background-color: derive(#3b7fc4, 78%);
+}
+
+.badge-quiz {
+    -fx-text-fill: #7b5ec4;
+    -fx-background-color: derive(#7b5ec4, 78%);
+}
+
+/* Stream card content */
+.stream-card-title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.stream-card-body-text {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: derive(-vc-text, 25%);
+    -fx-line-spacing: 3;
+}
+
+.attachment-chip {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: -vc-accent;
+    -fx-background-color: derive(-vc-accent, 78%);
+    -fx-background-radius: 6;
+    -fx-padding: 4 10 4 10;
+    -fx-cursor: hand;
+}
+
+/* Due banner */
+.due-banner {
+    -fx-background-color: derive(-vc-secondary, 10%);
+    -fx-background-radius: 8;
+    -fx-border-color: derive(-vc-secondary, -18%);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10 14 10 14;
+}
+
+.due-banner-soon {
+    -fx-background-color: derive(-vc-accent, 82%);
+    -fx-border-color: derive(-vc-accent, 40%);
+}
+
+.due-icon {
+    -fx-font-size: 14px;
+}
+
+.due-text {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: derive(-vc-text, 30%);
+}
+
+.due-text-urgent {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: derive(-vc-accent, -20%);
+}
+
+.due-pts {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-primary;
+    -fx-background-color: derive(-vc-primary, 72%);
+    -fx-background-radius: 5;
+    -fx-padding: 2 8 2 8;
+}
+
+/* Stream footer */
+.stream-footer-action {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-text, 40%);
+    -fx-cursor: hand;
+}
+
+.stream-footer-action:hover {
+    -fx-text-fill: -vc-primary;
+}
+
+.stream-footer-stat {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-text, 40%);
+}
+
+/* ══════════════════════════════════════════════
+   UPCOMING PANEL  (far right)
+   ══════════════════════════════════════════════ */
+.upcoming-panel {
+    -fx-background-color: -vc-secondary;
+    -fx-padding: 0;
+}
+
+.upcoming-title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: derive(-vc-text, 30%);
+    -fx-text-transform: uppercase;
+    -fx-padding: 24 20 12 20;
+    -fx-letter-spacing: 1;
+}
+
+.upcoming-title-sm {
+    -fx-padding: 20 20 10 20;
+}
+
+.upcoming-item {
+    -fx-padding: 14 20 14 20;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.upcoming-item:hover {
+    -fx-background-color: derive(-vc-secondary, -6%);
+}
+
+.upcoming-urgent {
+    -fx-background-color: derive(-vc-accent, 85%);
+}
+
+.upcoming-urgent:hover {
+    -fx-background-color: derive(-vc-accent, 78%);
+}
+
+.upcoming-due-tag {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 11px;
+    -fx-text-fill: derive(-vc-text, 40%);
+    -fx-background-color: derive(-vc-secondary, -12%);
+    -fx-background-radius: 4;
+    -fx-padding: 2 7 2 7;
+}
+
+.upcoming-due-urgent {
+    -fx-text-fill: derive(-vc-accent, -25%);
+    -fx-background-color: derive(-vc-accent, 55%);
+}
+
+.urgency-icon {
+    -fx-font-size: 12px;
+}
+
+.upcoming-item-name {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.upcoming-item-meta {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 11px;
+    -fx-text-fill: derive(-vc-text, 45%);
+}
+
+.upcoming-divider {
+    -fx-background-color: derive(-vc-secondary, -15%);
+}
+
+/* Resource links */
+.resource-list {
+    -fx-padding: 0 12 16 12;
+}
+
+.resource-item {
+    -fx-padding: 8 8 8 8;
+    -fx-background-radius: 7;
+    -fx-cursor: hand;
+}
+
+.resource-item:hover {
+    -fx-background-color: derive(-vc-secondary, -8%);
+}
+
+.resource-link {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: -vc-primary;
+    -fx-underline: false;
+}
+
+.resource-link:hover {
+    -fx-text-fill: derive(-vc-primary, -10%);
+    -fx-underline: true;
+}
+
+/* ── Buttons (mirrored from CreateCourseView) ── */
+.btn-primary {
+    -fx-background-color: -vc-accent;
+    -fx-background-radius: 10;
+    -fx-text-fill: -vc-background;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 22 10 22;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.btn-primary:hover {
+    -fx-background-color: derive(-vc-accent, -10%);
+    -fx-effect: dropshadow(gaussian, derive(-vc-accent, 10%), 14, 0, 0, 2);
+}
+
+.btn-primary:pressed {
+    -fx-background-color: derive(-vc-accent, -20%);
+    -fx-effect: none;
+}
