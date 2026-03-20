@@ -108,11 +108,56 @@ public class DB {
                 + ");"
                 + "CREATE INDEX IF NOT EXISTS idx_announcements_course_date ON announcements(course_id, created_at DESC);";
 
+        String assignmentsTable = "CREATE TABLE IF NOT EXISTS assignments ("
+                + "id SERIAL PRIMARY KEY,"
+                + "course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,"
+                + "created_by INTEGER NOT NULL REFERENCES users(id),"
+                + "title VARCHAR(255) NOT NULL,"
+                + "description TEXT,"
+                + "total_points INTEGER DEFAULT 100,"
+                + "late_submissions_allowed BOOLEAN DEFAULT FALSE,"
+                + "deadline TIMESTAMP NOT NULL,"
+                + "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+                + "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+                + ");"
+                + "CREATE INDEX IF NOT EXISTS idx_assignments_deadline ON assignments(course_id, deadline ASC);";
+
+        String submissionsTable = "CREATE TABLE IF NOT EXISTS submissions ("
+                + "id SERIAL PRIMARY KEY,"
+                + "assignment_id INTEGER NOT NULL REFERENCES assignments(id) ON DELETE CASCADE,"
+                + "user_id INTEGER NOT NULL REFERENCES users(id),"
+                + "submitted BOOLEAN DEFAULT FALSE,"
+                + "file_path VARCHAR(500),"
+                + "status VARCHAR(50),"
+                + "submitted_at TIMESTAMP,"
+                + "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+                + "UNIQUE(assignment_id, user_id)"
+                + ");"
+                + "CREATE INDEX IF NOT EXISTS idx_submissions_user ON submissions(user_id, assignment_id);";
+
+        String submissionCommentsTable = "CREATE TABLE IF NOT EXISTS submission_comments ("
+                + "id SERIAL PRIMARY KEY,"
+                + "submission_id INTEGER NOT NULL REFERENCES submissions(id) ON DELETE CASCADE,"
+                + "user_id INTEGER NOT NULL REFERENCES users(id),"
+                + "comment_text TEXT NOT NULL,"
+                + "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+                + ");"
+                + "CREATE INDEX IF NOT EXISTS idx_submission_comments_sub ON submission_comments(submission_id);";
+
         try (Statement statement = getConnection().createStatement()) {
             statement.execute(userTable);
             statement.execute(courseTable);
             statement.execute(courseEnrollmentsTable);
             statement.execute(announcementsTable);
+            statement.execute(assignmentsTable);
+            statement.execute(submissionsTable);
+            statement.execute(submissionCommentsTable);
+
+            // Add columns if tables already exist
+            try { statement.execute("ALTER TABLE assignments ADD COLUMN IF NOT EXISTS total_points INTEGER DEFAULT 100;"); } catch (SQLException e) {}
+            try { statement.execute("ALTER TABLE assignments ADD COLUMN IF NOT EXISTS late_submissions_allowed BOOLEAN DEFAULT FALSE;"); } catch (SQLException e) {}
+            try { statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS file_path VARCHAR(500);"); } catch (SQLException e) {}
+            try { statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS status VARCHAR(50);"); } catch (SQLException e) {}
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -131,18 +131,21 @@
                     </VBox>
                     <Button text="+ Post Announcement" styleClass="btn-primary"
                             onAction="#handlePostAnnouncement" />
+                    <Button fx:id="createAssignmentBtn" text="+ Create Assignment" styleClass="btn-primary"
+                            onAction="#handleCreateAssignment" visible="false" managed="false" />
                 </HBox>
 
                 <!-- Tab bar -->
                 <HBox styleClass="tab-bar" spacing="0" alignment="CENTER_LEFT">
-                    <Label text="Stream" styleClass="tab-item tab-active" />
-                    <Label text="Assignments" styleClass="tab-item" />
-                    <Label text="People" styleClass="tab-item" />
+                    <Label fx:id="streamTab" text="Stream" styleClass="tab-item tab-active" />
+                    <Label fx:id="assignmentsTab" text="Assignments" styleClass="tab-item" />
+                    <Label fx:id="peopleTab" text="People" styleClass="tab-item" />
+                    <Label fx:id="todoTab" text="To-Do" styleClass="tab-item" />
                 </HBox>
             </VBox>
 
             <!-- Stream content (two-column) -->
-            <HBox spacing="0" VBox.vgrow="ALWAYS">
+            <HBox spacing="0" VBox.vgrow="ALWAYS" fx:id="contentHBox">
 
                 <!-- ── Stream feed ── -->
                 <ScrollPane styleClass="stream-scroll" fitToWidth="true"
@@ -314,6 +317,10 @@
                 </VBox>
 
             </HBox>
+
+            <!-- To-Do content (programmatically loaded) -->
+            <VBox fx:id="todoContainer" spacing="0" VBox.vgrow="ALWAYS" 
+                  visible="false" managed="false" />
 
         </VBox>
 

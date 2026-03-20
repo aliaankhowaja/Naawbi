@@ -1,0 +1,221 @@
+/* =============================================
+   ToDoView.css
+   To-Do list dashboard view styles.
+   All colors derived from ViewConstants via
+   JavaFX looked-up color variables.
+   =============================================
+   Looked-up color map:
+     -vc-primary    → #4b5d4f  (forest green)
+     -vc-secondary  → #e7e1d5  (warm linen)
+     -vc-accent     → #db7706  (amber)
+     -vc-background → #f9f7f1  (cream)
+     -vc-text       → #1f1f1e  (near-black)
+   ============================================= */
+
+/* ── Root Container ────────────────────────── */
+.todo-panel {
+    -fx-background-color: -vc-background;
+}
+
+/* ──────────────────────────────────────────────
+   HEADER
+   ────────────────────────────────────────────── */
+.todo-header {
+    -fx-padding: 20 28 16 28;
+    -fx-background-color: -vc-background;
+}
+
+.todo-title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.btn-refresh {
+    -fx-background-color: transparent;
+    -fx-text-fill: -vc-primary;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-padding: 6 14 6 14;
+    -fx-border-color: derive(-vc-primary, 40%);
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+
+.btn-refresh:hover {
+    -fx-background-color: derive(-vc-primary, 85%);
+    -fx-border-color: -vc-primary;
+}
+
+.btn-refresh:pressed {
+    -fx-background-color: derive(-vc-primary, 75%);
+}
+
+/* Dividers */
+.todo-divider-h {
+    -fx-background-color: derive(-vc-secondary, -18%);
+}
+
+/* ──────────────────────────────────────────────
+   SCROLL & CONTENT
+   ────────────────────────────────────────────── */
+.todo-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-width: 0;
+}
+
+.todo-scroll>.viewport {
+    -fx-background-color: transparent;
+}
+
+.todo-content {
+    -fx-padding: 24 28 28 28;
+    -fx-background-color: transparent;
+}
+
+/* ──────────────────────────────────────────────
+   SECTIONS
+   ────────────────────────────────────────────── */
+.todo-section {
+    -fx-background-color: transparent;
+}
+
+.section-title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-primary;
+    -fx-padding: 0 0 4 0;
+}
+
+.section-title-missing {
+    -fx-text-fill: #c45b5b;
+}
+
+/* ──────────────────────────────────────────────
+   ASSIGNMENTS LIST
+   ────────────────────────────────────────────── */
+.assignments-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-width: 0;
+    -fx-max-height: 320;
+}
+
+.assignments-scroll>.viewport {
+    -fx-background-color: transparent;
+}
+
+.assignments-list {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* ──────────────────────────────────────────────
+   ASSIGNMENT CARDS
+   ────────────────────────────────────────────── */
+.assignment-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: derive(-vc-secondary, -12%);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 16 18 16 18;
+}
+
+.assignment-card:hover {
+    -fx-background-color: #fafafa;
+    -fx-border-color: derive(-vc-secondary, -18%);
+}
+
+/* Assignment meta container (title, course, deadline) */
+.assignment-meta {
+    -fx-spacing: 8;
+}
+
+.assignment-card-title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.assignment-course-code {
+    -fx-font-family: "Courier New";
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-primary;
+    -fx-background-color: derive(-vc-primary, 75%);
+    -fx-background-radius: 5;
+    -fx-padding: 2 8 2 8;
+}
+
+.assignment-deadline {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-text, 45%);
+    -fx-padding: 2 0 2 0;
+}
+
+/* Status badges */
+.assignment-status-badge {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 4 10 4 10;
+    -fx-text-fill: -vc-text;
+    -fx-background-color: derive(-vc-secondary, -8%);
+}
+
+.status-normal {
+    -fx-text-fill: -vc-text;
+    -fx-background-color: derive(-vc-secondary, -8%);
+}
+
+.status-due-soon {
+    -fx-text-fill: derive(-vc-accent, -25%);
+    -fx-background-color: derive(-vc-accent, 82%);
+}
+
+.status-overdue {
+    -fx-text-fill: white;
+    -fx-background-color: #c45b5b;
+}
+
+/* Submit button */
+.assignment-submit-btn {
+    -fx-background-color: -vc-accent;
+    -fx-background-radius: 8;
+    -fx-text-fill: -vc-background;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 18 8 18;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.assignment-submit-btn:hover {
+    -fx-background-color: derive(-vc-accent, -10%);
+    -fx-effect: dropshadow(gaussian, derive(-vc-accent, 10%), 10, 0, 0, 2);
+}
+
+.assignment-submit-btn:pressed {
+    -fx-background-color: derive(-vc-accent, -20%);
+    -fx-effect: none;
+}
+
+/* ──────────────────────────────────────────────
+   EMPTY STATE
+   ────────────────────────────────────────────── */
+.empty-state {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: derive(-vc-text, 50%);
+    -fx-alignment: CENTER;
+    -fx-padding: 32 16 32 16;
+}
