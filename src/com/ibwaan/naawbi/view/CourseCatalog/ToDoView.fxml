@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+
+<!--
+  ToDoView.fxml
+  To-Do list dashboard with Active and Missing assignment sections.
+  Assignment cards are populated programmatically by the controller.
+  Colors injected at runtime via -vc-* looked-up color pattern.
+-->
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="todoContainer"
+      prefWidth="1200" prefHeight="800"
+      styleClass="todo-panel"
+      spacing="0"
+      stylesheets="@./ToDoView.css">
+
+    <!-- ═════════════════════════════════════════════════════════════
+         HEADER BAR
+         ═════════════════════════════════════════════════════════════ -->
+    <HBox styleClass="todo-header" spacing="12" alignment="CENTER_LEFT">
+        <Label text="To-Do" styleClass="todo-title" HBox.hgrow="ALWAYS" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="refreshBtn" text="⟳ Refresh" styleClass="btn-refresh" onAction="#handleRefresh" />
+    </HBox>
+
+    <Pane styleClass="todo-divider-h" prefHeight="1" maxHeight="1" minHeight="1" />
+
+    <!-- ═════════════════════════════════════════════════════════════
+         CONTENT SCROLL
+         ═════════════════════════════════════════════════════════════ -->
+    <ScrollPane styleClass="todo-scroll" fitToWidth="true" VBox.vgrow="ALWAYS"
+                hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+
+        <VBox styleClass="todo-content" spacing="28">
+
+            <!-- ─────────────────────────────────────────────────────
+                 ACTIVE SECTION
+                 ───────────────────────────────────────────────────── -->
+            <VBox fx:id="activeSection" styleClass="todo-section" spacing="12">
+
+                <!-- Section Header -->
+                <Label text="Active" styleClass="section-title" />
+
+                <!-- Assignments Container -->
+                <ScrollPane styleClass="assignments-scroll" fitToWidth="true"
+                            hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+                    <VBox fx:id="activeAssignmentsList" styleClass="assignments-list"
+                          spacing="8">
+                    </VBox>
+                </ScrollPane>
+
+                <!-- Empty State Placeholder -->
+                <Label fx:id="activeEmptyState"
+                       text="No active assignments"
+                       styleClass="empty-state"
+                       managed="false"
+                       visible="false" />
+
+            </VBox>
+
+            <!-- ─────────────────────────────────────────────────────
+                 MISSING SECTION
+                 ───────────────────────────────────────────────────── -->
+            <VBox fx:id="missingSection" styleClass="todo-section" spacing="12">
+
+                <!-- Section Header -->
+                <Label text="Missing" styleClass="section-title section-title-missing" />
+
+                <!-- Assignments Container -->
+                <ScrollPane styleClass="assignments-scroll" fitToWidth="true"
+                            hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+                    <VBox fx:id="missingAssignmentsList" styleClass="assignments-list"
+                          spacing="8">
+                    </VBox>
+                </ScrollPane>
+
+                <!-- Empty State Placeholder -->
+                <Label fx:id="missingEmptyState"
+                       text="No missing assignments"
+                       styleClass="empty-state"
+                       managed="false"
+                       visible="false" />
+
+            </VBox>
+
+        </VBox>
+
+    </ScrollPane>
+
+</VBox>

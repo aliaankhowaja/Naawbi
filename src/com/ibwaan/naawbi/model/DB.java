@@ -108,11 +108,36 @@ public class DB {
                 + ");"
                 + "CREATE INDEX IF NOT EXISTS idx_announcements_course_date ON announcements(course_id, created_at DESC);";
 
+        String assignmentsTable = "CREATE TABLE IF NOT EXISTS assignments ("
+                + "id SERIAL PRIMARY KEY,"
+                + "course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,"
+                + "created_by INTEGER NOT NULL REFERENCES users(id),"
+                + "title VARCHAR(255) NOT NULL,"
+                + "description TEXT,"
+                + "deadline TIMESTAMP NOT NULL,"
+                + "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+                + "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+                + ");"
+                + "CREATE INDEX IF NOT EXISTS idx_assignments_deadline ON assignments(course_id, deadline ASC);";
+
+        String submissionsTable = "CREATE TABLE IF NOT EXISTS submissions ("
+                + "id SERIAL PRIMARY KEY,"
+                + "assignment_id INTEGER NOT NULL REFERENCES assignments(id) ON DELETE CASCADE,"
+                + "user_id INTEGER NOT NULL REFERENCES users(id),"
+                + "submitted BOOLEAN DEFAULT FALSE,"
+                + "submitted_at TIMESTAMP,"
+                + "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+                + "UNIQUE(assignment_id, user_id)"
+                + ");"
+                + "CREATE INDEX IF NOT EXISTS idx_submissions_user ON submissions(user_id, assignment_id);";
+
         try (Statement statement = getConnection().createStatement()) {
             statement.execute(userTable);
             statement.execute(courseTable);
             statement.execute(courseEnrollmentsTable);
             statement.execute(announcementsTable);
+            statement.execute(assignmentsTable);
+            statement.execute(submissionsTable);
         } catch (SQLException e) {
             e.printStackTrace();
         }

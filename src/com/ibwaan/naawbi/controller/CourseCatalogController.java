@@ -64,10 +64,31 @@ public class CourseCatalogController implements Initializable {
     @FXML
     private VBox streamContainer;
 
+    /* ── Tabs ────────────────────────────────────────── */
+    @FXML
+    private Label streamTab;
+    @FXML
+    private Label assignmentsTab;
+    @FXML
+    private Label peopleTab;
+    @FXML
+    private Label todoTab;
+
+    /* ── Content containers ──────────────────────────── */
+    @FXML
+    private HBox contentHBox;
+    @FXML
+    private VBox todoContainer;
+
+    /* ── Buttons ─────────────────────────────────────── */
+    @FXML
+    private Button createAssignmentBtn;
+
     /* ── State ───────────────────────────────────────── */
     private Course currentSelectedCourse;
     private int currentCourseId = -1;
     private int currentUserId = 1; // TODO: Replace with actual logged-in user ID from session
+    private ToDoController toDoController;
 
     /* ── Lifecycle ───────────────────────────────────── */
 
@@ -75,7 +96,37 @@ public class CourseCatalogController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         injectColorConstants();
         wireSearch();
+        setupTabSwitching();
         loadCoursesFromDB();
+    }
+
+    /**
+     * Loads all courses from the database and populates the catalog list.
+     */
+    private void setupTabSwitching() {
+        // Stream tab (default)
+        streamTab.setOnMouseClicked(event -> {
+            showStream();
+            highlightTab(streamTab);
+        });
+
+        // Assignments tab
+        assignmentsTab.setOnMouseClicked(event -> {
+            showAssignments();
+            highlightTab(assignmentsTab);
+        });
+
+        // People tab
+        peopleTab.setOnMouseClicked(event -> {
+            showPeople();
+            highlightTab(peopleTab);
+        });
+
+        // To-Do tab
+        todoTab.setOnMouseClicked(event -> {
+            showToDo();
+            highlightTab(todoTab);
+        });
     }
 
     /**
@@ -224,6 +275,98 @@ public class CourseCatalogController implements Initializable {
     /* ── Handlers ────────────────────────────────────── */
 
     /**
+     * Shows the Stream (announcements) tab content
+     */
+    private void showStream() {
+        contentHBox.setVisible(true);
+        contentHBox.setManaged(true);
+        todoContainer.setVisible(false);
+        todoContainer.setManaged(false);
+        createAssignmentBtn.setVisible(false);
+        createAssignmentBtn.setManaged(false);
+        if (currentCourseId > 0) {
+            loadAnnouncementsForCourse(currentCourseId);
+        }
+    }
+
+    /**
+     * Shows the Assignments tab content (stub)
+     */
+    private void showAssignments() {
+        contentHBox.setVisible(true);
+        contentHBox.setManaged(true);
+        todoContainer.setVisible(false);
+        todoContainer.setManaged(false);
+        createAssignmentBtn.setVisible(false);
+        createAssignmentBtn.setManaged(false);
+        // TODO: Load and display assignments for this course
+        // For now, just show the assignments as announcements would be shown
+    }
+
+    /**
+     * Shows the People tab content (stub)
+     */
+    private void showPeople() {
+        contentHBox.setVisible(true);
+        contentHBox.setManaged(true);
+        todoContainer.setVisible(false);
+        todoContainer.setManaged(false);
+        createAssignmentBtn.setVisible(false);
+        createAssignmentBtn.setManaged(false);
+        // TODO: Load and display course members/people
+    }
+
+    /**
+     * Shows the To-Do tab content with pending assignments
+     */
+    private void showToDo() {
+        contentHBox.setVisible(false);
+        contentHBox.setManaged(false);
+        todoContainer.setVisible(true);
+        todoContainer.setManaged(true);
+        createAssignmentBtn.setVisible(true);
+        createAssignmentBtn.setManaged(true);
+
+        if (currentCourseId > 0) {
+            try {
+                // Load ToDoView if not already loaded
+                if (toDoController == null) {
+                    FXMLLoader loader = new FXMLLoader(
+                            getClass().getResource("/com/ibwaan/naawbi/view/ToDoView.fxml"));
+                    Parent todoRoot = loader.load();
+                    toDoController = loader.getController();
+                    todoContainer.getChildren().clear();
+                    todoContainer.getChildren().add(todoRoot);
+                }
+
+                // Set context and refresh assignments
+                toDoController.setContext(currentCourseId, currentUserId, currentSelectedCourse);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Failed to load To-Do view: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Highlights the active tab by updating CSS classes
+     */
+    private void highlightTab(Label activeTab) {
+        // Remove active class from all tabs
+        streamTab.getStyleClass().remove("tab-active");
+        assignmentsTab.getStyleClass().remove("tab-active");
+        peopleTab.getStyleClass().remove("tab-active");
+        todoTab.getStyleClass().remove("tab-active");
+
+        // Add active class to the clicked tab
+        if (!activeTab.getStyleClass().contains("tab-active")) {
+            activeTab.getStyleClass().add("tab-active");
+        }
+    }
+
+    /* ── Handlers ────────────────────────────────────── */
+
+    /**
      * Navigates to the Create Course view.
      */
     @FXML
@@ -357,10 +500,16 @@ public class CourseCatalogController implements Initializable {
             }
         }
 
-        // Store current course and load announcements
+        // Store current course
         currentSelectedCourse = course;
         currentCourseId = course.getId();
-        loadAnnouncementsForCourse(currentCourseId);
+
+        // Reset to Stream tab and load announcements
+        highlightTab(streamTab);
+        showStream();
+
+        // Reset ToDoController for new course context
+        toDoController = null;
     }
 
     /**
@@ -374,6 +523,19 @@ public class CourseCatalogController implements Initializable {
             return;
         }
         openCreateAnnouncementDialog();
+    }
+
+    /**
+     * Handles the "+ Create Assignment" button
+     * Opens CreateAssignmentView as a modal dialog
+     */
+    @FXML
+    private void handleCreateAssignment(ActionEvent event) {
+        if (currentCourseId <= 0) {
+            System.out.println("No course selected");
+            return;
+        }
+        openCreateAssignmentDialog();
     }
 
     /**
@@ -402,6 +564,40 @@ public class CourseCatalogController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Failed to open announcement dialog: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Opens CreateAssignmentView as a modal stage
+     * On success, reloads assignments in the To-Do view
+     */
+    private void openCreateAssignmentDialog() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/ibwaan/naawbi/view/CreateAssignment/CreateAssignmentView.fxml"));
+            Parent dialogRoot = loader.load();
+
+            CreateAssignmentController controller = loader.getController();
+            Stage dialogStage = new Stage();
+
+            controller.setCourseContext(currentCourseId, currentUserId, dialogStage);
+
+            dialogStage.setTitle("Create Assignment - "
+                    + (currentSelectedCourse != null ? currentSelectedCourse.getName() : "Course"));
+            dialogStage.setScene(new Scene(dialogRoot));
+            dialogStage.setResizable(false);
+
+            // When dialog closes, refresh the To-Do view if visible
+            dialogStage.setOnHidden(event -> {
+                if (toDoController != null) {
+                    toDoController.refreshAssignments();
+                }
+            });
+
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to open assignment dialog: " + e.getMessage());
         }
     }
 }

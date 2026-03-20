@@ -1,0 +1,142 @@
+package com.ibwaan.naawbi.model;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Assignment {
+    private int id, courseId, createdBy;
+    private String authorName, title, description;
+    private LocalDateTime deadline, createdAt, updatedAt;
+
+    public Assignment(int courseId, int createdBy, String title, String description, LocalDateTime deadline) {
+        this.courseId = courseId;
+        this.createdBy = createdBy;
+        this.title = title;
+        this.description = description;
+        this.deadline = deadline;
+    }
+
+    public Assignment(int id, int courseId, int createdBy, String authorName, String title, String description,
+            LocalDateTime deadline, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.courseId = courseId;
+        this.createdBy = createdBy;
+        this.authorName = authorName;
+        this.title = title;
+        this.description = description;
+        this.deadline = deadline;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public boolean save() throws SQLException {
+        String insertSQL = "INSERT INTO assignments (course_id,created_by,title,description,deadline,created_at) VALUES(?,?,?,?,?,CURRENT_TIMESTAMP)";
+        try (PreparedStatement pstmt = DB.getInstance().prepareStatement(insertSQL)) {
+            pstmt.setInt(1, courseId);
+            pstmt.setInt(2, createdBy);
+            pstmt.setString(3, title);
+            pstmt.setString(4, description);
+            pstmt.setObject(5, deadline);
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
+    public static List<Assignment> fetchByCourseId(int courseId) throws SQLException {
+        List<Assignment> assignments = new ArrayList<>();
+        String query = "SELECT a.id, a.course_id, a.created_by, u.username, a.title, a.description, a.deadline, a.created_at, a.updated_at FROM assignments a JOIN users u ON a.created_by = u.id WHERE a.course_id = ? ORDER BY a.deadline ASC";
+        try (PreparedStatement pstmt = DB.getInstance().prepareStatement(query)) {
+            pstmt.setInt(1, courseId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    assignments.add(new Assignment(
+                            rs.getInt("id"),
+                            rs.getInt("course_id"),
+                            rs.getInt("created_by"),
+                            rs.getString("username"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getTimestamp("deadline").toLocalDateTime(),
+                            rs.getTimestamp("created_at").toLocalDateTime(),
+                            rs.getTimestamp("updated_at").toLocalDateTime()));
+                }
+            }
+        }
+        return assignments;
+    }
+
+    public static List<Assignment> fetchStudentPending(int courseId, int userId) throws SQLException {
+        List<Assignment> assignments = new ArrayList<>();
+        String query = "SELECT a.id, a.course_id, a.created_by, u.username, a.title, a.description, a.deadline, a.created_at, a.updated_at FROM assignments a JOIN users u ON a.created_by = u.id WHERE a.course_id = ? AND a.id NOT IN (SELECT assignment_id FROM submissions WHERE user_id = ? AND submitted = true) ORDER BY a.deadline ASC";
+        try (PreparedStatement pstmt = DB.getInstance().prepareStatement(query)) {
+            pstmt.setInt(1, courseId);
+            pstmt.setInt(2, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    assignments.add(new Assignment(
+                            rs.getInt("id"),
+                            rs.getInt("course_id"),
+                            rs.getInt("created_by"),
+                            rs.getString("username"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getTimestamp("deadline").toLocalDateTime(),
+                            rs.getTimestamp("created_at").toLocalDateTime(),
+                            rs.getTimestamp("updated_at").toLocalDateTime()));
+                }
+            }
+        }
+        return assignments;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
+}
