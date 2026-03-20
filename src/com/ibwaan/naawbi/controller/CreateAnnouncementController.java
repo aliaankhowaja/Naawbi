@@ -18,11 +18,16 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class CreateAnnouncementController implements Initializable {
-    @FXML private Label courseNameLabel;
-    @FXML private TextField titleField;
-    @FXML private TextArea contentArea;
-    @FXML private Button boldBtn, italicBtn, underlineBtn, bulletBtn, uploadBtn;
-    @FXML private VBox fileListContainer;
+    @FXML
+    private Label courseNameLabel;
+    @FXML
+    private TextField titleField;
+    @FXML
+    private TextArea contentArea;
+    @FXML
+    private Button boldBtn, italicBtn, underlineBtn, bulletBtn, uploadBtn;
+    @FXML
+    private VBox fileListContainer;
 
     private int courseId, currentUserId;
     private List<File> attachedFiles;
@@ -37,17 +42,24 @@ public class CreateAnnouncementController implements Initializable {
         this.courseId = courseId;
         this.currentUserId = userId;
         this.onSuccessCallback = onSuccess;
-        if (course != null) courseNameLabel.setText(course.getName());
+        if (course != null)
+            courseNameLabel.setText(course.getName());
     }
 
     @FXML
-    private void handleBold(ActionEvent event) { toggleFormatting("b"); }
+    private void handleBold(ActionEvent event) {
+        toggleFormatting("b");
+    }
 
     @FXML
-    private void handleItalic(ActionEvent event) { toggleFormatting("i"); }
+    private void handleItalic(ActionEvent event) {
+        toggleFormatting("i");
+    }
 
     @FXML
-    private void handleUnderline(ActionEvent event) { toggleFormatting("u"); }
+    private void handleUnderline(ActionEvent event) {
+        toggleFormatting("u");
+    }
 
     @FXML
     private void handleBulletList(ActionEvent event) {
@@ -66,10 +78,11 @@ public class CreateAnnouncementController implements Initializable {
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"));
         Stage stage = (Stage) uploadBtn.getScene().getWindow();
         List<File> files = fc.showOpenMultipleDialog(stage);
-        if (files != null) for (File file : files) {
-            attachedFiles.add(file);
-            addFileToUI(file);
-        }
+        if (files != null)
+            for (File file : files) {
+                attachedFiles.add(file);
+                addFileToUI(file);
+            }
     }
 
     private void addFileToUI(File file) {
@@ -102,23 +115,34 @@ public class CreateAnnouncementController implements Initializable {
         String title = titleField.getText().trim();
         String content = contentArea.getText().trim();
 
-        if (title.isEmpty()) { showError("Title is required"); return; }
-        if (content.isEmpty()) { showError("Content is required"); return; }
+        if (title.isEmpty()) {
+            showError("Title is required");
+            return;
+        }
+        if (content.isEmpty()) {
+            showError("Content is required");
+            return;
+        }
 
         try {
             Announcement announcement = new Announcement(courseId, currentUserId, title, content, "html");
             if (announcement.save()) {
                 showInfo("Announcement posted successfully!");
-                if (onSuccessCallback != null) onSuccessCallback.run();
+                if (onSuccessCallback != null)
+                    onSuccessCallback.run();
                 closeDialog();
-            } else showError("Failed to save announcement");
+            } else
+                showError("Failed to save announcement");
         } catch (SQLException e) {
             e.printStackTrace();
             showError("Database error: " + e.getMessage());
         }
     }
 
-    @FXML private void handleCancel(ActionEvent event) { closeDialog(); }
+    @FXML
+    private void handleCancel(ActionEvent event) {
+        closeDialog();
+    }
 
     private void closeDialog() {
         Stage stage = (Stage) titleField.getScene().getWindow();

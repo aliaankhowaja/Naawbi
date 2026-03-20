@@ -308,16 +308,20 @@ public class CourseCatalogController implements Initializable {
      * Examples: "2 hours ago", "1 day ago", "5 minutes ago"
      */
     private String formatTime(LocalDateTime dateTime) {
-        if (dateTime == null) return "Unknown";
+        if (dateTime == null)
+            return "Unknown";
         try {
             Duration duration = Duration.between(dateTime, LocalDateTime.now());
             long minutes = duration.getSeconds() / 60;
             long hours = minutes / 60;
             long days = hours / 24;
 
-            if (days >= 1) return days + " day" + (days == 1 ? "" : "s") + " ago";
-            if (hours >= 1) return hours + " hour" + (hours == 1 ? "" : "s") + " ago";
-            if (minutes >= 1) return minutes + " minute" + (minutes == 1 ? "" : "s") + " ago";
+            if (days >= 1)
+                return days + " day" + (days == 1 ? "" : "s") + " ago";
+            if (hours >= 1)
+                return hours + " hour" + (hours == 1 ? "" : "s") + " ago";
+            if (minutes >= 1)
+                return minutes + " minute" + (minutes == 1 ? "" : "s") + " ago";
             return "Just now";
         } catch (Exception e) {
             return "Recently";
@@ -329,7 +333,8 @@ public class CourseCatalogController implements Initializable {
      * This is a simplified version - in production use HTMLEditor or similar
      */
     private String stripHtmlTags(String html) {
-        if (html == null) return "";
+        if (html == null)
+            return "";
         return html.replaceAll("<[^>]*>", "");
     }
 
@@ -386,11 +391,11 @@ public class CourseCatalogController implements Initializable {
                     currentCourseId,
                     currentUserId,
                     currentSelectedCourse,
-                    () -> loadAnnouncementsForCourse(currentCourseId)
-            );
+                    () -> loadAnnouncementsForCourse(currentCourseId));
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Post Announcement - " + (currentSelectedCourse != null ? currentSelectedCourse.getName() : "Course"));
+            dialogStage.setTitle("Post Announcement - "
+                    + (currentSelectedCourse != null ? currentSelectedCourse.getName() : "Course"));
             dialogStage.setScene(new Scene(dialogRoot));
             dialogStage.setResizable(false);
             dialogStage.showAndWait();

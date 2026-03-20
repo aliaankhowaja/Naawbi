@@ -20,7 +20,8 @@ public class Announcement {
         this.contentType = contentType;
     }
 
-    public Announcement(int id, int courseId, int createdBy, String authorName, String title, String content, String contentType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Announcement(int id, int courseId, int createdBy, String authorName, String title, String content,
+            String contentType, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.courseId = courseId;
         this.createdBy = createdBy;
@@ -52,16 +53,15 @@ public class Announcement {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     announcements.add(new Announcement(
-                        rs.getInt("id"),
-                        rs.getInt("course_id"),
-                        rs.getInt("created_by"),
-                        rs.getString("username"),
-                        rs.getString("title"),
-                        rs.getString("content"),
-                        rs.getString("content_type"),
-                        rs.getTimestamp("created_at").toLocalDateTime(),
-                        rs.getTimestamp("updated_at").toLocalDateTime()
-                    ));
+                            rs.getInt("id"),
+                            rs.getInt("course_id"),
+                            rs.getInt("created_by"),
+                            rs.getString("username"),
+                            rs.getString("title"),
+                            rs.getString("content"),
+                            rs.getString("content_type"),
+                            rs.getTimestamp("created_at").toLocalDateTime(),
+                            rs.getTimestamp("updated_at").toLocalDateTime()));
                 }
             }
         }
@@ -76,13 +76,39 @@ public class Announcement {
         }
     }
 
-    public int getId() { return id; }
-    public int getCourseId() { return courseId; }
-    public int getCreatedBy() { return createdBy; }
-    public String getAuthorName() { return authorName; }
-    public String getTitle() { return title; }
-    public String getContent() { return content; }
-    public String getContentType() { return contentType; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public int getId() {
+        return id;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
