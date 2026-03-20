@@ -8,20 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Assignment {
-    private int id, courseId, createdBy;
+private int id, courseId, createdBy, totalPoints;
     private String authorName, title, description;
+    private boolean lateSubmissionsAllowed;
     private LocalDateTime deadline, createdAt, updatedAt;
 
-    public Assignment(int courseId, int createdBy, String title, String description, LocalDateTime deadline) {
+    public Assignment(int courseId, int createdBy, String title, String description, LocalDateTime deadline, int totalPoints, boolean lateSubmissionsAllowed) {
         this.courseId = courseId;
         this.createdBy = createdBy;
         this.title = title;
         this.description = description;
         this.deadline = deadline;
+        this.totalPoints = totalPoints;
+        this.lateSubmissionsAllowed = lateSubmissionsAllowed;
     }
 
     public Assignment(int id, int courseId, int createdBy, String authorName, String title, String description,
-            LocalDateTime deadline, LocalDateTime createdAt, LocalDateTime updatedAt) {
+                            LocalDateTime deadline, LocalDateTime createdAt, LocalDateTime updatedAt, int totalPoints, boolean lateSubmissionsAllowed) {
         this.id = id;
         this.courseId = courseId;
         this.createdBy = createdBy;
@@ -31,23 +34,27 @@ public class Assignment {
         this.deadline = deadline;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.totalPoints = totalPoints;
+        this.lateSubmissionsAllowed = lateSubmissionsAllowed;
     }
 
     public boolean save() throws SQLException {
-        String insertSQL = "INSERT INTO assignments (course_id,created_by,title,description,deadline,created_at) VALUES(?,?,?,?,?,CURRENT_TIMESTAMP)";
+        String insertSQL = "INSERT INTO assignments (course_id,created_by,title,description,deadline,total_points,late_submissions_allowed,created_at) VALUES(?,?,?,?,?,?,?,CURRENT_TIMESTAMP)";
         try (PreparedStatement pstmt = DB.getInstance().prepareStatement(insertSQL)) {
             pstmt.setInt(1, courseId);
             pstmt.setInt(2, createdBy);
             pstmt.setString(3, title);
             pstmt.setString(4, description);
             pstmt.setObject(5, deadline);
+            pstmt.setInt(6, totalPoints);
+            pstmt.setBoolean(7, lateSubmissionsAllowed);
             return pstmt.executeUpdate() > 0;
         }
     }
 
     public static List<Assignment> fetchByCourseId(int courseId) throws SQLException {
         List<Assignment> assignments = new ArrayList<>();
-        String query = "SELECT a.id, a.course_id, a.created_by, u.username, a.title, a.description, a.deadline, a.created_at, a.updated_at FROM assignments a JOIN users u ON a.created_by = u.id WHERE a.course_id = ? ORDER BY a.deadline ASC";
+        String query = "SELECT a.id, a.course_id, a.created_by, u.username, a.title, a.description, a.deadline, a.created_at, a.updated_at, a.total_points, a.late_submissions_allowed FROM assignments a JOIN users u ON a.created_by = u.id WHERE a.course_id = ? ORDER BY a.deadline ASC";
         try (PreparedStatement pstmt = DB.getInstance().prepareStatement(query)) {
             pstmt.setInt(1, courseId);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -61,7 +68,9 @@ public class Assignment {
                             rs.getString("description"),
                             rs.getTimestamp("deadline").toLocalDateTime(),
                             rs.getTimestamp("created_at").toLocalDateTime(),
-                            rs.getTimestamp("updated_at").toLocalDateTime()));
+                            rs.getTimestamp("updated_at").toLocalDateTime(),
+                            rs.getInt("total_points"),
+                            rs.getBoolean("late_submissions_allowed")));
                 }
             }
         }
@@ -70,7 +79,7 @@ public class Assignment {
 
     public static List<Assignment> fetchStudentPending(int courseId, int userId) throws SQLException {
         List<Assignment> assignments = new ArrayList<>();
-        String query = "SELECT a.id, a.course_id, a.created_by, u.username, a.title, a.description, a.deadline, a.created_at, a.updated_at FROM assignments a JOIN users u ON a.created_by = u.id WHERE a.course_id = ? AND a.id NOT IN (SELECT assignment_id FROM submissions WHERE user_id = ? AND submitted = true) ORDER BY a.deadline ASC";
+        String query = "SELECT a.id, a.course_id, a.created_by, u.username, a.title, a.description, a.deadline, a.created_at, a.updated_at, a.total_points, a.late_submissions_allowed FROM assignments a JOIN users u ON a.created_by = u.id WHERE a.course_id = ? AND a.id NOT IN (SELECT assignment_id FROM submissions WHERE user_id = ? AND submitted = true) ORDER BY a.deadline ASC";
         try (PreparedStatement pstmt = DB.getInstance().prepareStatement(query)) {
             pstmt.setInt(1, courseId);
             pstmt.setInt(2, userId);
@@ -85,7 +94,9 @@ public class Assignment {
                             rs.getString("description"),
                             rs.getTimestamp("deadline").toLocalDateTime(),
                             rs.getTimestamp("created_at").toLocalDateTime(),
-                            rs.getTimestamp("updated_at").toLocalDateTime()));
+                            rs.getTimestamp("updated_at").toLocalDateTime(),
+                            rs.getInt("total_points"),
+                            rs.getBoolean("late_submissions_allowed")));
                 }
             }
         }
@@ -126,6 +137,14 @@ public class Assignment {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    public boolean isLateSubmissionsAllowed() {
+        return lateSubmissionsAllowed;
     }
 
     public void setTitle(String title) {

@@ -17,6 +17,13 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.Duration;
@@ -30,8 +37,10 @@ import java.util.ResourceBundle;
  * Controller for ToDoView.fxml
  *
  * Responsibilities:
- * 1. Display pending assignments partitioned into "Active" and "Missing" sections
- * 2. Calculate assignment urgency: Overdue (red), Due Soon < 48hrs (orange), or normal deadline
+ * 1. Display pending assignments partitioned into "Active" and "Missing"
+ * sections
+ * 2. Calculate assignment urgency: Overdue (red), Due Soon < 48hrs (orange), or
+ * normal deadline
  * 3. Allow students to mark assignments as submitted with instant UI refresh
  * 4. Provide a refresh button to reload assignments from the database
  */
@@ -212,9 +221,9 @@ public class ToDoController implements Initializable {
         // Submit Button
         HBox buttonRow = new HBox();
         buttonRow.setAlignment(Pos.CENTER_RIGHT);
-        Button submitBtn = new Button("Mark as Submitted");
+        Button submitBtn = new Button("View/Submit");
         submitBtn.getStyleClass().add("assignment-submit-btn");
-        submitBtn.setOnAction(event -> handleSubmit(assignment));
+        submitBtn.setOnAction(event -> openAssignmentDetails(assignment));
 
         buttonRow.getChildren().add(submitBtn);
 
@@ -274,16 +283,33 @@ public class ToDoController implements Initializable {
     }
 
     /**
-     * Submit button handler: marks assignment as submitted and refreshes UI
+     * Open details dialog to allow the student to submit/unsubmit and view comments
      */
-    private void handleSubmit(Assignment assignment) {
+    private void openAssignmentDetails(Assignment assignment) {
         try {
-            Submission.markAsSubmitted(assignment.getId(), userId);
-            System.out.println("Assignment marked as submitted: " + assignment.getTitle());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ibwaan/naawbi/view/AssignmentDetails/AssignmentDetailsView.fxml"));
+            Parent root = loader.load();
+
+            AssignmentDetailsController controller = loader.getController();
+
+            Stage modalStage = new Stage();
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initStyle(StageStyle.UNDECORATED);
+            modalStage.setResizable(false);
+
+            Scene scene = new Scene(root);
+            modalStage.setScene(scene);
+
+            controller.setContext(assignment, userId, modalStage);
+
+            modalStage.showAndWait();
+            
+            // Refresh when closed in case submission was altered
             refreshAssignments();
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error marking assignment as submitted: " + e.getMessage());
+            System.err.println("Error opening assignment details: " + e.getMessage());
         }
     }
 

@@ -55,6 +55,12 @@ public class CreateAssignmentController implements Initializable {
     private Spinner<Integer> deadlineMinute;
 
     @FXML
+    private TextField pointsField;
+
+    @FXML
+    private CheckBox lateAllowedToggle;
+
+    @FXML
     private CheckBox publishToggle;
 
     /* ── Error Labels ───────────────────────────────── */
@@ -74,7 +80,7 @@ public class CreateAssignmentController implements Initializable {
     @FXML
     private Button createBtn;
 
-    /* ──  State ──────────────────────────────────────── */
+    /* ── State ──────────────────────────────────────── */
     private int courseId;
     private int userId;
     private Stage modal;
@@ -104,10 +110,12 @@ public class CreateAssignmentController implements Initializable {
      * Minute: 0-59 (step 5)
      */
     private void initializeSpinners() {
-        SpinnerValueFactory.IntegerSpinnerValueFactory hourFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 11);
+        SpinnerValueFactory.IntegerSpinnerValueFactory hourFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                0, 23, 11);
         deadlineHour.setValueFactory(hourFactory);
 
-        SpinnerValueFactory.IntegerSpinnerValueFactory minuteFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0, 5);
+        SpinnerValueFactory.IntegerSpinnerValueFactory minuteFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                0, 59, 0, 5);
         deadlineMinute.setValueFactory(minuteFactory);
     }
 
@@ -154,8 +162,19 @@ public class CreateAssignmentController implements Initializable {
             String description = descriptionField.getText().trim();
             LocalDateTime deadline = combineDateTime();
 
+            int totalPoints = 100;
+            try {
+                if (!pointsField.getText().trim().isEmpty()) {
+                    totalPoints = Integer.parseInt(pointsField.getText().trim());
+                }
+            } catch (NumberFormatException e) {
+                // Default to 100
+            }
+
+            boolean lateAllowed = lateAllowedToggle.isSelected();
+
             // Create and save assignment to database
-            Assignment assignment = new Assignment(courseId, userId, title, description, deadline);
+            Assignment assignment = new Assignment(courseId, userId, title, description, deadline, totalPoints, lateAllowed);
             assignment.save();
 
             System.out.println("Assignment created: " + title);

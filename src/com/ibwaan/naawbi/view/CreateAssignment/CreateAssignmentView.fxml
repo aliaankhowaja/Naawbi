@@ -82,6 +82,30 @@
                             </VBox>
                         </HBox>
                     </VBox>
+                    <!-- Assignment Settings -->
+                    <HBox spacing="32" alignment="CENTER_LEFT">
+                        <!-- Points -->
+                        <VBox spacing="8" HBox.hgrow="NEVER">
+                            <Label text="Total Points" styleClass="field-label" />
+                            <TextField fx:id="pointsField"
+                                       promptText="e.g. 100"
+                                       text="100"
+                                       styleClass="text-field-modern"
+                                       prefWidth="120" />
+                        </VBox>
+                        <!-- Late Submissions -->
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Late Policy" styleClass="field-label" />
+                            <HBox spacing="16" alignment="CENTER_LEFT" styleClass="toggle-row">
+                                <CheckBox fx:id="lateAllowedToggle" styleClass="modern-checkbox" selected="true" />
+                                <VBox spacing="2">
+                                    <Label text="Allow late turn-ins" styleClass="toggle-label" />
+                                    <Label text="If unchecked, forms a hard deadline" styleClass="toggle-sublabel" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                    
                     <!-- Publish toggle row -->
                     <HBox spacing="16" alignment="CENTER_LEFT" styleClass="toggle-row">
                         <CheckBox fx:id="publishToggle" styleClass="modern-checkbox" />
