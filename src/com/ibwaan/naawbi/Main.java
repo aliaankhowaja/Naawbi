@@ -1,4 +1,5 @@
 package com.ibwaan.naawbi;
+import com.ibwaan.naawbi.model.DB;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,14 +10,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("view/View.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 400, 300));
+        Parent root = FXMLLoader.load(getClass().getResource("view/CourseCatalog/CourseCatalogView.fxml"));
+        primaryStage.setTitle("Naawbi - Course Catalog");
+        primaryStage.setScene(new Scene(root, 1920, 1080));
         primaryStage.show();
     }
 
 
     public static void main(String[] args) {
+        DB.getInstance().createTables();
         launch(args);
     }
 }
