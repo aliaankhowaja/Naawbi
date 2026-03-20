@@ -1,0 +1,112 @@
+.root-pane {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -vc-primary: #4b5d4f;
+    -vc-secondary: #e7e1d5;
+    -vc-accent: #db7706;
+    -vc-background: #f9f7f1;
+    -vc-text: #1f1f1e;
+}
+
+.modal-title { 
+    -fx-font-size: 20px; 
+    -fx-font-weight: bold; 
+    -fx-text-fill: -vc-text; 
+}
+
+.form-label { 
+    -fx-font-size: 13px; 
+    -fx-font-weight: bold; 
+    -fx-text-fill: -vc-text; 
+}
+
+.form-value { 
+    -fx-font-size: 13px; 
+    -fx-text-fill: -vc-primary; 
+}
+
+.form-input { 
+    -fx-font-size: 13px; 
+    -fx-padding: 10px; 
+    -fx-border-color: -vc-secondary; 
+    -fx-border-width: 1; 
+    -fx-background-color: white; 
+    -fx-text-fill: -vc-text; 
+}
+
+.form-input:focused { 
+    -fx-border-color: -vc-accent; 
+    -fx-border-width: 2; 
+}
+
+.form-textarea { 
+    -fx-font-size: 12px; 
+    -fx-padding: 10px; 
+    -fx-border-color: -vc-secondary; 
+    -fx-border-width: 1; 
+    -fx-background-color: white; 
+    -fx-text-fill: -vc-text; 
+}
+
+.form-textarea:focused { 
+    -fx-border-color: -vc-accent; 
+    -fx-border-width: 2; 
+}
+
+.form-hint { 
+    -fx-font-size: 11px; 
+    -fx-text-fill: #999; 
+    -fx-font-style: italic; 
+}
+
+.formatting-toolbar { 
+    -fx-padding: 8; 
+    -fx-border-color: -vc-secondary; 
+    -fx-background-color: #fafafa; 
+}
+
+.format-btn { 
+    -fx-font-size: 13px; 
+    -fx-font-weight: bold; 
+    -fx-padding: 6 8; 
+    -fx-border-color: -vc-secondary; 
+    -fx-border-width: 1; 
+    -fx-background-color: white; 
+    -fx-text-fill: -vc-text; 
+}
+
+.format-btn:hover { 
+    -fx-background-color: -vc-secondary; 
+}
+
+.btn-primary { 
+    -fx-font-size: 13px; 
+    -fx-padding: 10 20; 
+    -fx-background-color: -vc-primary; 
+    -fx-text-fill: white; 
+    -fx-border-radius: 4; 
+}
+
+.btn-primary:hover { 
+    -fx-background-color: #3d4a41; 
+}
+
+.btn-secondary { 
+    -fx-font-size: 13px; 
+    -fx-padding: 8 16; 
+    -fx-background-color: -vc-secondary; 
+    -fx-text-fill: -vc-text; 
+    -fx-border-radius: 4; 
+}
+
+.btn-cancel { 
+    -fx-font-size: 13px; 
+    -fx-padding: 10 20; 
+    -fx-background-color: white; 
+    -fx-text-fill: -vc-text; 
+    -fx-border-color: -vc-secondary; 
+    -fx-border-width: 1; 
+}
+
+.btn-cancel:hover { 
+    -fx-background-color: -vc-secondary; 
+}

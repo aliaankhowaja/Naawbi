@@ -7,12 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
+    private int id;
     private String name;
     private String code;
     private String description;
     private boolean active;
 
+    public Course(int id, String name, String code, String description, boolean active) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+        this.description = description;
+        this.active = active;
+    }
+
     public Course(String name, String code, String description, boolean active) {
+        this.id = -1;
         this.name = name;
         this.code = code;
         this.description = description;
@@ -25,6 +35,7 @@ public class Course {
         try (ResultSet rs = DB.getInstance().executeQuery(query)) {
             while (rs.next()) {
                 courses.add(new Course(
+                        rs.getInt("id"),
                         rs.getString("course_name"),
                         rs.getString("course_code"),
                         rs.getString("description"),
@@ -47,6 +58,14 @@ public class Course {
     }
 
     // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

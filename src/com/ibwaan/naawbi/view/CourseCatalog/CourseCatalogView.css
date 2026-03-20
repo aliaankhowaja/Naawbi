@@ -599,6 +599,71 @@
     -fx-font-size: 12px;
 }
 
+/* ══════════════════════════════════════════════
+   ANNOUNCEMENT CARDS
+   ══════════════════════════════════════════════ */
+
+.announcement-card {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-padding: 12;
+    -fx-spacing: 8;
+}
+
+.announcement-card:hover {
+    -fx-border-color: -vc-accent;
+    -fx-background-color: #fafafa;
+}
+
+.announcement-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+    -fx-wrap-text: true;
+}
+
+.announcement-meta {
+    -fx-font-size: 12px;
+    -fx-text-fill: #999;
+}
+
+.announcement-content {
+    -fx-font-size: 12px;
+    -fx-text-fill: -vc-text;
+    -fx-wrap-text: true;
+}
+
+.announcement-author {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.announcement-timestamp {
+    -fx-font-size: 11px;
+    -fx-text-fill: #999;
+}
+
+.empty-state-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #999;
+    -fx-padding: 32;
+    -fx-alignment: CENTER;
+}
+
+.error-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #d9534f;
+    -fx-padding: 16;
+}
+
+.announcement-content-text {
+    -fx-font: 12 "Segoe UI";
+    -fx-fill: -vc-text;
+}
+
 .upcoming-item-name {
     -fx-font-family: "Segoe UI";
     -fx-font-size: 13px;
