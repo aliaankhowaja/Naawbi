@@ -1,11 +1,13 @@
 package com.ibwaan.naawbi.controller;
 
+import com.ibwaan.naawbi.model.Announcement;
 import com.ibwaan.naawbi.model.Course;
 import com.ibwaan.naawbi.view.ViewConstants;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,11 +20,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -58,6 +64,11 @@ public class CourseCatalogController implements Initializable {
     @FXML
     private VBox streamContainer;
 
+    /* ── State ───────────────────────────────────────── */
+    private Course currentSelectedCourse;
+    private int currentCourseId = -1;
+    private int currentUserId = 1; // TODO: Replace with actual logged-in user ID from session
+
     /* ── Lifecycle ───────────────────────────────────── */
 
     @Override
@@ -92,7 +103,7 @@ public class CourseCatalogController implements Initializable {
         VBox card = new VBox();
         card.getStyleClass().add("course-card");
         card.setSpacing(0);
-        card.setOnMouseClicked(this::handleCourseSelect);
+        card.setOnMouseClicked(event -> handleCourseSelect(event, course));
 
         // Accent bar
         HBox accent = new HBox();
@@ -229,15 +240,108 @@ public class CourseCatalogController implements Initializable {
     }
 
     /**
-     * Handles clicking a course card in the catalog.
-     * Toggles the -selected style class and would trigger a Course Home
-     * content swap in a real implementation.
+     * Loads announcements for the selected course and populates streamContainer
      */
-    @FXML
-    private void handleCourseSelect(MouseEvent event) {
-        // Find the root card VBox from the click target
-        Node target = (Node) event.getSource();
+    private void loadAnnouncementsForCourse(int courseId) {
+        streamContainer.getChildren().clear();
+        try {
+            List<Announcement> announcements = Announcement.fetchByCourseId(courseId);
+            if (announcements.isEmpty()) {
+                Label emptyLabel = new Label("No announcements yet. Be the first to post!");
+                emptyLabel.getStyleClass().add("empty-state-label");
+                streamContainer.getChildren().add(emptyLabel);
+            } else {
+                for (Announcement announcement : announcements) {
+                    VBox card = createAnnouncementCard(announcement);
+                    streamContainer.getChildren().add(card);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Label errorLabel = new Label("Error loading announcements");
+            errorLabel.getStyleClass().add("error-label");
+            streamContainer.getChildren().add(errorLabel);
+        }
+    }
 
+    /**
+     * Creates a VBox announcement card from an Announcement model
+     * Displays: author, timestamp, title, content with HTML rendering (basic)
+     */
+    private VBox createAnnouncementCard(Announcement announcement) {
+        VBox card = new VBox();
+        card.getStyleClass().add("announcement-card");
+        card.setSpacing(8);
+        card.setPadding(new Insets(12));
+
+        HBox authorLine = new HBox();
+        authorLine.setSpacing(8);
+        authorLine.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        Label authorLabel = new Label(announcement.getAuthorName());
+        authorLabel.getStyleClass().add("announcement-author");
+
+        Label timeLabel = new Label(formatTime(announcement.getCreatedAt()));
+        timeLabel.getStyleClass().add("announcement-timestamp");
+
+        authorLine.getChildren().addAll(authorLabel, timeLabel);
+
+        Label titleLabel = new Label(announcement.getTitle());
+        titleLabel.getStyleClass().addAll("announcement-title");
+        titleLabel.setWrapText(true);
+
+        TextFlow contentFlow = new TextFlow();
+        contentFlow.getStyleClass().add("announcement-content");
+        contentFlow.setPrefWidth(500);
+
+        // Parse simple HTML tags (b, i, u) and render as styled text
+        Text contentText = new Text(stripHtmlTags(announcement.getContent()));
+        contentText.getStyleClass().add("announcement-content-text");
+        contentFlow.getChildren().add(contentText);
+
+        card.getChildren().addAll(authorLine, titleLabel, contentFlow);
+        return card;
+    }
+
+    /**
+     * Helper: formats a LocalDateTime to a relative time string
+     * Examples: "2 hours ago", "1 day ago", "5 minutes ago"
+     */
+    private String formatTime(LocalDateTime dateTime) {
+        if (dateTime == null)
+            return "Unknown";
+        try {
+            Duration duration = Duration.between(dateTime, LocalDateTime.now());
+            long minutes = duration.getSeconds() / 60;
+            long hours = minutes / 60;
+            long days = hours / 24;
+
+            if (days >= 1)
+                return days + " day" + (days == 1 ? "" : "s") + " ago";
+            if (hours >= 1)
+                return hours + " hour" + (hours == 1 ? "" : "s") + " ago";
+            if (minutes >= 1)
+                return minutes + " minute" + (minutes == 1 ? "" : "s") + " ago";
+            return "Just now";
+        } catch (Exception e) {
+            return "Recently";
+        }
+    }
+
+    /**
+     * Helper: strips HTML tags for display (basic implementation)
+     * This is a simplified version - in production use HTMLEditor or similar
+     */
+    private String stripHtmlTags(String html) {
+        if (html == null)
+            return "";
+        return html.replaceAll("<[^>]*>", "");
+    }
+
+    /**
+     * Handles clicking a course card: select it and load its announcements
+     */
+    private void handleCourseSelect(MouseEvent event, Course course) {
         // Deselect all cards
         for (Node node : courseListContainer.getChildren()) {
             if (node instanceof VBox card) {
@@ -246,26 +350,58 @@ public class CourseCatalogController implements Initializable {
         }
 
         // Select the clicked card
+        Node target = (Node) event.getSource();
         if (target instanceof VBox card) {
             if (!card.getStyleClass().contains("course-card-selected")) {
                 card.getStyleClass().add("course-card-selected");
             }
         }
 
-        // TODO: load the corresponding course's stream data into streamContainer
-        // courseService.getCourse(courseId).thenAccept(course -> {
-        // Platform.runLater(() -> streamController.populate(course));
-        // });
-        System.out.println("Course selected: " + event.getSource());
+        // Store current course and load announcements
+        currentSelectedCourse = course;
+        currentCourseId = course.getId();
+        loadAnnouncementsForCourse(currentCourseId);
     }
 
     /**
-     * Handles the "+ Post Announcement" button on the Course Home header.
-     * In production this would open a CreateAnnouncementView dialog.
+     * Handles the "+ Post Announcement" button
+     * Opens CreateAnnouncementView as a modal dialog
      */
     @FXML
     private void handlePostAnnouncement(ActionEvent event) {
-        // TODO: open CreateAnnouncementView as a modal stage
-        System.out.println("Post announcement clicked.");
+        if (currentCourseId <= 0) {
+            System.out.println("No course selected");
+            return;
+        }
+        openCreateAnnouncementDialog();
+    }
+
+    /**
+     * Opens CreateAnnouncementView as a modal stage
+     * On success, reloads announcements for the current course
+     */
+    private void openCreateAnnouncementDialog() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/ibwaan/naawbi/view/CreateAnnouncement/CreateAnnouncementView.fxml"));
+            Parent dialogRoot = loader.load();
+
+            CreateAnnouncementController controller = loader.getController();
+            controller.setCourseContext(
+                    currentCourseId,
+                    currentUserId,
+                    currentSelectedCourse,
+                    () -> loadAnnouncementsForCourse(currentCourseId));
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Post Announcement - "
+                    + (currentSelectedCourse != null ? currentSelectedCourse.getName() : "Course"));
+            dialogStage.setScene(new Scene(dialogRoot));
+            dialogStage.setResizable(false);
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to open announcement dialog: " + e.getMessage());
+        }
     }
 }

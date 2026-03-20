@@ -87,9 +87,32 @@ public class DB {
                 + "is_active BOOLEAN DEFAULT FALSE"
                 + ");";
 
+        String courseEnrollmentsTable = "CREATE TABLE IF NOT EXISTS course_enrollments ("
+                + "id SERIAL PRIMARY KEY,"
+                + "course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,"
+                + "user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,"
+                + "role VARCHAR(50) DEFAULT 'student',"
+                + "enrolled_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+                + "UNIQUE(course_id, user_id)"
+                + ");";
+
+        String announcementsTable = "CREATE TABLE IF NOT EXISTS announcements ("
+                + "id SERIAL PRIMARY KEY,"
+                + "course_id INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,"
+                + "created_by INTEGER NOT NULL REFERENCES users(id),"
+                + "title VARCHAR(255) NOT NULL,"
+                + "content TEXT NOT NULL,"
+                + "content_type VARCHAR(20) DEFAULT 'html',"
+                + "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+                + "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+                + ");"
+                + "CREATE INDEX IF NOT EXISTS idx_announcements_course_date ON announcements(course_id, created_at DESC);";
+
         try (Statement statement = getConnection().createStatement()) {
             statement.execute(userTable);
             statement.execute(courseTable);
+            statement.execute(courseEnrollmentsTable);
+            statement.execute(announcementsTable);
         } catch (SQLException e) {
             e.printStackTrace();
         }
