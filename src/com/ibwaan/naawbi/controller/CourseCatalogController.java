@@ -26,7 +26,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -311,21 +313,32 @@ public class CourseCatalogController implements Initializable {
     }
 
     /**
-     * Shows the Assignments tab content (stub)
+     * Shows the Assignments tab — loads all assignments for the selected course
+     * and renders them as cards in streamContainer with submission status badges.
+     * Instructors see a "Grade Submissions" button (opens GradingView — US 19/20).
      */
     private void showAssignments() {
         contentHBox.setVisible(true);
         contentHBox.setManaged(true);
         todoContainer.setVisible(false);
         todoContainer.setManaged(false);
-        createAssignmentBtn.setVisible(false);
-        createAssignmentBtn.setManaged(false);
-        // TODO: Load and display assignments for this course
-        // For now, just show the assignments as announcements would be shown
+
+        boolean isInstructor = Session.getInstance().isInstructor();
+        createAssignmentBtn.setVisible(isInstructor);
+        createAssignmentBtn.setManaged(isInstructor);
+
+        if (currentCourseId <= 0) {
+            streamContainer.getChildren().clear();
+            Label empty = new Label("Select a course first.");
+            empty.getStyleClass().add("empty-state-label");
+            streamContainer.getChildren().add(empty);
+            return;
+        }
+        loadAssignmentsForCourse(currentCourseId, currentUserId, isInstructor);
     }
 
     /**
-     * Shows the People tab content (stub)
+     * Shows the People tab — loads the course roster and renders role-badged cards.
      */
     private void showPeople() {
         contentHBox.setVisible(true);
@@ -334,7 +347,69 @@ public class CourseCatalogController implements Initializable {
         todoContainer.setManaged(false);
         createAssignmentBtn.setVisible(false);
         createAssignmentBtn.setManaged(false);
-        // TODO: Load and display course members/people
+
+        streamContainer.getChildren().clear();
+
+        if (currentCourseId <= 0) {
+            Label empty = new Label("Select a course to see its roster.");
+            empty.getStyleClass().add("empty-state-label");
+            streamContainer.getChildren().add(empty);
+            return;
+        }
+
+        try {
+            java.util.List<Object[]> users = Course.fetchEnrolledUsers(currentCourseId);
+            if (users.isEmpty()) {
+                Label empty = new Label("No enrolled users yet.");
+                empty.getStyleClass().add("empty-state-label");
+                streamContainer.getChildren().add(empty);
+                return;
+            }
+            Label instructorsHeader = new Label("Instructors");
+            instructorsHeader.setStyle("-fx-font-size:16px;-fx-font-weight:bold;-fx-text-fill:#3c4043;-fx-padding:8 0 4 0;");
+            VBox instructorsList = new VBox(6);
+            Label studentsHeader = new Label("Students");
+            studentsHeader.setStyle("-fx-font-size:16px;-fx-font-weight:bold;-fx-text-fill:#3c4043;-fx-padding:16 0 4 0;");
+            VBox studentsList = new VBox(6);
+            boolean hasInstructors = false, hasStudents = false;
+            for (Object[] row : users) {
+                String username = (String) row[0];
+                String email    = (String) row[1];
+                String role     = (String) row[2];
+                HBox card = new HBox(12);
+                card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+                card.setPadding(new Insets(10, 14, 10, 14));
+                card.setStyle("-fx-background-color:white;-fx-background-radius:8;" +
+                    "-fx-border-color:#e0e0e0;-fx-border-radius:8;");
+                Label avatar = new Label(username.substring(0, 1).toUpperCase());
+                avatar.setStyle("-fx-min-width:38;-fx-min-height:38;-fx-max-width:38;-fx-max-height:38;" +
+                    "-fx-background-radius:19;-fx-alignment:center;-fx-font-weight:bold;" +
+                    "-fx-text-fill:white;-fx-background-color:" +
+                    ("instructor".equalsIgnoreCase(role) ? "#5c6bc0" : "#26a69a") + ";");
+                VBox info = new VBox(2);
+                Label nameLbl = new Label(username);
+                nameLbl.setStyle("-fx-font-size:14px;-fx-font-weight:bold;-fx-text-fill:#202124;");
+                Label emailLbl = new Label(email);
+                emailLbl.setStyle("-fx-font-size:12px;-fx-text-fill:#666;");
+                info.getChildren().addAll(nameLbl, emailLbl);
+                HBox.setHgrow(info, Priority.ALWAYS);
+                Label roleBadge = new Label(role.substring(0, 1).toUpperCase() + role.substring(1));
+                roleBadge.setStyle("-fx-font-size:11px;-fx-padding:3 10;-fx-background-color:" +
+                    ("instructor".equalsIgnoreCase(role) ? "#e8eafd" : "#e0f2f1") +
+                    ";-fx-text-fill:" + ("instructor".equalsIgnoreCase(role) ? "#3949ab" : "#00796b") +
+                    ";-fx-background-radius:10;-fx-font-weight:bold;");
+                card.getChildren().addAll(avatar, info, roleBadge);
+                if ("instructor".equalsIgnoreCase(role)) {
+                    instructorsList.getChildren().add(card); hasInstructors = true;
+                } else {
+                    studentsList.getChildren().add(card); hasStudents = true;
+                }
+            }
+            if (hasInstructors) streamContainer.getChildren().addAll(instructorsHeader, instructorsList);
+            if (hasStudents) streamContainer.getChildren().addAll(studentsHeader, studentsList);
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -415,10 +490,136 @@ public class CourseCatalogController implements Initializable {
         }
     }
 
+    private void loadAssignmentsForCourse(int courseId, int userId, boolean isInstructor) {
+        streamContainer.getChildren().clear();
+        try {
+            java.util.List<com.ibwaan.naawbi.model.Assignment> assignments =
+                com.ibwaan.naawbi.model.Assignment.fetchWithStatusForUser(courseId, userId);
+            if (assignments.isEmpty()) {
+                Label emptyLabel = new Label("No assignments yet.");
+                emptyLabel.getStyleClass().add("empty-state-label");
+                streamContainer.getChildren().add(emptyLabel);
+            } else {
+                for (com.ibwaan.naawbi.model.Assignment a : assignments) {
+                    VBox card = createAssignmentListCard(a, isInstructor);
+                    streamContainer.getChildren().add(card);
+                }
+            }
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private VBox createAssignmentListCard(com.ibwaan.naawbi.model.Assignment a, boolean isInstructor) {
+        VBox card = new VBox();
+        card.getStyleClass().add("announcement-card");
+        card.setSpacing(8);
+        card.setPadding(new Insets(16));
+
+        java.time.format.DateTimeFormatter dtf =
+            java.time.format.DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a");
+
+        HBox titleRow = new HBox(10);
+        titleRow.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        Label titleLbl = new Label(a.getTitle());
+        titleLbl.getStyleClass().add("announcement-title");
+        titleLbl.setWrapText(true);
+        HBox.setHgrow(titleLbl, Priority.ALWAYS);
+        Label ptsLbl = new Label(a.getTotalPoints() + " pts");
+        ptsLbl.setStyle("-fx-font-size:12px;-fx-text-fill:#666;-fx-font-weight:bold;");
+        titleRow.getChildren().addAll(titleLbl, ptsLbl);
+
+        HBox metaRow = new HBox(12);
+        metaRow.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        Label deadlineLbl = new Label("Due: " + a.getDeadline().format(dtf));
+        deadlineLbl.setStyle("-fx-font-size:13px;-fx-text-fill:#555;");
+        Label lateLbl = new Label(a.isLateSubmissionsAllowed() ? "Late OK" : "Hard deadline");
+        lateLbl.setStyle("-fx-font-size:11px;-fx-background-color:" +
+            (a.isLateSubmissionsAllowed() ? "#e8f5e9" : "#fce4ec") +
+            ";-fx-text-fill:" + (a.isLateSubmissionsAllowed() ? "#388e3c" : "#c62828") +
+            ";-fx-padding:2 8;-fx-background-radius:10;");
+        metaRow.getChildren().addAll(deadlineLbl, lateLbl);
+
+        HBox actionRow = new HBox(10);
+        actionRow.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
+
+        if (isInstructor) {
+            Button gradeBtn = new Button("Grade Submissions");
+            gradeBtn.setStyle("-fx-background-color:#5c6bc0;-fx-text-fill:white;" +
+                "-fx-font-size:12px;-fx-padding:6 14;-fx-background-radius:6;-fx-cursor:hand;");
+            gradeBtn.setOnAction(ev -> openGradingDialog(a));
+            actionRow.getChildren().add(gradeBtn);
+        } else {
+            String status = a.getUserStatus();
+            if (status == null) status = "Not Submitted";
+            Label statusLbl = new Label(status);
+            String bgColor = switch (status) {
+                case "Submitted" -> "#5cb85c";
+                case "Late"      -> "#f0ad4e";
+                case "Missing"   -> "#d9534f";
+                default          -> "#9e9e9e";
+            };
+            statusLbl.setStyle("-fx-font-size:12px;-fx-text-fill:white;-fx-font-weight:bold;" +
+                "-fx-padding:3 10;-fx-background-color:" + bgColor + ";-fx-background-radius:12;");
+            Button viewBtn = new Button("View / Submit");
+            viewBtn.setStyle("-fx-background-color:transparent;-fx-border-color:#5c6bc0;" +
+                "-fx-border-radius:6;-fx-text-fill:#5c6bc0;-fx-font-size:12px;" +
+                "-fx-padding:5 12;-fx-cursor:hand;");
+            viewBtn.setOnAction(ev -> openStudentAssignmentDetails(a));
+            actionRow.getChildren().addAll(statusLbl, viewBtn);
+        }
+
+        card.getChildren().addAll(titleRow, metaRow, actionRow);
+        return card;
+    }
+
+    private void openStudentAssignmentDetails(com.ibwaan.naawbi.model.Assignment a) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/ibwaan/naawbi/view/AssignmentDetails/AssignmentDetailsView.fxml"));
+            Parent root = loader.load();
+            AssignmentDetailsController ctrl = loader.getController();
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.initStyle(StageStyle.UNDECORATED);
+            modal.setResizable(false);
+            modal.setScene(new Scene(root));
+            ctrl.setContext(a, currentUserId, modal);
+            modal.showAndWait();
+            loadAssignmentsForCourse(currentCourseId, currentUserId, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens GradingView.fxml as a modal for the given assignment (instructor only).
+     * Implements US 19 (view submissions) and US 20 (grade & feedback).
+     */
+    private void openGradingDialog(com.ibwaan.naawbi.model.Assignment a) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/ibwaan/naawbi/view/Grading/GradingView.fxml"));
+            Parent root = loader.load();
+            GradingController ctrl = loader.getController();
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.initStyle(StageStyle.UNDECORATED);
+            modal.setResizable(false);
+            modal.setScene(new Scene(root));
+            ctrl.setContext(a, modal);
+            modal.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to open GradingView: " + e.getMessage());
+        }
+    }
+
     /**
      * Loads announcements for the selected course and populates streamContainer
      */
     private void loadAnnouncementsForCourse(int courseId) {
+
         streamContainer.getChildren().clear();
         try {
             List<Announcement> announcements = Announcement.fetchByCourseId(courseId);
