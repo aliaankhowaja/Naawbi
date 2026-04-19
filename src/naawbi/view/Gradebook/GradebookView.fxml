@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<!--
+  GradebookView.fxml — US 21 & 22: Gradebook
+  Dual-mode:
+    - Student mode (US 22): scrollable list of all graded assignments with score + feedback
+    - Instructor mode (US 21): scrollable GridPane — rows=students, cols=assignments
+  The controller switches mode based on Session.isInstructor().
+-->
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:id="rootPane"
+           fx:controller="naawbi.controller.GradebookController"
+           prefWidth="1000" prefHeight="680"
+           style="-fx-background-color:#f5f6fa;">
+
+    <VBox spacing="0">
+
+        <!-- Header -->
+        <HBox style="-fx-background-color:#26a69a;-fx-padding:16 24;"
+              alignment="CENTER_LEFT" spacing="16">
+            <Label fx:id="headerLabel" text="Gradebook"
+                   style="-fx-font-size:20px;-fx-font-weight:bold;-fx-text-fill:white;" />
+            <javafx.scene.layout.Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="courseNameLabel" text=""
+                   style="-fx-font-size:13px;-fx-text-fill:#b2dfdb;" />
+            <Button text="✕ Close" onAction="#handleClose"
+                    style="-fx-background-color:transparent;-fx-text-fill:white;
+                           -fx-font-size:14px;-fx-cursor:hand;" />
+        </HBox>
+
+        <!-- Tab switcher (for instructor: "Class Gradebook" | "Students"; student: "My Grades") -->
+        <HBox fx:id="modeTabBar" spacing="0"
+              style="-fx-background-color:white;-fx-border-color:#e0e0e0;-fx-border-width:0 0 1 0;">
+            <Label fx:id="myGradesTab" text="My Grades"
+                   style="-fx-padding:12 24;-fx-font-size:14px;-fx-font-weight:bold;
+                          -fx-text-fill:#26a69a;-fx-border-color:transparent transparent #26a69a transparent;
+                          -fx-border-width:0 0 2 0;-fx-cursor:hand;" />
+            <Label fx:id="classGradebookTab" text="Class Gradebook"
+                   visible="false" managed="false"
+                   style="-fx-padding:12 24;-fx-font-size:14px;-fx-text-fill:#666;-fx-cursor:hand;" />
+        </HBox>
+
+        <!-- Student personal grades view (US 22) -->
+        <ScrollPane fx:id="studentGradesPane" fitToWidth="true" VBox.vgrow="ALWAYS"
+                    hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                    style="-fx-background-color:transparent;">
+            <VBox fx:id="studentGradesContainer" spacing="12"
+                  style="-fx-padding:20;">
+
+                <!-- Grade row cards injected programmatically -->
+
+            </VBox>
+        </ScrollPane>
+
+        <!-- Instructor class gradebook view (US 21) - hidden until mode switched -->
+        <ScrollPane fx:id="instructorGradebookPane" fitToWidth="true" VBox.vgrow="ALWAYS"
+                    visible="false" managed="false"
+                    hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED"
+                    style="-fx-background-color:transparent;">
+            <VBox style="-fx-padding:20;">
+                <GridPane fx:id="gradebookGrid" hgap="1" vgap="1"
+                          style="-fx-background-color:#e0e0e0;" />
+            </VBox>
+        </ScrollPane>
+
+    </VBox>
+</StackPane>

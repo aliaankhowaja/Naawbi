@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:id="rootPane"
+           fx:controller="naawbi.controller.LoginController"
+           prefWidth="1920" prefHeight="1080"
+           stylesheets="@./LoginView.css">
+
+    <HBox prefWidth="1920" prefHeight="1080">
+
+        <!-- Left brand panel -->
+        <VBox fx:id="leftPanel" styleClass="login-left-panel"
+              alignment="CENTER" spacing="20">
+            <Label text="Naawbi" styleClass="login-brand" />
+            <Label text="Your courses.&#10;Your progress."
+                   styleClass="login-tagline" wrapText="true" textAlignment="CENTER" />
+        </VBox>
+
+        <!-- Right form panel -->
+        <VBox styleClass="login-right-panel" alignment="CENTER"
+              HBox.hgrow="ALWAYS">
+
+            <VBox styleClass="login-form-container" spacing="0" maxWidth="420">
+
+                <!-- Tab strip -->
+                <HBox styleClass="login-tab-strip" spacing="32">
+                    <Label fx:id="signInTab" text="Sign In"
+                           styleClass="login-tab login-tab-active"
+                           onMouseClicked="#handleSignInTab" />
+                    <Label fx:id="registerTab" text="Register"
+                           styleClass="login-tab"
+                           onMouseClicked="#handleRegisterTab" />
+                </HBox>
+                <Pane styleClass="tab-strip-divider" prefHeight="1" maxHeight="1" minHeight="1" />
+
+                <!-- Sign In form (default visible) -->
+                <VBox fx:id="signInForm" styleClass="login-form-body"
+                      spacing="20" visible="true" managed="true">
+                    <VBox spacing="6">
+                        <Label text="Email" styleClass="field-label" />
+                        <TextField fx:id="loginEmailField"
+                                   promptText="you@university.edu"
+                                   styleClass="text-field-modern" />
+                    </VBox>
+                    <VBox spacing="6">
+                        <Label text="Password" styleClass="field-label" />
+                        <PasswordField fx:id="loginPasswordField"
+                                       promptText="••••••••"
+                                       styleClass="text-field-modern" />
+                    </VBox>
+                    <Label fx:id="loginErrorLabel" text=""
+                           styleClass="login-error" visible="false" managed="false" />
+                    <Button fx:id="signInBtn" text="Sign In"
+                            styleClass="btn-primary" maxWidth="Infinity"
+                            onAction="#handleSignIn" />
+                </VBox>
+
+                <!-- Register form (hidden by default) -->
+                <VBox fx:id="registerForm" styleClass="login-form-body"
+                      spacing="20" visible="false" managed="false">
+                    <VBox spacing="6">
+                        <Label text="Username" styleClass="field-label" />
+                        <TextField fx:id="regUsernameField"
+                                   promptText="e.g. john_doe"
+                                   styleClass="text-field-modern" />
+                    </VBox>
+                    <VBox spacing="6">
+                        <Label text="Email" styleClass="field-label" />
+                        <TextField fx:id="regEmailField"
+                                   promptText="you@university.edu"
+                                   styleClass="text-field-modern" />
+                    </VBox>
+                    <VBox spacing="6">
+                        <Label text="Password" styleClass="field-label" />
+                        <PasswordField fx:id="regPasswordField"
+                                       promptText="••••••••"
+                                       styleClass="text-field-modern" />
+                    </VBox>
+                    <VBox spacing="8">
+                        <Label text="Role" styleClass="field-label" />
+                        <HBox spacing="8">
+                            <Button fx:id="studentRoleBtn" text="Student"
+                                    styleClass="role-chip role-chip-active"
+                                    onAction="#handleRoleStudent"
+                                    HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                            <Button fx:id="instructorRoleBtn" text="Instructor"
+                                    styleClass="role-chip"
+                                    onAction="#handleRoleInstructor"
+                                    HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                        </HBox>
+                    </VBox>
+                    <Label fx:id="registerErrorLabel" text=""
+                           styleClass="login-error" visible="false" managed="false" />
+                    <Button text="Create Account" styleClass="btn-primary"
+                            maxWidth="Infinity" onAction="#handleRegister" />
+                </VBox>
+
+            </VBox>
+        </VBox>
+
+    </HBox>
+</StackPane>

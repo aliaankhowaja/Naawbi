@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+
+<!--
+  CourseCatalogView.fxml
+  Two-panel layout:
+    LEFT: sidebar nav + course catalog grid
+    RIGHT: Course Home (stream: announcements, assignments, deadlines)
+  Colors injected at runtime via CourseCatalogController.initialize()
+  using the same -vc-* looked-up color pattern as the rest of the app.
+-->
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:id="rootPane"
+           fx:controller="naawbi.controller.CourseCatalogController"
+           prefWidth="1920" prefHeight="1080"
+           styleClass="root-pane"
+           stylesheets="@./CourseCatalogView.css">
+
+    <HBox spacing="0" prefWidth="1920" prefHeight="1080">
+
+    
+
+        <!-- ══════════════════════════════════════
+             CATALOG PANEL  (left main column)
+             ══════════════════════════════════════ -->
+        <VBox styleClass="catalog-panel" spacing="0" prefWidth="560" minWidth="480">
+
+            <!-- Header -->
+            <VBox styleClass="catalog-header" spacing="4">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label text="My Courses" styleClass="catalog-title" HBox.hgrow="ALWAYS" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="createCourseBtn" text="+ Create Course" onAction="#handleNavigateToCreate" styleClass="create-course-btn" />
+                    <Label text="Spring 2025" styleClass="semester-badge" />
+                    <Button fx:id="logoutBtn" text="Log out" onAction="#handleLogout"
+                            style="-fx-background-color:transparent;-fx-border-color:#ccc;-fx-border-radius:6;-fx-text-fill:#555;-fx-font-size:12px;-fx-padding:4 10;-fx-cursor:hand;" />
+                </HBox>
+                <Label fx:id="courseCountLabel" text="0 active courses" styleClass="catalog-subtitle" />
+            </VBox>
+
+            <!-- Search bar -->
+            <HBox styleClass="search-bar-wrap" alignment="CENTER_LEFT" spacing="10">
+                <Label text="⌕" styleClass="search-icon" />
+                <TextField fx:id="searchField"
+                           promptText="Search courses..."
+                           styleClass="search-field"
+                           HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <!-- Filter chips -->
+            <HBox styleClass="chip-row" spacing="8" alignment="CENTER_LEFT">
+                <Label text="All" styleClass="chip chip-active" />
+                <Label text="Teaching" styleClass="chip" />
+                <Label text="Enrolled" styleClass="chip" />
+                <Label text="Archived" styleClass="chip" />
+            </HBox>
+
+            <Pane styleClass="panel-divider-h" prefHeight="1" maxHeight="1" minHeight="1" />
+
+            <!-- Course card list -->
+            <ScrollPane styleClass="catalog-scroll" fitToWidth="true" VBox.vgrow="ALWAYS"
+                        hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+                <VBox fx:id="courseListContainer" styleClass="course-list" spacing="0">
+                </VBox>
+            </ScrollPane>
+
+        </VBox>
+
+        <!-- thin vertical divider -->
+        <Pane styleClass="panel-divider-v" prefWidth="1" minWidth="1" maxWidth="1" />
+
+        <!-- ══════════════════════════════════════
+             COURSE HOME  (right main column)
+             ══════════════════════════════════════ -->
+        <VBox styleClass="home-panel" spacing="0" HBox.hgrow="ALWAYS">
+
+            <!-- Course Home header banner -->
+            <VBox styleClass="home-header" spacing="6">
+                <HBox alignment="CENTER_LEFT" spacing="16">
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Introduction to Machine Learning"
+                                   styleClass="home-course-title" />
+                            <Label text="CS-401" styleClass="course-code-tag course-code-lg" />
+                        </HBox>
+                        <Label text="Dr. Aisha Salim  ·  34 students  ·  Spring 2025"
+                               styleClass="home-course-meta" />
+                    </VBox>
+                    <Button fx:id="postAnnouncementBtn" text="+ Post Announcement" styleClass="btn-primary"
+                            onAction="#handlePostAnnouncement" />
+                    <Button fx:id="createAssignmentBtn" text="+ Create Assignment" styleClass="btn-primary"
+                            onAction="#handleCreateAssignment" visible="false" managed="false" />
+                </HBox>
+
+                <!-- Tab bar -->
+                <HBox styleClass="tab-bar" spacing="0" alignment="CENTER_LEFT">
+                    <Label fx:id="streamTab" text="Stream" styleClass="tab-item tab-active" />
+                    <Label fx:id="assignmentsTab" text="Assignments" styleClass="tab-item" />
+                    <Label fx:id="peopleTab" text="People" styleClass="tab-item" />
+                    <Label fx:id="todoTab" text="To-Do" styleClass="tab-item" />
+                    <Label fx:id="gradesTab" text="Grades" styleClass="tab-item" />
+                </HBox>
+            </VBox>
+
+            <!-- Stream content (two-column) -->
+            <HBox spacing="0" VBox.vgrow="ALWAYS" fx:id="contentHBox">
+
+                <!-- ── Stream feed ── -->
+                <ScrollPane styleClass="stream-scroll" fitToWidth="true"
+                            HBox.hgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+                    <VBox fx:id="streamContainer" styleClass="stream-feed" spacing="20">
+
+                        <!-- ───── Announcement card ───── -->
+                        <VBox styleClass="stream-card" spacing="0">
+                            <HBox styleClass="stream-card-header" alignment="CENTER_LEFT" spacing="12">
+                                <Label text="AS" styleClass="avatar avatar-primary" />
+                                <VBox spacing="1">
+                                    <Label text="Dr. Aisha Salim" styleClass="stream-author" />
+                                    <Label text="Posted an announcement  ·  2 hours ago"
+                                           styleClass="stream-timestamp" />
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label text="📢 Announcement" styleClass="stream-type-badge badge-announce" />
+                            </HBox>
+                            <Pane styleClass="stream-card-divider" prefHeight="1" minHeight="1" maxHeight="1" />
+                            <VBox styleClass="stream-card-body" spacing="10">
+                                <Label text="Midterm Exam: Updated Syllabus Coverage"
+                                       styleClass="stream-card-title" />
+                                <Label text="Hi everyone, the midterm exam on March 14 will now cover Chapters 1–7 only. Chapter 8 (Ensemble Methods) is excluded. Please review the updated study guide posted in Files. Office hours are extended to Tues/Thurs 3–5 PM this week."
+                                       styleClass="stream-card-body-text" wrapText="true" />
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <Label text="📎 Updated_Study_Guide.pdf" styleClass="attachment-chip" />
+                                </HBox>
+                            </VBox>
+                            <HBox styleClass="stream-card-footer" alignment="CENTER_LEFT" spacing="16">
+                                <Label text="💬  8 comments" styleClass="stream-footer-action" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- ───── Assignment card ───── -->
+                        <VBox styleClass="stream-card" spacing="0">
+                            <HBox styleClass="stream-card-header" alignment="CENTER_LEFT" spacing="12">
+                                <Label text="AS" styleClass="avatar avatar-primary" />
+                                <VBox spacing="1">
+                                    <Label text="Dr. Aisha Salim" styleClass="stream-author" />
+                                    <Label text="Posted an assignment  ·  Yesterday"
+                                           styleClass="stream-timestamp" />
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label text="📝 Assignment" styleClass="stream-type-badge badge-assign" />
+                            </HBox>
+                            <Pane styleClass="stream-card-divider" prefHeight="1" minHeight="1" maxHeight="1" />
+                            <VBox styleClass="stream-card-body" spacing="10">
+                                <Label text="Assignment 3: Decision Trees &amp; Random Forests"
+                                       styleClass="stream-card-title" />
+                                <Label text="Implement a decision tree classifier from scratch and compare its performance against scikit-learn's RandomForestClassifier on the provided dataset. Submit a Jupyter notebook with clear comments."
+                                       styleClass="stream-card-body-text" wrapText="true" />
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <Label text="📎 A3_Dataset.csv" styleClass="attachment-chip" />
+                                    <Label text="📎 A3_Starter.ipynb" styleClass="attachment-chip" />
+                                </HBox>
+                                <HBox styleClass="due-banner" alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="⏰" styleClass="due-icon" />
+                                    <Label text="Due  Mar 18, 2025  ·  11:59 PM" styleClass="due-text" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label text="100 pts" styleClass="due-pts" />
+                                </HBox>
+                            </VBox>
+                            <HBox styleClass="stream-card-footer" alignment="CENTER_LEFT" spacing="16">
+                                <Label text="💬  3 comments" styleClass="stream-footer-action" />
+                                <Label text="Submitted" styleClass="stream-footer-stat" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- ───── Announcement card 2 ───── -->
+                        <VBox styleClass="stream-card" spacing="0">
+                            <HBox styleClass="stream-card-header" alignment="CENTER_LEFT" spacing="12">
+                                <Label text="JK" styleClass="avatar avatar-secondary" />
+                                <VBox spacing="1">
+                                    <Label text="Sagar Mehmood  (TA)" styleClass="stream-author" />
+                                    <Label text="Posted an announcement  ·  2 days ago"
+                                           styleClass="stream-timestamp" />
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label text="📢 Announcement" styleClass="stream-type-badge badge-announce" />
+                            </HBox>
+                            <Pane styleClass="stream-card-divider" prefHeight="1" minHeight="1" maxHeight="1" />
+                            <VBox styleClass="stream-card-body" spacing="10">
+                                <Label text="Lab Session Reschedule: Week 8"
+                                       styleClass="stream-card-title" />
+                                <Label text="The Week 8 lab session originally scheduled for Monday March 10 has been moved to Wednesday March 12, same time (2–4 PM), Room B204. Attendance is mandatory. Please bring your laptop with Python 3.10+ installed."
+                                       styleClass="stream-card-body-text" wrapText="true" />
+                            </VBox>
+                            <HBox styleClass="stream-card-footer" alignment="CENTER_LEFT" spacing="16">
+                                <Label text="💬  2 comments" styleClass="stream-footer-action" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- ───── Assignment card 2 ───── -->
+                        <VBox styleClass="stream-card" spacing="0">
+                            <HBox styleClass="stream-card-header" alignment="CENTER_LEFT" spacing="12">
+                                <Label text="AS" styleClass="avatar avatar-primary" />
+                                <VBox spacing="1">
+                                    <Label text="Dr. Aisha Salim" styleClass="stream-author" />
+                                    <Label text="Posted a quiz  ·  3 days ago"
+                                           styleClass="stream-timestamp" />
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label text="❓ Quiz" styleClass="stream-type-badge badge-quiz" />
+                            </HBox>
+                            <Pane styleClass="stream-card-divider" prefHeight="1" minHeight="1" maxHeight="1" />
+                            <VBox styleClass="stream-card-body" spacing="10">
+                                <Label text="Quiz 2: Neural Networks Fundamentals"
+                                       styleClass="stream-card-title" />
+                                <Label text="Online quiz covering perceptrons, activation functions, backpropagation, and gradient descent. 20 MCQs, 30-minute time limit."
+                                       styleClass="stream-card-body-text" wrapText="true" />
+                                <HBox styleClass="due-banner due-banner-soon" alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="⚠️" styleClass="due-icon" />
+                                    <Label text="Due  Mar 12, 2025  ·  11:59 PM: closes soon!" styleClass="due-text-urgent" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label text="25 pts" styleClass="due-pts" />
+                                </HBox>
+                            </VBox>
+                            <HBox styleClass="stream-card-footer" alignment="CENTER_LEFT" spacing="16">
+                                <Label text="💬  0 comments" styleClass="stream-footer-action" />
+                                <Label text="Attempted: 28 / 34" styleClass="stream-footer-stat" />
+                            </HBox>
+                        </VBox>
+
+                    </VBox>
+                </ScrollPane>
+
+                <!-- thin vertical divider -->
+                <Pane styleClass="panel-divider-v" prefWidth="1" minWidth="1" maxWidth="1" />
+
+                <!-- ── Right sidebar: Upcoming ── -->
+                <VBox styleClass="upcoming-panel" spacing="0" minWidth="280" prefWidth="300" maxWidth="320">
+
+                    <Label text="Upcoming" styleClass="upcoming-title" />
+
+
+                    <Pane styleClass="upcoming-divider" prefHeight="1" minHeight="1" maxHeight="1" />
+
+                    <VBox styleClass="upcoming-item" spacing="4">
+                        <HBox alignment="CENTER_LEFT" spacing="6">
+                            <Label text="Due in 6 days" styleClass="upcoming-due-tag" />
+                        </HBox>
+                        <Label text="Assignment 3: Decision Trees" styleClass="upcoming-item-name" wrapText="true" />
+                        <Label text="Mar 18  ·  11:59 PM  ·  100 pts" styleClass="upcoming-item-meta" />
+                    </VBox>
+
+                    <Pane styleClass="upcoming-divider" prefHeight="1" minHeight="1" maxHeight="1" />
+
+                    <VBox styleClass="upcoming-item" spacing="4">
+                        <HBox alignment="CENTER_LEFT" spacing="6">
+                            <Label text="Mar 14" styleClass="upcoming-due-tag" />
+                        </HBox>
+                        <Label text="Midterm Exam" styleClass="upcoming-item-name" wrapText="true" />
+                        <Label text="Room A101  ·  Chapters 1–7" styleClass="upcoming-item-meta" />
+                    </VBox>
+
+                    <Pane styleClass="upcoming-divider" prefHeight="1" minHeight="1" maxHeight="1" />
+
+                    <VBox styleClass="upcoming-item" spacing="4">
+                        <HBox alignment="CENTER_LEFT" spacing="6">
+                            <Label text="Mar 25" styleClass="upcoming-due-tag" />
+                        </HBox>
+                        <Label text="Project Proposal Submission" styleClass="upcoming-item-name" wrapText="true" />
+                        <Label text="Mar 25  ·  150 pts" styleClass="upcoming-item-meta" />
+                    </VBox>
+
+                    <Pane styleClass="upcoming-divider" prefHeight="1" minHeight="1" maxHeight="1" />
+
+
+                </VBox>
+
+            </HBox>
+
+            <!-- To-Do content (programmatically loaded) -->
+            <VBox fx:id="todoContainer" spacing="0" VBox.vgrow="ALWAYS" 
+                  visible="false" managed="false" />
+
+        </VBox>
+
+    </HBox>
+
+</StackPane>

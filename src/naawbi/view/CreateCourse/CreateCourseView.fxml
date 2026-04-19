@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:id="rootPane"
+           fx:controller="naawbi.controller.CreateCourseController"
+           prefWidth="1920" prefHeight="1080"
+           styleClass="root-pane"
+           stylesheets="@./CreateCourseView.css">
+    <HBox alignment="CENTER" spacing="0" prefWidth="1920" prefHeight="1080">
+        <VBox alignment="CENTER" spacing="0" prefWidth="860" HBox.hgrow="ALWAYS">
+            <VBox styleClass="form-container" spacing="0">
+                <!-- Form header -->
+                <VBox spacing="8" styleClass="form-header">
+                    <Label text="Create New Course" styleClass="form-title" />
+                    <Label text="Fill in the details below: description is optional but recommended."
+                           styleClass="form-subtitle" wrapText="true" />
+                </VBox>
+                <!-- Divider: use Pane instead of Rectangle to support maxWidth -->
+                <Pane styleClass="form-divider" prefHeight="1" maxHeight="1" minHeight="1" />
+                <!-- Form body -->
+                <VBox spacing="32" styleClass="form-body">
+                    <!-- Course Name field -->
+                    <VBox spacing="8">
+                        <HBox spacing="4" alignment="CENTER_LEFT">
+                            <Label text="Course Name" styleClass="field-label" />
+                            <Label text="*" styleClass="required-mark" />
+                        </HBox>
+                        <TextField fx:id="courseNameField"
+                                   promptText="e.g. Introduction to Machine Learning"
+                                   styleClass="text-field-modern" />
+                        <Label fx:id="courseNameError" text="" styleClass="field-error" managed="false" visible="false" />
+                    </VBox>
+                    <!-- Course Code field -->
+                    <VBox spacing="8">
+                        <Label text="Course Code" styleClass="field-label" />
+                        <TextField fx:id="courseCodeField"
+                                   promptText="e.g. CS-401 (optional)"
+                                   styleClass="text-field-modern" />
+                    </VBox>
+                    <!-- Description field -->
+                    <VBox spacing="8">
+                        <HBox spacing="6" alignment="CENTER_LEFT">
+                            <Label text="Description" styleClass="field-label" />
+                            <Label text="Optional" styleClass="optional-badge" />
+                        </HBox>
+                        <TextArea fx:id="descriptionField"
+                                  promptText="Briefly describe what students will learn in this course..."
+                                  styleClass="text-area-modern"
+                                  prefRowCount="3"
+                                  wrapText="true" />
+                    </VBox>
+                    <!-- Visibility toggle row -->
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="toggle-row">
+                        <CheckBox fx:id="visibilityToggle" styleClass="modern-checkbox" />
+                        <VBox spacing="2">
+                            <Label text="Publish immediately" styleClass="toggle-label" />
+                            <Label text="Students can enroll as soon as the course is created"
+                                   styleClass="toggle-sublabel" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <!-- Divider: use Pane instead of Rectangle -->
+                <Pane styleClass="form-divider" prefHeight="1" maxHeight="1" minHeight="1" />
+                <!-- Action row -->
+                <HBox styleClass="form-actions" alignment="CENTER_RIGHT" spacing="16">
+                    <Label fx:id="globalError" text="" styleClass="global-error" managed="false" visible="false" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="cancelBtn" text="Cancel" styleClass="btn-secondary"
+                            onAction="#handleCancel" />
+                    <Button fx:id="createBtn" text="Create Course →" styleClass="btn-primary"
+                            defaultButton="true" onAction="#handleCreate" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </HBox>
+</StackPane>

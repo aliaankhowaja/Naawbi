@@ -8,7 +8,7 @@
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "mainClass": "com.ibwaan.naawbi.Main",
+            "mainClass": "naawbi.Main",
             "vmArgs": "--module-path ./lib --add-modules javafx.controls,javafx.fxml -Dprism.order=sw -Dprism.verbose=true",
         }
     ]
