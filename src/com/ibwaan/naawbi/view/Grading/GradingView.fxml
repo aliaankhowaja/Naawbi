@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<!--
+  GradingView.fxml — US 19 & 20: Instructor Grading Interface
+  Two-panel layout:
+    LEFT : scrollable list of student submission rows
+    RIGHT: detail panel — file path, status, grade input, feedback textarea, Save button
+-->
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:id="rootPane"
+           fx:controller="com.ibwaan.naawbi.controller.GradingController"
+           prefWidth="900" prefHeight="640"
+           style="-fx-background-color: #f5f6fa;">
+
+    <VBox spacing="0">
+
+        <!-- Header bar -->
+        <HBox style="-fx-background-color:#5c6bc0;-fx-padding:16 24;"
+              alignment="CENTER_LEFT" spacing="16">
+            <Label fx:id="assignmentTitleLabel" text="Grade Submissions"
+                   style="-fx-font-size:20px;-fx-font-weight:bold;-fx-text-fill:white;" />
+            <javafx.scene.layout.Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="submissionCountLabel" text="0 submissions"
+                   style="-fx-font-size:13px;-fx-text-fill:#c5cae9;" />
+            <Button text="✕ Close" onAction="#handleClose"
+                    style="-fx-background-color:transparent;-fx-text-fill:white;
+                           -fx-font-size:14px;-fx-cursor:hand;" />
+        </HBox>
+
+        <!-- Two-panel body -->
+        <HBox VBox.vgrow="ALWAYS" spacing="0">
+
+            <!-- LEFT: student submission list -->
+            <VBox prefWidth="300" minWidth="260"
+                  style="-fx-background-color:white;-fx-border-color:#e0e0e0;
+                         -fx-border-width:0 1 0 0;">
+                <Label text="Students" style="-fx-font-size:13px;-fx-font-weight:bold;
+                       -fx-text-fill:#666;-fx-padding:12 16 8 16;" />
+                <Separator />
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                            hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                            style="-fx-background-color:transparent;">
+                    <VBox fx:id="studentListContainer" spacing="0" />
+                </ScrollPane>
+            </VBox>
+
+            <!-- RIGHT: grading detail panel -->
+            <VBox HBox.hgrow="ALWAYS" spacing="16"
+                  style="-fx-padding:24;-fx-background-color:#f5f6fa;">
+
+                <!-- Placeholder shown when no student is selected -->
+                <VBox fx:id="placeholderPane" spacing="8" alignment="CENTER"
+                      VBox.vgrow="ALWAYS">
+                    <Label text="← Select a student to grade"
+                           style="-fx-font-size:16px;-fx-text-fill:#aaa;" />
+                </VBox>
+
+                <!-- Detail content (hidden until student selected) -->
+                <VBox fx:id="detailPane" spacing="16" visible="false" managed="false">
+
+                    <!-- Student info row -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label fx:id="studentNameLabel" text="Student Name"
+                               style="-fx-font-size:18px;-fx-font-weight:bold;-fx-text-fill:#202124;" />
+                        <Label fx:id="submissionStatusLabel" text="Not Submitted"
+                               style="-fx-font-size:12px;-fx-padding:3 10;
+                                      -fx-background-color:#9e9e9e;-fx-text-fill:white;
+                                      -fx-background-radius:12;-fx-font-weight:bold;" />
+                    </HBox>
+
+                    <!-- Submitted file -->
+                    <VBox spacing="4"
+                          style="-fx-background-color:white;-fx-border-color:#e0e0e0;
+                                 -fx-border-radius:8;-fx-padding:12;-fx-background-radius:8;">
+                        <Label text="Submitted File"
+                               style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:#555;" />
+                        <Label fx:id="filePathLabel" text="—"
+                               style="-fx-font-size:13px;-fx-text-fill:#333;" wrapText="true"/>
+                        <Label fx:id="submittedAtLabel" text=""
+                               style="-fx-font-size:11px;-fx-text-fill:#888;" />
+                    </VBox>
+
+                    <!-- Grade input -->
+                    <VBox spacing="6"
+                          style="-fx-background-color:white;-fx-border-color:#e0e0e0;
+                                 -fx-border-radius:8;-fx-padding:12;-fx-background-radius:8;">
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Grade"
+                                   style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:#555;" />
+                            <Label fx:id="totalPointsLabel" text="/ 100"
+                                   style="-fx-font-size:12px;-fx-text-fill:#888;" />
+                        </HBox>
+                        <TextField fx:id="gradeField" promptText="Enter score (e.g. 85)"
+                                   maxWidth="160"
+                                   style="-fx-font-size:14px;-fx-padding:6 10;
+                                          -fx-border-color:#ddd;-fx-border-radius:6;" />
+                        <Label fx:id="gradeErrorLabel" text="" visible="false" managed="false"
+                               style="-fx-text-fill:#d32f2f;-fx-font-size:12px;" />
+                    </VBox>
+
+                    <!-- Feedback textarea -->
+                    <VBox spacing="6"
+                          style="-fx-background-color:white;-fx-border-color:#e0e0e0;
+                                 -fx-border-radius:8;-fx-padding:12;-fx-background-radius:8;">
+                        <Label text="Feedback (optional)"
+                               style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:#555;" />
+                        <TextArea fx:id="feedbackArea" promptText="Add written feedback for the student..."
+                                  prefRowCount="4" wrapText="true"
+                                  style="-fx-font-size:13px;-fx-border-color:#ddd;-fx-border-radius:6;" />
+                    </VBox>
+
+                    <!-- Save button + success message -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Button fx:id="saveGradeBtn" text="Save Grade"
+                                onAction="#handleSaveGrade"
+                                style="-fx-background-color:#5c6bc0;-fx-text-fill:white;
+                                       -fx-font-weight:bold;-fx-padding:8 20;
+                                       -fx-background-radius:6;-fx-cursor:hand;" />
+                        <Label fx:id="saveSuccessLabel" text="✓ Grade saved"
+                               visible="false" managed="false"
+                               style="-fx-text-fill:#388e3c;-fx-font-size:13px;-fx-font-weight:bold;" />
+                    </HBox>
+
+                </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</StackPane>

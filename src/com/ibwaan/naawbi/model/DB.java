@@ -175,6 +175,10 @@ public class DB {
             try { statement.execute("ALTER TABLE assignments ADD COLUMN IF NOT EXISTS late_submissions_allowed BOOLEAN DEFAULT FALSE;"); } catch (SQLException e) {}
             try { statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS file_path VARCHAR(500);"); } catch (SQLException e) {}
             try { statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS status VARCHAR(50);"); } catch (SQLException e) {}
+            // Sprint 3 — Grading columns
+            try { statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS grade INTEGER;"); } catch (SQLException e) {}
+            try { statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS feedback TEXT;"); } catch (SQLException e) {}
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
