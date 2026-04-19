@@ -102,6 +102,7 @@
                     <Label fx:id="assignmentsTab" text="Assignments" styleClass="tab-item" />
                     <Label fx:id="peopleTab" text="People" styleClass="tab-item" />
                     <Label fx:id="todoTab" text="To-Do" styleClass="tab-item" />
+                    <Label fx:id="gradesTab" text="Grades" styleClass="tab-item" />
                 </HBox>
             </VBox>
 
