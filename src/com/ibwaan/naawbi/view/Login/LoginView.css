@@ -1,0 +1,147 @@
+/* =============================================
+   LoginView.css
+   Colors via ViewConstants looked-up variables injected by LoginController:
+     -vc-primary    #4b5d4f  forest green
+     -vc-secondary  #e7e1d5  warm linen
+     -vc-accent     #db7706  amber
+     -vc-background #f9f7f1  cream
+     -vc-text       #1f1f1e  near-black
+   ============================================= */
+
+.login-left-panel {
+    -fx-background-color: -vc-primary;
+    -fx-padding: 72;
+    -fx-min-width: 806;
+    -fx-pref-width: 806;
+    -fx-max-width: 806;
+}
+
+.login-brand {
+    -fx-font-family: "Georgia";
+    -fx-font-style: italic;
+    -fx-font-size: 52px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-background;
+}
+
+.login-tagline {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 18px;
+    -fx-text-fill: -vc-secondary;
+    -fx-opacity: 0.85;
+    -fx-text-alignment: center;
+    -fx-line-spacing: 4;
+}
+
+.login-right-panel {
+    -fx-background-color: -vc-background;
+}
+
+.login-form-container {
+    -fx-max-width: 400;
+}
+
+.login-tab-strip {
+}
+
+.login-tab {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: derive(-vc-text, 50%);
+    -fx-padding: 10 28 10 0;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 3 0;
+}
+
+.login-tab-active {
+    -fx-text-fill: -vc-text;
+    -fx-border-color: transparent transparent -vc-accent transparent;
+}
+
+.tab-strip-divider {
+    -fx-background-color: -vc-secondary;
+}
+
+.login-form-body {
+    -fx-padding: 32 0 0 0;
+}
+
+.field-label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.text-field-modern {
+    -fx-background-color: -vc-secondary;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: -vc-text;
+    -fx-prompt-text-fill: derive(-vc-text, 60%);
+    -fx-padding: 10 14;
+}
+
+.text-field-modern:focused {
+    -fx-border-color: -vc-accent;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, derive(-vc-accent, 60%), 8, 0, 0, 0);
+}
+
+.btn-primary {
+    -fx-background-color: -vc-accent;
+    -fx-text-fill: -vc-background;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 11 20;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: derive(-vc-accent, -12%);
+}
+
+.btn-primary:pressed {
+    -fx-background-color: derive(-vc-accent, -22%);
+}
+
+.login-error {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-vc-accent, -25%);
+}
+
+.role-chip {
+    -fx-background-color: -vc-secondary;
+    -fx-background-radius: 8;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: derive(-vc-text, 35%);
+    -fx-padding: 9 16;
+    -fx-cursor: hand;
+    -fx-pref-height: 38;
+    -fx-min-height: 38;
+}
+
+.role-chip:hover {
+    -fx-background-color: derive(-vc-secondary, -10%);
+    -fx-text-fill: -vc-text;
+}
+
+.role-chip-active {
+    -fx-background-color: -vc-primary;
+    -fx-background-radius: 8;
+    -fx-text-fill: -vc-background;
+}
+
+.role-chip-active:hover {
+    -fx-background-color: derive(-vc-primary, -10%);
+}

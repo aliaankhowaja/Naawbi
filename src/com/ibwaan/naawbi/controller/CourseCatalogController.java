@@ -2,6 +2,7 @@ package com.ibwaan.naawbi.controller;
 
 import com.ibwaan.naawbi.model.Announcement;
 import com.ibwaan.naawbi.model.Course;
+import com.ibwaan.naawbi.model.Session;
 import com.ibwaan.naawbi.view.ViewConstants;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -83,11 +84,13 @@ public class CourseCatalogController implements Initializable {
     /* ── Buttons ─────────────────────────────────────── */
     @FXML
     private Button createAssignmentBtn;
+    @FXML
+    private Button postAnnouncementBtn;
 
     /* ── State ───────────────────────────────────────── */
     private Course currentSelectedCourse;
     private int currentCourseId = -1;
-    private int currentUserId = 1; // TODO: Replace with actual logged-in user ID from session
+    private int currentUserId;
     private ToDoController toDoController;
 
     /* ── Lifecycle ───────────────────────────────────── */
@@ -95,6 +98,8 @@ public class CourseCatalogController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         injectColorConstants();
+        currentUserId = Session.getInstance().getUserId();
+        applyRoleGating();
         wireSearch();
         setupTabSwitching();
         loadCoursesFromDB();
@@ -207,6 +212,16 @@ public class CourseCatalogController implements Initializable {
         card.getChildren().addAll(accent, body);
 
         return card;
+    }
+
+    private void applyRoleGating() {
+        boolean isInstructor = Session.getInstance().isInstructor();
+        createCourseBtn.setVisible(isInstructor);
+        createCourseBtn.setManaged(isInstructor);
+        postAnnouncementBtn.setVisible(isInstructor);
+        postAnnouncementBtn.setManaged(isInstructor);
+        todoTab.setVisible(!isInstructor);
+        todoTab.setManaged(!isInstructor);
     }
 
     /**

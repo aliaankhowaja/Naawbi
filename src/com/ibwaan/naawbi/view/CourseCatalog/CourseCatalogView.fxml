@@ -67,45 +67,6 @@
                 <VBox fx:id="courseListContainer" styleClass="course-list" spacing="0">
                 </VBox>
             </ScrollPane>
-                        <VBox styleClass="course-card-body" spacing="6">
-                            <HBox alignment="CENTER_LEFT" spacing="8">
-                                <Label text="DB-330" styleClass="course-code-tag" />
-                                <Region HBox.hgrow="ALWAYS" />
-                                <Label text="Enrolled" styleClass="role-badge " />
-                            </HBox>
-                            <Label text="Database Systems &amp; Design"
-                                   styleClass="course-card-name" wrapText="true" />
-                            <Label text="Dr. Akhtar Jamil · 45 students"
-                                   styleClass="course-card-meta" />
-                            <HBox spacing="12" alignment="CENTER_LEFT">
-                                <Label text="📋  2 pending" styleClass="course-stat" />
-                                <Label text="🔔  0 new" styleClass="course-stat" />
-                            </HBox>
-                        </VBox>
-                    </VBox>
-
-                    <!-- ── Course Card 6 ── -->
-                    <VBox styleClass="course-card" spacing="0" onMouseClicked="#handleCourseSelect">
-                        <HBox styleClass="course-card-accent course-accent-purple" />
-                        <VBox styleClass="course-card-body" spacing="6">
-                            <HBox alignment="CENTER_LEFT" spacing="8">
-                                <Label text="NLP-490" styleClass="course-code-tag" />
-                                <Region HBox.hgrow="ALWAYS" />
-                                <Label text="Enrolled" styleClass="role-badge " />
-                            </HBox>
-                            <Label text="Natural Language Processing"
-                                   styleClass="course-card-name" wrapText="true" />
-                            <Label text="Dr. Mansah Moosah · 19 students"
-                                   styleClass="course-card-meta" />
-                            <HBox spacing="12" alignment="CENTER_LEFT">
-                                <Label text="📋  1 pending" styleClass="course-stat" />
-                                <Label text="🔔  3 new" styleClass="course-stat" />
-                            </HBox>
-                        </VBox>
-                    </VBox>
-
-                </VBox>
-            </ScrollPane>
 
         </VBox>
 
@@ -129,7 +90,7 @@
                         <Label text="Dr. Aisha Salim  ·  34 students  ·  Spring 2025"
                                styleClass="home-course-meta" />
                     </VBox>
-                    <Button text="+ Post Announcement" styleClass="btn-primary"
+                    <Button fx:id="postAnnouncementBtn" text="+ Post Announcement" styleClass="btn-primary"
                             onAction="#handlePostAnnouncement" />
                     <Button fx:id="createAssignmentBtn" text="+ Create Assignment" styleClass="btn-primary"
                             onAction="#handleCreateAssignment" visible="false" managed="false" />
