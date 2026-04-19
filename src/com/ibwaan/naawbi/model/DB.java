@@ -159,6 +159,17 @@ public class DB {
             statement.execute(submissionsTable);
             statement.execute(submissionCommentsTable);
 
+            String announcementAttachmentsTable = "CREATE TABLE IF NOT EXISTS announcement_attachments ("
+                    + "id SERIAL PRIMARY KEY,"
+                    + "announcement_id INTEGER NOT NULL REFERENCES announcements(id) ON DELETE CASCADE,"
+                    + "file_name VARCHAR(255) NOT NULL,"
+                    + "file_path VARCHAR(1000),"
+                    + "link_url VARCHAR(2000),"
+                    + "file_size BIGINT DEFAULT 0,"
+                    + "is_link BOOLEAN DEFAULT FALSE"
+                    + ");";
+            statement.execute(announcementAttachmentsTable);
+
             // Add columns if tables already exist
             try { statement.execute("ALTER TABLE assignments ADD COLUMN IF NOT EXISTS total_points INTEGER DEFAULT 100;"); } catch (SQLException e) {}
             try { statement.execute("ALTER TABLE assignments ADD COLUMN IF NOT EXISTS late_submissions_allowed BOOLEAN DEFAULT FALSE;"); } catch (SQLException e) {}

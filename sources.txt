@@ -7,6 +7,7 @@ src/com/ibwaan/naawbi/model/Announcement.java
 src/com/ibwaan/naawbi/model/Course.java
 src/com/ibwaan/naawbi/model/User.java
 src/com/ibwaan/naawbi/model/Session.java
+src/com/ibwaan/naawbi/model/AnnouncementAttachment.java
 src/com/ibwaan/naawbi/model/Submission.java
 src/com/ibwaan/naawbi/model/Assignment.java
 src/com/ibwaan/naawbi/controller/ToDoController.java

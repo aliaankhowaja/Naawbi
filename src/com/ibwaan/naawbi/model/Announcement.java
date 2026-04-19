@@ -33,15 +33,17 @@ public class Announcement {
         this.updatedAt = updatedAt;
     }
 
-    public boolean save() throws SQLException {
-        String insertSQL = "INSERT INTO announcements (course_id,created_by,title,content,content_type,created_at) VALUES(?,?,?,?,?,CURRENT_TIMESTAMP)";
+    public int save() throws SQLException {
+        String insertSQL = "INSERT INTO announcements (course_id,created_by,title,content,content_type,created_at) VALUES(?,?,?,?,?,CURRENT_TIMESTAMP) RETURNING id";
         try (PreparedStatement pstmt = DB.getInstance().prepareStatement(insertSQL)) {
             pstmt.setInt(1, courseId);
             pstmt.setInt(2, createdBy);
             pstmt.setString(3, title);
             pstmt.setString(4, content);
             pstmt.setString(5, contentType);
-            return pstmt.executeUpdate() > 0;
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : -1;
+            }
         }
     }
 
