@@ -1,7 +1,17 @@
-lib/
-bin/*
+# ── Build output ──────────────────────────────────────────────
+bin/
+sources.txt
 
-# LaTeX build artifacts
+# ── Runtime libraries (extracted JavaFX SDK) ─────────────────
+lib/
+
+# ── Downloaded SDK archives ───────────────────────────────────
+openjfx-*.zip
+
+# ── Tool / IDE internals ─────────────────────────────────────
+.superpowers/
+
+# ── LaTeX build artifacts ─────────────────────────────────────
 *.aux
 *.bbl
 *.bcf
@@ -25,6 +35,11 @@ bin/*
 *.snm
 *.synctex.gz
 *.toc
+docs/D1/out/
+
+# ── Draft documents ───────────────────────────────────────────
+*_draft.md
+
+# ── Images (local assets not part of the repo) ───────────────
 *.png
 *.jpeg
-D1.md
