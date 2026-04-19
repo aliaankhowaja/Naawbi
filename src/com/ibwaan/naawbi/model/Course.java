@@ -70,19 +70,26 @@ public class Course {
         return courses;
     }
 
-    /** Returns all enrolled users for a course: [username, email, role] */
-    public static java.util.List<Object[]> fetchEnrolledUsers(int courseId) throws SQLException {
-        java.util.List<Object[]> users = new java.util.ArrayList<>();
+    /**
+     * Fetches all users enrolled in (or teaching) this course.
+     * Returns Object[] per row: [username, email, role]
+     */
+    public static List<Object[]> fetchEnrolledUsers(int courseId) throws SQLException {
+        List<Object[]> users = new ArrayList<>();
         String sql =
             "SELECT u.username, u.email, ce.role " +
-            "FROM course_enrollments ce JOIN users u ON ce.user_id = u.id " +
-            "WHERE ce.course_id = ? ORDER BY ce.role DESC, u.username ASC";
+            "FROM course_enrollments ce " +
+            "JOIN users u ON ce.user_id = u.id " +
+            "WHERE ce.course_id = ? " +
+            "ORDER BY ce.role DESC, u.username ASC";
         try (PreparedStatement ps = DB.getInstance().prepareStatement(sql)) {
             ps.setInt(1, courseId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     users.add(new Object[]{
-                        rs.getString("username"), rs.getString("email"), rs.getString("role")
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("role")
                     });
                 }
             }
