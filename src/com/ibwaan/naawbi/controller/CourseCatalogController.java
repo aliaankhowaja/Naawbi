@@ -140,7 +140,7 @@ public class CourseCatalogController implements Initializable {
     private void loadCoursesFromDB() {
         courseListContainer.getChildren().clear();
         try {
-            List<Course> courses = Course.fetchAll();
+            List<Course> courses = Course.fetchByUserId(currentUserId);
             for (Course course : courses) {
                 VBox card = createCourseCard(course);
                 courseListContainer.getChildren().add(card);
