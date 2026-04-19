@@ -10,6 +10,8 @@ import java.util.List;
 public class Assignment {
 private int id, courseId, createdBy, totalPoints;
     private String authorName, title, description;
+    /** Populated only when fetched via fetchWithStatusForUser() */
+    private String userStatus;
     private boolean lateSubmissionsAllowed;
     private LocalDateTime deadline, createdAt, updatedAt;
 
@@ -158,4 +160,58 @@ private int id, courseId, createdBy, totalPoints;
     public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
+
+    public String getUserStatus() { return userStatus; }
+    public void setUserStatus(String s) { this.userStatus = s; }
+
+    /**
+     * Fetches all assignments for a course with the given user's submission status
+     * joined inline. Status will be "Submitted", "Late", "Missing", or null (not yet
+     * initialised = no submission row exists).
+     */
+    public static List<Assignment> fetchWithStatusForUser(int courseId, int userId) throws SQLException {
+        List<Assignment> list = new ArrayList<>();
+        String sql =
+            "SELECT a.id, a.course_id, a.created_by, u.username, a.title, a.description, " +
+            "       a.deadline, a.created_at, a.updated_at, a.total_points, a.late_submissions_allowed, " +
+            "       s.submitted, s.status " +
+            "FROM assignments a " +
+            "JOIN users u ON a.created_by = u.id " +
+            "LEFT JOIN submissions s ON s.assignment_id = a.id AND s.user_id = ? " +
+            "WHERE a.course_id = ? " +
+            "ORDER BY a.deadline ASC";
+        try (PreparedStatement ps = DB.getInstance().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, courseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Assignment a = new Assignment(
+                        rs.getInt("id"),
+                        rs.getInt("course_id"),
+                        rs.getInt("created_by"),
+                        rs.getString("username"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getTimestamp("deadline").toLocalDateTime(),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("updated_at").toLocalDateTime(),
+                        rs.getInt("total_points"),
+                        rs.getBoolean("late_submissions_allowed"));
+                    // Determine display status
+                    boolean submitted = rs.getBoolean("submitted");
+                    String dbStatus   = rs.getString("status");
+                    if (submitted) {
+                        a.setUserStatus(dbStatus != null ? dbStatus : "Submitted");
+                    } else {
+                        LocalDateTime now = LocalDateTime.now();
+                        a.setUserStatus(rs.getTimestamp("deadline") != null
+                            && a.getDeadline().isBefore(now) ? "Missing" : "Not Submitted");
+                    }
+                    list.add(a);
+                }
+            }
+        }
+        return list;
+    }
 }
+
