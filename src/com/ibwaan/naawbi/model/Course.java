@@ -70,7 +70,28 @@ public class Course {
         return courses;
     }
 
+    /** Returns all enrolled users for a course: [username, email, role] */
+    public static java.util.List<Object[]> fetchEnrolledUsers(int courseId) throws SQLException {
+        java.util.List<Object[]> users = new java.util.ArrayList<>();
+        String sql =
+            "SELECT u.username, u.email, ce.role " +
+            "FROM course_enrollments ce JOIN users u ON ce.user_id = u.id " +
+            "WHERE ce.course_id = ? ORDER BY ce.role DESC, u.username ASC";
+        try (PreparedStatement ps = DB.getInstance().prepareStatement(sql)) {
+            ps.setInt(1, courseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    users.add(new Object[]{
+                        rs.getString("username"), rs.getString("email"), rs.getString("role")
+                    });
+                }
+            }
+        }
+        return users;
+    }
+
     public boolean save() throws SQLException {
+
         int createdBy = Session.getInstance().getUserId();
         String insertSQL = "INSERT INTO courses (course_name, course_code, description, is_active, created_by) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = DB.getInstance().prepareStatement(insertSQL)) {
