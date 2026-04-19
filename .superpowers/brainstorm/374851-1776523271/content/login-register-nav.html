@@ -1,0 +1,74 @@
+<h2>Login ↔ Register Navigation</h2>
+<p class="subtitle">How do users switch between signing in and creating an account?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;height:220px;border-radius:8px;overflow:hidden;font-family:'Segoe UI',sans-serif">
+        <div style="width:42%;background:#4b5d4f;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px">
+          <div style="font-family:Georgia,serif;font-style:italic;color:#f9f7f1;font-size:20px;font-weight:bold">Naawbi</div>
+        </div>
+        <div style="flex:1;background:#f9f7f1;display:flex;flex-direction:column;padding:16px">
+          <!-- Tabs -->
+          <div style="display:flex;margin-bottom:14px;border-bottom:2px solid #e7e1d5">
+            <div style="font-size:9px;font-weight:600;color:#1f1f1e;padding-bottom:6px;border-bottom:2px solid #db7706;margin-bottom:-2px;margin-right:14px">Sign In</div>
+            <div style="font-size:9px;color:#999;padding-bottom:6px;margin-right:14px">Register</div>
+          </div>
+          <div style="background:#e7e1d5;border-radius:5px;height:20px;margin-bottom:6px"></div>
+          <div style="background:#e7e1d5;border-radius:5px;height:20px;margin-bottom:10px"></div>
+          <div style="background:#db7706;border-radius:5px;height:20px;display:flex;align-items:center;justify-content:center"><span style="font-size:8px;color:white;font-weight:600">Sign In</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Tabs on Same Screen</h3>
+      <p>One FXML, two tab states. User clicks "Register" tab to reveal the registration form. Left panel stays constant.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;gap:8px;height:220px;font-family:'Segoe UI',sans-serif;padding:4px">
+        <!-- Login screen -->
+        <div style="flex:1;display:flex;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+          <div style="width:38%;background:#4b5d4f;display:flex;align-items:center;justify-content:center">
+            <div style="font-family:Georgia,serif;font-style:italic;color:#f9f7f1;font-size:13px;font-weight:bold">Naawbi</div>
+          </div>
+          <div style="flex:1;background:#f9f7f1;padding:12px;display:flex;flex-direction:column;justify-content:center">
+            <div style="font-size:9px;font-weight:600;color:#1f1f1e;margin-bottom:10px">Sign In</div>
+            <div style="background:#e7e1d5;border-radius:4px;height:16px;margin-bottom:5px"></div>
+            <div style="background:#e7e1d5;border-radius:4px;height:16px;margin-bottom:8px"></div>
+            <div style="background:#db7706;border-radius:4px;height:16px;display:flex;align-items:center;justify-content:center"><span style="font-size:7px;color:white">Sign In</span></div>
+            <div style="margin-top:6px;text-align:center;font-size:7px;color:#db7706">Create account →</div>
+          </div>
+        </div>
+        <!-- Arrow -->
+        <div style="display:flex;align-items:center;color:#999;font-size:16px">→</div>
+        <!-- Register screen -->
+        <div style="flex:1;display:flex;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+          <div style="width:38%;background:#4b5d4f;display:flex;align-items:center;justify-content:center">
+            <div style="font-family:Georgia,serif;font-style:italic;color:#f9f7f1;font-size:13px;font-weight:bold">Naawbi</div>
+          </div>
+          <div style="flex:1;background:#f9f7f1;padding:12px;display:flex;flex-direction:column;justify-content:center">
+            <div style="font-size:9px;font-weight:600;color:#1f1f1e;margin-bottom:8px">Create Account</div>
+            <div style="background:#e7e1d5;border-radius:4px;height:14px;margin-bottom:4px"></div>
+            <div style="background:#e7e1d5;border-radius:4px;height:14px;margin-bottom:4px"></div>
+            <div style="background:#e7e1d5;border-radius:4px;height:14px;margin-bottom:6px"></div>
+            <!-- Role toggle -->
+            <div style="display:flex;gap:4px;margin-bottom:6px">
+              <div style="flex:1;background:#4b5d4f;border-radius:4px;height:14px;display:flex;align-items:center;justify-content:center"><span style="font-size:6px;color:white">Student</span></div>
+              <div style="flex:1;border:1px solid #e7e1d5;border-radius:4px;height:14px;display:flex;align-items:center;justify-content:center"><span style="font-size:6px;color:#888">Instructor</span></div>
+            </div>
+            <div style="background:#db7706;border-radius:4px;height:14px;display:flex;align-items:center;justify-content:center"><span style="font-size:6px;color:white">Register</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Separate Scenes (same Stage)</h3>
+      <p>Login scene → click "Create account" → scene swaps to Registration. Back button returns to login. Left panel animates or stays.</p>
+    </div>
+  </div>
+
+</div>
