@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -140,7 +141,7 @@ public class CourseCatalogController implements Initializable {
     private void loadCoursesFromDB() {
         courseListContainer.getChildren().clear();
         try {
-            List<Course> courses = Course.fetchAll();
+            List<Course> courses = Course.fetchByUserId(currentUserId);
             for (Course course : courses) {
                 VBox card = createCourseCard(course);
                 courseListContainer.getChildren().add(card);
@@ -381,11 +382,23 @@ public class CourseCatalogController implements Initializable {
 
     /* ── Handlers ────────────────────────────────────── */
 
+    private void denyAccess() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Access Denied");
+        alert.setHeaderText("Access Denied");
+        alert.setContentText("You do not have permission to perform this action.");
+        alert.showAndWait();
+    }
+
     /**
      * Navigates to the Create Course view.
      */
     @FXML
     private void handleNavigateToCreate(ActionEvent event) {
+        if (!Session.getInstance().isInstructor()) {
+            denyAccess();
+            return;
+        }
         try {
             Parent createRoot = FXMLLoader
                     .load(getClass().getResource("/com/ibwaan/naawbi/view/CreateCourse/CreateCourseView.fxml"));
@@ -533,6 +546,10 @@ public class CourseCatalogController implements Initializable {
      */
     @FXML
     private void handlePostAnnouncement(ActionEvent event) {
+        if (!Session.getInstance().isInstructor()) {
+            denyAccess();
+            return;
+        }
         if (currentCourseId <= 0) {
             System.out.println("No course selected");
             return;
@@ -546,6 +563,10 @@ public class CourseCatalogController implements Initializable {
      */
     @FXML
     private void handleCreateAssignment(ActionEvent event) {
+        if (!Session.getInstance().isInstructor()) {
+            denyAccess();
+            return;
+        }
         if (currentCourseId <= 0) {
             System.out.println("No course selected");
             return;

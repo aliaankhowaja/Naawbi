@@ -45,13 +45,40 @@ public class Course {
         return courses;
     }
 
+    public static List<Course> fetchByUserId(int userId) throws SQLException {
+        List<Course> courses = new ArrayList<>();
+        String query =
+            "SELECT DISTINCT c.id, c.course_name, c.course_code, c.description, c.is_active " +
+            "FROM courses c " +
+            "WHERE c.id IN (SELECT course_id FROM course_enrollments WHERE user_id = ?) " +
+            "   OR c.created_by = ? " +
+            "ORDER BY c.id DESC";
+        try (PreparedStatement pstmt = DB.getInstance().prepareStatement(query)) {
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    courses.add(new Course(
+                            rs.getInt("id"),
+                            rs.getString("course_name"),
+                            rs.getString("course_code"),
+                            rs.getString("description"),
+                            rs.getBoolean("is_active")));
+                }
+            }
+        }
+        return courses;
+    }
+
     public boolean save() throws SQLException {
-        String insertSQL = "INSERT INTO courses (course_name, course_code, description, is_active) VALUES (?, ?, ?, ?)";
+        int createdBy = Session.getInstance().getUserId();
+        String insertSQL = "INSERT INTO courses (course_name, course_code, description, is_active, created_by) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = DB.getInstance().prepareStatement(insertSQL)) {
             pstmt.setString(1, name);
             pstmt.setString(2, code);
             pstmt.setString(3, description);
             pstmt.setBoolean(4, active);
+            pstmt.setInt(5, createdBy);
 
             return pstmt.executeUpdate() > 0;
         }
