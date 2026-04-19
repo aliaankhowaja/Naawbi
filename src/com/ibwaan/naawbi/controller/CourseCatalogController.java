@@ -1,6 +1,7 @@
 package com.ibwaan.naawbi.controller;
 
 import com.ibwaan.naawbi.model.Announcement;
+import com.ibwaan.naawbi.model.AnnouncementAttachment;
 import com.ibwaan.naawbi.model.Course;
 import com.ibwaan.naawbi.model.Session;
 import com.ibwaan.naawbi.view.ViewConstants;
@@ -16,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -26,7 +28,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.Duration;
@@ -471,7 +476,56 @@ public class CourseCatalogController implements Initializable {
         contentFlow.getChildren().add(contentText);
 
         card.getChildren().addAll(authorLine, titleLabel, contentFlow);
+
+        try {
+            List<AnnouncementAttachment> attachments = AnnouncementAttachment
+                    .fetchByAnnouncementId(announcement.getId());
+            if (!attachments.isEmpty()) {
+                HBox chipRow = new HBox(6);
+                chipRow.setStyle("-fx-padding: 4 0 0 0;");
+                for (AnnouncementAttachment att : attachments) {
+                    Label chip = new Label((att.isLink() ? "🔗 " : "📎 ") + att.getFileName());
+                    chip.getStyleClass().add("attachment-chip");
+                    chip.setCursor(Cursor.HAND);
+                    chip.setOnMouseClicked(e -> {
+                        if (att.isLink())
+                            openUrl(att.getLinkUrl());
+                        else
+                            openFile(att.getFilePath());
+                    });
+                    chipRow.getChildren().add(chip);
+                }
+                card.getChildren().add(chipRow);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return card;
+    }
+
+    private void openFile(String path) {
+        File f = new File(path);
+        if (!f.exists()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("File Not Found");
+            alert.setContentText("File not found at: " + path);
+            alert.showAndWait();
+            return;
+        }
+        try {
+            Desktop.getDesktop().open(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openUrl(String url) {
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

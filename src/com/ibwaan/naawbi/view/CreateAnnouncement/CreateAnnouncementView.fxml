@@ -31,8 +31,10 @@
         <Label text="Attachments (Optional)" styleClass="form-label" />
         <HBox spacing="10" alignment="CENTER_LEFT">
             <Button fx:id="uploadBtn" text="+ Add File" styleClass="btn-secondary" onAction="#handleFileUpload" />
-            <VBox fx:id="fileListContainer" spacing="4" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="linkUrlField" promptText="Paste a URL (https://...)" styleClass="form-input" HBox.hgrow="ALWAYS" />
+            <Button fx:id="addLinkBtn" text="Add Link" styleClass="btn-secondary" onAction="#handleAddLink" />
         </HBox>
+        <VBox fx:id="fileListContainer" spacing="4" />
     </VBox>
     <HBox spacing="12" alignment="CENTER_RIGHT">
         <Button text="Cancel" styleClass="btn-cancel" onAction="#handleCancel" prefWidth="100" />

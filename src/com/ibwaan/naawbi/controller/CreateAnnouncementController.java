@@ -1,6 +1,7 @@
 package com.ibwaan.naawbi.controller;
 
 import com.ibwaan.naawbi.model.Announcement;
+import com.ibwaan.naawbi.model.AnnouncementAttachment;
 import com.ibwaan.naawbi.model.Course;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,17 +26,21 @@ public class CreateAnnouncementController implements Initializable {
     @FXML
     private TextArea contentArea;
     @FXML
-    private Button boldBtn, italicBtn, underlineBtn, bulletBtn, uploadBtn;
+    private Button boldBtn, italicBtn, underlineBtn, bulletBtn, uploadBtn, addLinkBtn;
+    @FXML
+    private TextField linkUrlField;
     @FXML
     private VBox fileListContainer;
 
     private int courseId, currentUserId;
     private List<File> attachedFiles;
+    private List<String[]> attachedLinks; // [displayName, url]
     private Runnable onSuccessCallback;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         attachedFiles = new ArrayList<>();
+        attachedLinks = new ArrayList<>();
     }
 
     public void setCourseContext(int courseId, int userId, Course course, Runnable onSuccess) {
@@ -87,8 +92,8 @@ public class CreateAnnouncementController implements Initializable {
 
     private void addFileToUI(File file) {
         HBox fileItem = new HBox(8);
-        fileItem.setStyle("-fx-padding: 8;");
-        Label fileName = new Label(file.getName());
+        fileItem.setStyle("-fx-padding: 4;");
+        Label fileName = new Label("📎 " + file.getName());
         Button removeBtn = new Button("✕");
         removeBtn.setOnAction(e -> {
             attachedFiles.remove(file);
@@ -96,6 +101,32 @@ public class CreateAnnouncementController implements Initializable {
         });
         fileItem.getChildren().addAll(fileName, removeBtn);
         fileListContainer.getChildren().add(fileItem);
+    }
+
+    @FXML
+    private void handleAddLink(ActionEvent event) {
+        String url = linkUrlField.getText().trim();
+        if (url.isEmpty() || (!url.startsWith("http://") && !url.startsWith("https://"))) {
+            showError("Please enter a valid URL starting with http:// or https://");
+            return;
+        }
+        String[] entry = { url, url };
+        attachedLinks.add(entry);
+        addLinkToUI(entry);
+        linkUrlField.clear();
+    }
+
+    private void addLinkToUI(String[] entry) {
+        HBox linkItem = new HBox(8);
+        linkItem.setStyle("-fx-padding: 4;");
+        Label linkLabel = new Label("🔗 " + entry[0]);
+        Button removeBtn = new Button("✕");
+        removeBtn.setOnAction(e -> {
+            attachedLinks.remove(entry);
+            fileListContainer.getChildren().remove(linkItem);
+        });
+        linkItem.getChildren().addAll(linkLabel, removeBtn);
+        fileListContainer.getChildren().add(linkItem);
     }
 
     private void toggleFormatting(String tag) {
@@ -126,8 +157,12 @@ public class CreateAnnouncementController implements Initializable {
 
         try {
             Announcement announcement = new Announcement(courseId, currentUserId, title, content, "html");
-            if (announcement.save()) {
-                showInfo("Announcement posted successfully!");
+            int announcementId = announcement.save();
+            if (announcementId > 0) {
+                for (File f : attachedFiles)
+                    AnnouncementAttachment.saveFile(announcementId, f.getName(), f.getAbsolutePath(), f.length());
+                for (String[] link : attachedLinks)
+                    AnnouncementAttachment.saveLink(announcementId, link[0], link[1]);
                 if (onSuccessCallback != null)
                     onSuccessCallback.run();
                 closeDialog();
