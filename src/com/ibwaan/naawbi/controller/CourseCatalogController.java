@@ -82,6 +82,8 @@ public class CourseCatalogController implements Initializable {
     private Label peopleTab;
     @FXML
     private Label todoTab;
+    @FXML
+    private Label gradesTab;
 
     /* ── Content containers ──────────────────────────── */
     @FXML
@@ -139,6 +141,12 @@ public class CourseCatalogController implements Initializable {
         todoTab.setOnMouseClicked(event -> {
             showToDo();
             highlightTab(todoTab);
+        });
+
+        // Grades tab
+        gradesTab.setOnMouseClicked(event -> {
+            highlightTab(gradesTab);
+            showGrades();
         });
     }
 
@@ -453,12 +461,45 @@ public class CourseCatalogController implements Initializable {
         assignmentsTab.getStyleClass().remove("tab-active");
         peopleTab.getStyleClass().remove("tab-active");
         todoTab.getStyleClass().remove("tab-active");
+        gradesTab.getStyleClass().remove("tab-active");
 
         // Add active class to the clicked tab
         if (!activeTab.getStyleClass().contains("tab-active")) {
             activeTab.getStyleClass().add("tab-active");
         }
     }
+
+    /**
+     * Opens GradebookView as a modal for the current course.
+     * Instructor sees the class gradebook (US 21); student sees personal grades (US 22).
+     */
+    private void showGrades() {
+        if (currentCourseId <= 0 || currentSelectedCourse == null) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Grades");
+            alert.setHeaderText("No course selected");
+            alert.setContentText("Please select a course first to view its gradebook.");
+            alert.showAndWait();
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/ibwaan/naawbi/view/Gradebook/GradebookView.fxml"));
+            Parent root = loader.load();
+            GradebookController ctrl = loader.getController();
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.initStyle(StageStyle.UNDECORATED);
+            modal.setResizable(true);
+            modal.setScene(new Scene(root));
+            ctrl.setContext(currentCourseId, currentSelectedCourse.getName(), modal);
+            modal.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to open GradebookView: " + e.getMessage());
+        }
+    }
+
 
     /* ── Handlers ────────────────────────────────────── */
 

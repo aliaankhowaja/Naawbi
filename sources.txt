@@ -5,6 +5,7 @@ E:\codebases\uni\Naawbi\src\com\ibwaan\naawbi\controller\CourseCatalogController
 E:\codebases\uni\Naawbi\src\com\ibwaan\naawbi\controller\CreateAnnouncementController.java
 E:\codebases\uni\Naawbi\src\com\ibwaan\naawbi\controller\CreateAssignmentController.java
 E:\codebases\uni\Naawbi\src\com\ibwaan\naawbi\controller\CreateCourseController.java
+E:\codebases\uni\Naawbi\src\com\ibwaan\naawbi\controller\GradebookController.java
 E:\codebases\uni\Naawbi\src\com\ibwaan\naawbi\controller\GradingController.java
 E:\codebases\uni\Naawbi\src\com\ibwaan\naawbi\controller\LoginController.java
 E:\codebases\uni\Naawbi\src\com\ibwaan\naawbi\controller\ToDoController.java
