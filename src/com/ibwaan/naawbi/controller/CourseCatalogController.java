@@ -2,6 +2,7 @@ package com.ibwaan.naawbi.controller;
 
 import com.ibwaan.naawbi.model.Announcement;
 import com.ibwaan.naawbi.model.AnnouncementAttachment;
+import com.ibwaan.naawbi.model.Assignment;
 import com.ibwaan.naawbi.model.Course;
 import com.ibwaan.naawbi.model.Session;
 import com.ibwaan.naawbi.view.ViewConstants;
@@ -313,7 +314,7 @@ public class CourseCatalogController implements Initializable {
     }
 
     /**
-     * Shows the Assignments tab content (stub)
+     * Shows the Assignments tab content
      */
     private void showAssignments() {
         contentHBox.setVisible(true);
@@ -322,8 +323,27 @@ public class CourseCatalogController implements Initializable {
         todoContainer.setManaged(false);
         createAssignmentBtn.setVisible(false);
         createAssignmentBtn.setManaged(false);
-        // TODO: Load and display assignments for this course
-        // For now, just show the assignments as announcements would be shown
+
+        streamContainer.getChildren().clear();
+        if (currentCourseId <= 0) return;
+
+        try {
+            List<Assignment> assignments = Assignment.fetchByCourseId(currentCourseId);
+            if (assignments.isEmpty()) {
+                Label emptyLabel = new Label("No assignments yet.");
+                emptyLabel.getStyleClass().add("empty-state-label");
+                streamContainer.getChildren().add(emptyLabel);
+            } else {
+                for (Assignment a : assignments) {
+                    streamContainer.getChildren().add(createAssignmentCard(a));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Label errorLabel = new Label("Error loading assignments");
+            errorLabel.getStyleClass().add("error-label");
+            streamContainer.getChildren().add(errorLabel);
+        }
     }
 
     /**
@@ -503,6 +523,61 @@ public class CourseCatalogController implements Initializable {
             e.printStackTrace();
         }
 
+        return card;
+    }
+
+    /**
+     * Creates a VBox assignment card from an Assignment model
+     * Displays: author, posted time, title, due date banner with urgency indicator, and point value
+     */
+    private VBox createAssignmentCard(Assignment assignment) {
+        VBox card = new VBox();
+        card.getStyleClass().add("assignment-card");
+        card.setSpacing(8);
+        card.setPadding(new Insets(12));
+
+        HBox authorLine = new HBox();
+        authorLine.setSpacing(8);
+        authorLine.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        Label authorLabel = new Label(assignment.getAuthorName());
+        authorLabel.getStyleClass().add("assignment-author");
+
+        Label timeLabel = new Label("Posted " + formatTime(assignment.getCreatedAt()));
+        timeLabel.getStyleClass().add("announcement-timestamp");
+
+        authorLine.getChildren().addAll(authorLabel, timeLabel);
+
+        Label titleLabel = new Label(assignment.getTitle());
+        titleLabel.getStyleClass().add("assignment-title");
+        titleLabel.setWrapText(true);
+
+        HBox dueBanner = new HBox();
+        dueBanner.setSpacing(8);
+        dueBanner.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        boolean isDueSoon = assignment.getDeadline() != null &&
+                java.time.Duration.between(LocalDateTime.now(), assignment.getDeadline()).toDays() <= 2;
+        dueBanner.getStyleClass().add("due-banner");
+        if (isDueSoon) dueBanner.getStyleClass().add("due-banner-soon");
+
+        Label dueIcon = new Label(isDueSoon ? "⚠️" : "⏰");
+        dueIcon.getStyleClass().add("due-icon");
+
+        String dueText = assignment.getDeadline() != null
+                ? assignment.getDeadline().format(java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy  ·  h:mm a"))
+                : "No deadline";
+        Label dueLabel = new Label("Due  " + dueText);
+        dueLabel.getStyleClass().add(isDueSoon ? "due-text-urgent" : "due-text");
+
+        javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Label ptsLabel = new Label(assignment.getTotalPoints() + " pts");
+        ptsLabel.getStyleClass().add("assignment-pts");
+
+        dueBanner.getChildren().addAll(dueIcon, dueLabel, spacer, ptsLabel);
+        card.getChildren().addAll(authorLine, titleLabel, dueBanner);
         return card;
     }
 
