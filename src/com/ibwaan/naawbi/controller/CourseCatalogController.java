@@ -618,21 +618,23 @@ public class CourseCatalogController implements Initializable {
         dueBanner.setSpacing(8);
         dueBanner.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
 
-        boolean isDueSoon = assignment.getDeadline() != null &&
-                java.time.Duration.between(LocalDateTime.now(), assignment.getDeadline()).toDays() <= 2;
+        boolean isOverdue = assignment.getDeadline() != null &&
+                assignment.getDeadline().isBefore(LocalDateTime.now());
+        boolean isDueSoon = !isOverdue && assignment.getDeadline() != null &&
+                Duration.between(LocalDateTime.now(), assignment.getDeadline()).toDays() <= 2;
         dueBanner.getStyleClass().add("due-banner");
-        if (isDueSoon) dueBanner.getStyleClass().add("due-banner-soon");
+        if (isDueSoon || isOverdue) dueBanner.getStyleClass().add("due-banner-soon");
 
-        Label dueIcon = new Label(isDueSoon ? "⚠️" : "⏰");
+        Label dueIcon = new Label(isOverdue ? "🔴" : isDueSoon ? "⚠️" : "⏰");
         dueIcon.getStyleClass().add("due-icon");
 
         String dueText = assignment.getDeadline() != null
                 ? assignment.getDeadline().format(java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy  ·  h:mm a"))
                 : "No deadline";
         Label dueLabel = new Label("Due  " + dueText);
-        dueLabel.getStyleClass().add(isDueSoon ? "due-text-urgent" : "due-text");
+        dueLabel.getStyleClass().add(isOverdue ? "due-text-urgent" : isDueSoon ? "due-text-urgent" : "due-text");
 
-        javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
+        Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Label ptsLabel = new Label(assignment.getTotalPoints() + " pts");
@@ -643,6 +645,10 @@ public class CourseCatalogController implements Initializable {
         return card;
     }
 
+    /**
+     * Creates a member card row for the People tab.
+     * Displays avatar initials, username, and a role badge (Instructor/Student).
+     */
     private HBox createMemberCard(User member) {
         HBox card = new HBox();
         card.getStyleClass().add("member-card");
@@ -660,7 +666,7 @@ public class CourseCatalogController implements Initializable {
         Label nameLabel = new Label(member.getUsername());
         nameLabel.getStyleClass().add("member-name");
 
-        javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
+        Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         String roleDisplay = "instructor".equals(member.getRole()) ? "Instructor" : "Student";
