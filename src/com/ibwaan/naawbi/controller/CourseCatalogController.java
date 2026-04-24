@@ -5,6 +5,7 @@ import com.ibwaan.naawbi.model.AnnouncementAttachment;
 import com.ibwaan.naawbi.model.Assignment;
 import com.ibwaan.naawbi.model.Course;
 import com.ibwaan.naawbi.model.Session;
+import com.ibwaan.naawbi.model.User;
 import com.ibwaan.naawbi.view.ViewConstants;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -347,7 +348,7 @@ public class CourseCatalogController implements Initializable {
     }
 
     /**
-     * Shows the People tab content (stub)
+     * Shows the People tab content
      */
     private void showPeople() {
         contentHBox.setVisible(true);
@@ -356,7 +357,68 @@ public class CourseCatalogController implements Initializable {
         todoContainer.setManaged(false);
         createAssignmentBtn.setVisible(false);
         createAssignmentBtn.setManaged(false);
-        // TODO: Load and display course members/people
+
+        streamContainer.getChildren().clear();
+        if (currentCourseId <= 0) return;
+
+        try {
+            List<User> members = User.fetchByCourseId(currentCourseId);
+            if (members.isEmpty()) {
+                Label emptyLabel = new Label("No members enrolled in this course yet.");
+                emptyLabel.getStyleClass().add("empty-state-label");
+                streamContainer.getChildren().add(emptyLabel);
+                return;
+            }
+
+            // Render members grouped by section — SQL orders by ce.role ASC (instructor before student)
+            String currentSection = null;
+            boolean anyInSection = false;
+
+            for (User m : members) {
+                String role = m.getRole();
+
+                if (!role.equals(currentSection)) {
+                    // Close previous section if it was empty
+                    if (currentSection != null && !anyInSection) {
+                        Label none = new Label("None");
+                        none.getStyleClass().add("empty-state-label");
+                        streamContainer.getChildren().add(none);
+                    }
+                    // Open new section
+                    String header = "instructor".equals(role) ? "INSTRUCTORS" : "STUDENTS";
+                    Label sectionHeader = new Label(header);
+                    sectionHeader.getStyleClass().add("people-section-header");
+                    streamContainer.getChildren().add(sectionHeader);
+                    currentSection = role;
+                    anyInSection = false;
+                }
+
+                streamContainer.getChildren().add(createMemberCard(m));
+                anyInSection = true;
+            }
+
+            // Close last section if it was empty (shouldn't happen, but guard anyway)
+            if (currentSection != null && !anyInSection) {
+                Label none = new Label("None");
+                none.getStyleClass().add("empty-state-label");
+                streamContainer.getChildren().add(none);
+            }
+
+            // If we never saw a student section at all, add it with empty state
+            if (!"student".equals(currentSection)) {
+                Label studentHeader = new Label("STUDENTS");
+                studentHeader.getStyleClass().add("people-section-header");
+                streamContainer.getChildren().add(studentHeader);
+                Label noStudents = new Label("No students enrolled yet.");
+                noStudents.getStyleClass().add("empty-state-label");
+                streamContainer.getChildren().add(noStudents);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Label errorLabel = new Label("Error loading course members");
+            errorLabel.getStyleClass().add("error-label");
+            streamContainer.getChildren().add(errorLabel);
+        }
     }
 
     /**
@@ -578,6 +640,37 @@ public class CourseCatalogController implements Initializable {
 
         dueBanner.getChildren().addAll(dueIcon, dueLabel, spacer, ptsLabel);
         card.getChildren().addAll(authorLine, titleLabel, dueBanner);
+        return card;
+    }
+
+    private HBox createMemberCard(User member) {
+        HBox card = new HBox();
+        card.getStyleClass().add("member-card");
+        card.setSpacing(12);
+        card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        card.setPadding(new Insets(10, 12, 10, 12));
+
+        String initials = member.getUsername().length() >= 2
+                ? member.getUsername().substring(0, 2).toUpperCase()
+                : member.getUsername().toUpperCase();
+        Label avatar = new Label(initials);
+        avatar.getStyleClass().addAll("avatar",
+                "instructor".equals(member.getRole()) ? "avatar-primary" : "avatar-secondary");
+
+        Label nameLabel = new Label(member.getUsername());
+        nameLabel.getStyleClass().add("member-name");
+
+        javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        String roleDisplay = "instructor".equals(member.getRole()) ? "Instructor" : "Student";
+        Label roleLabel = new Label(roleDisplay);
+        roleLabel.getStyleClass().add("member-role-badge");
+        if ("instructor".equals(member.getRole())) {
+            roleLabel.getStyleClass().add("member-role-badge-instructor");
+        }
+
+        card.getChildren().addAll(avatar, nameLabel, spacer, roleLabel);
         return card;
     }
 
