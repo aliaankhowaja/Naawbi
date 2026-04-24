@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Course {
     private int id;
@@ -68,6 +69,68 @@ public class Course {
             }
         }
         return courses;
+    }
+
+    /**
+     * Returns courses for the given user with instructor name and user's role.
+     * Each Object[] row: [Course, String instructorName, String myRole]
+     */
+    public static List<Object[]> fetchByUserIdWithInstructor(int userId) throws SQLException {
+        List<Object[]> rows = new ArrayList<>();
+        String sql =
+            "SELECT c.id, c.course_name, c.course_code, c.description, c.is_active, " +
+            "       u.username AS instructor_name, " +
+            "       COALESCE(ce_me.role, 'instructor') AS my_role " +
+            "FROM courses c " +
+            "LEFT JOIN course_enrollments ce_me ON c.id = ce_me.course_id AND ce_me.user_id = ? " +
+            "LEFT JOIN course_enrollments ce_inst ON c.id = ce_inst.course_id AND ce_inst.role = 'instructor' " +
+            "LEFT JOIN users u ON ce_inst.user_id = u.id " +
+            "WHERE (c.id IN (SELECT course_id FROM course_enrollments WHERE user_id = ?) " +
+            "   OR c.created_by = ?) " +
+            "ORDER BY c.id DESC";
+        try (PreparedStatement ps = DB.getInstance().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, userId);
+            ps.setInt(3, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Course course = new Course(
+                        rs.getInt("id"),
+                        rs.getString("course_name"),
+                        rs.getString("course_code"),
+                        rs.getString("description"),
+                        rs.getBoolean("is_active"));
+                    rows.add(new Object[]{
+                        course,
+                        rs.getString("instructor_name"),
+                        rs.getString("my_role")
+                    });
+                }
+            }
+        }
+        return rows;
+    }
+
+    /**
+     * Looks up a course by its code (case-insensitive). Returns empty if not found.
+     */
+    public static Optional<Course> fetchByCode(String code) throws SQLException {
+        String sql = "SELECT id, course_name, course_code, description, is_active " +
+                     "FROM courses WHERE UPPER(course_code) = UPPER(?)";
+        try (PreparedStatement ps = DB.getInstance().prepareStatement(sql)) {
+            ps.setString(1, code);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(new Course(
+                        rs.getInt("id"),
+                        rs.getString("course_name"),
+                        rs.getString("course_code"),
+                        rs.getString("description"),
+                        rs.getBoolean("is_active")));
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     /**
