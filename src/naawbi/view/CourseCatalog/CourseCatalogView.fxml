@@ -34,6 +34,8 @@
             <!-- Header -->
             <VBox styleClass="catalog-header" spacing="4">
                 <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Button text="← Back" onAction="#handleBack"
+                            style="-fx-background-color:transparent;-fx-border-color:#ccc;-fx-border-radius:6;-fx-text-fill:#555;-fx-font-size:12px;-fx-padding:4 10;-fx-cursor:hand;" />
                     <Label text="My Courses" styleClass="catalog-title" HBox.hgrow="ALWAYS" />
                     <Region HBox.hgrow="ALWAYS" />
                     <Button fx:id="createCourseBtn" text="+ Create Course" onAction="#handleNavigateToCreate" styleClass="create-course-btn" />

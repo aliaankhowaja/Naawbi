@@ -105,6 +105,19 @@ public class CourseCatalogController implements Initializable {
     private int currentUserId;
     private ToDoController toDoController;
 
+    /* ── Entry point (called by HomeController after load) ──────────── */
+
+    public void initWithCourse(Course course) {
+        currentSelectedCourse = course;
+        currentCourseId = course.getId();
+        if (homeCourseTitle != null) {
+            homeCourseTitle.setText(course.getName());
+        }
+        toDoController = null;
+        highlightTab(streamTab);
+        showStream();
+    }
+
     /* ── Lifecycle ───────────────────────────────────── */
 
     @Override
@@ -511,6 +524,19 @@ public class CourseCatalogController implements Initializable {
         alert.setHeaderText("Access Denied");
         alert.setContentText("You do not have permission to perform this action.");
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleBack(ActionEvent event) {
+        try {
+            Parent homeRoot = FXMLLoader.load(
+                getClass().getResource("/naawbi/view/Home/HomeView.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle("Naawbi");
+            stage.getScene().setRoot(homeRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
