@@ -1,0 +1,362 @@
+% ==============================================================
+%  Naawbi LMS --- CS3009 Software Engineering (Spring 2026)
+%  Deliverable 3 — Project Team Information  |  Team Ibwaan
+% ==============================================================
+\documentclass[11pt, legalpaper]{article}
+
+% ── Packages ──────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage[top=2.2cm, bottom=2.2cm, left=2.2cm, right=2.2cm, headheight=28pt]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{caption}
+\usepackage[most]{tcolorbox}
+
+% ── Colours ───────────────────────────────────────────────────
+\definecolor{primary}{HTML}{1A237E}
+\definecolor{accent}{HTML}{283593}
+\definecolor{rule}{HTML}{5C6BC0}
+\definecolor{muted}{HTML}{546E7A}
+\definecolor{boxbg}{HTML}{EEF0FB}
+\definecolor{success}{HTML}{1B5E20}
+
+% ── Hyperref setup ────────────────────────────────────────────
+\hypersetup{
+    colorlinks   = true,
+    linkcolor    = primary,
+    urlcolor     = accent,
+    citecolor    = primary,
+    pdftitle     = {Naawbi LMS — Deliverable 3 (Team Information)},
+    pdfauthor    = {Team Ibwaan},
+    pdfsubject   = {CS3009 Software Engineering Spring 2026},
+    pdfkeywords  = {LMS, Software Engineering, Naawbi, Ibwaan},
+}
+
+% ── Spacing ───────────────────────────────────────────────────
+\setstretch{1.18}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+
+% ── Section formatting ────────────────────────────────────────
+\titleformat{\section}
+  {\Large\bfseries\color{primary}}
+  {\thesection}{1em}{}
+  [\color{rule}\titlerule]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{accent}}
+  {\thesubsection}{1em}{}
+
+\titlespacing*{\section}{0pt}{1.2ex plus .4ex minus .2ex}{0.7ex}
+\titlespacing*{\subsection}{0pt}{0.9ex plus .3ex minus .1ex}{0.35ex}
+
+% ── Header / Footer ───────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rule}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\small\color{muted}\textbf{Naawbi LMS} — Team Information (D3)}
+\fancyhead[R]{\small\color{muted}CS3009 Spring 2026}
+\fancyfoot[C]{\small\color{muted}\thepage}
+
+% ── Lists ─────────────────────────────────────────────────────
+\setlist[itemize]{leftmargin=1.5em, itemsep=1.5pt, topsep=3pt}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=1.5pt, topsep=3pt}
+
+% ── Image fallback ────────────────────────────────────────────
+\newcommand{\imgOrPlaceholder}[3][width=0.85\textwidth]{%
+  \IfFileExists{#2}{%
+    \includegraphics[#1]{#2}%
+  }{%
+    \begin{center}%
+    \fboxsep=8pt\fbox{\parbox{0.7\textwidth}{\centering\color{muted}%
+      \textit{[Placeholder — image not yet available]}\\[4pt]%
+      \footnotesize #3}}%
+    \end{center}%
+  }%
+}
+
+% ── Custom environments ───────────────────────────────────────
+\tcbuselibrary{skins, breakable}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced, breakable,
+  colback=boxbg, colframe=rule,
+  arc=4pt, boxrule=0.8pt,
+  leftrule=4pt,
+  title=#1,
+  fonttitle=\bfseries\color{primary},
+  #1
+}
+
+\begin{document}
+
+% ═══════════════════════════════════════════════════════════════
+%  TITLE PAGE
+% ═══════════════════════════════════════════════════════════════
+\begin{titlepage}
+  \centering
+
+  \vspace*{1.6cm}
+
+  {\small\scshape\color{muted} National University of Computer and Emerging Sciences}\\[0.4em]
+  {\small\color{muted} CS3009 — Software Engineering \quad|\quad Spring 2026}
+
+  \vspace{1.0cm}
+  {\color{rule}\hrule height 1.2pt}
+  \vspace{1.0cm}
+
+  {\fontsize{44}{50}\selectfont\bfseries\color{primary} Team Information}\\[0.5em]
+  {\Large\color{muted} Deliverable 3 — Final Sprint}
+
+  \vspace{0.9cm}
+  {\color{rule!40}\rule{6cm}{0.6pt}}
+  \vspace{1.0cm}
+
+  {\fontsize{48}{54}\selectfont\bfseries\color{primary} Ibwaan}\\[0.2em]
+  {\Large\color{muted} (Project: Naawbi — Learning Management System)}
+
+  \vspace{1.2cm}
+
+  \begin{tabular}{r@{\quad}l}
+    {\color{muted}\small Team Lead}       & {\bfseries Ibraheem Farooq} \\[4pt]
+    {\color{muted}\small Members}         & 23i-0708 \textbar\ Ali Aan Khowaja \\
+                                          & 23i-0816 \textbar\ Ibraheem Farooq \\
+                                          & 23i-0819 \textbar\ Wajih-Ur-Raza Asif \\[4pt]
+    {\color{muted}\small Submission Date} & 20 April 2026 \\[4pt]
+    {\color{muted}\small Repository}      & \href{https://github.com/aliaankhowaja/Naawbi}{github.com/aliaankhowaja/Naawbi} \\
+  \end{tabular}
+
+  \vfill
+
+  {\color{rule!40}\hrule height 0.5pt}
+  \vspace{0.5cm}
+  {\footnotesize\color{muted}
+    \href{https://github.com/ibbi1020}{ibbi1020}\enspace\textbullet\enspace
+    \href{https://github.com/wajih-rathore}{wajih-rathore}\enspace\textbullet\enspace
+    \href{https://github.com/aliaankhowaja}{aliaankhowaja}
+  }
+  \vspace{0.6cm}
+\end{titlepage}
+
+% ═══════════════════════════════════════════════════════════════
+%  TEAM UPDATES (D3-specific)
+% ═══════════════════════════════════════════════════════════════
+\section{Team Updates for Sprint 3}
+
+\begin{infobox}[title=Status summary]
+\textbf{No changes to team membership or roles.}\\
+\textbf{Team Lead confirmed:} Ibraheem Farooq continues as Team Lead.\\
+\textbf{Team agreement:} the agreement established in Deliverable~1 remains
+fully active for Sprint~3. No revisions to communication methods, meeting
+schedules, version control practices, work division, submission
+responsibilities, or contingency planning were required.
+\end{infobox}
+
+\begin{itemize}
+  \item \textbf{Team membership:} unchanged since Deliverable~1. All three
+        original members carried through to the final sprint.
+  \item \textbf{Development:} \textbf{all three members contribute to
+        development equally} across every sprint --- this has been our
+        working model from Sprint~1 onwards and continues unchanged in
+        Sprint~3.
+  \item \textbf{Roles \& responsibilities:} the additional (non-development)
+        ownership areas are unchanged in substance. On top of the shared
+        development work, Ibraheem leads authentication/RBAC + attachments,
+        Wajih leads assignments tab + grading/gradebook + test plan, and Ali
+        leads Sprint~2 features + Sprint~3 UI screenshots. Detailed in the
+        Deliverable~3 document, Section ``Work Division for Sprint~3''.
+  \item \textbf{Communication:} WhatsApp + in-person + Google Meet — unchanged.
+  \item \textbf{Meeting cadence:} 4 check-ins per week — unchanged. Sprint~3
+        planning held 26~March; mid-sprint review 8~April; sprint close
+        retrospective 20~April.
+  \item \textbf{Version control:} same branch-per-feature + PR-review policy,
+        atomic commits with \texttt{feat:}/\texttt{fix:}/\texttt{docs:}/\texttt{chore:}
+        prefixes — unchanged.
+  \item \textbf{Submission responsibilities:} Wajih remains submission owner;
+        Ibraheem and Ali review before submission; internal cutoff is
+        24~hours before the deadline — unchanged.
+  \item \textbf{Contingency planning:} unchanged. Scope-down-then-redistribute
+        protocol did not need to be invoked during Sprint~3.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════
+%  TEAM DETAILS
+% ═══════════════════════════════════════════════════════════════
+\section{Project Team Information}
+
+\begin{minipage}[c]{0.65\linewidth}
+  \begin{tabular}{r@{\quad}l}
+    \textbf{Team Name}    & Ibwaan \\
+    \textbf{Project Name} & Naawbi \\
+    \textbf{Team Lead}    & Ibraheem Farooq \\
+    \textbf{Deliverable}  & Deliverable 3 (Sprint 3 / Final Sprint) \\
+  \end{tabular}
+\end{minipage}%
+\begin{minipage}[c]{0.3\linewidth}
+  \raggedleft
+  \imgOrPlaceholder[height=2cm]{assets/ibwaan_team_logo.png}{Team Logo}
+\end{minipage}
+
+\vspace{0.35cm}
+
+\subsection{Team Roles (Unchanged from D1)}
+
+\begin{center}
+\begin{tabular}{l l p{0.60\linewidth}}
+  \toprule
+  Member & Role(s) & GitHub \\
+  \midrule
+  Ibraheem Farooq     & PM, Scrum Master, Developer              & \href{https://github.com/ibbi1020}{github.com/ibbi1020} \\[3pt]
+  Wajih-Ur-Raza Asif  & Requirements Architect, Tester, Developer & \href{https://github.com/wajih-rathore}{github.com/wajih-rathore} \\[3pt]
+  Ali Aan Khowaja     & Developer, UI Designer                    & \href{https://github.com/aliaankhowaja}{github.com/aliaankhowaja} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Member Biographies}
+
+% ---- Ibraheem Farooq ----------------------------------------
+\noindent
+\begin{minipage}[t]{0.30\linewidth}
+  \vspace{0pt}
+  \imgOrPlaceholder[width=\linewidth]{assets/ibraheem_photo.png}{Photo}
+\end{minipage}%
+\hspace{1em}%
+\begin{minipage}[t]{0.67\linewidth}
+  \vspace{0pt}
+  {\bfseries\color{primary} Ibraheem Farooq} \hfill {\small\color{muted} 23i-0816}\\[-2pt]
+  {\small\color{muted} PM / Scrum Master / Developer}\\[4pt]
+  A Computer Science major based in Islamabad who transitioned from designing
+  posters and brand identities to UX and product design. His technical background
+  provides a unique perspective on bridging digital experiences that balance user
+  needs with technical viability. Passionate about solving real problems through
+  thoughtful design and clean, intuitive interfaces.
+\end{minipage}
+
+\medskip\noindent\color{rule!25}\hrule\color{black}\medskip
+
+% ---- Wajih-Ur-Raza Asif -------------------------------------
+\noindent
+\begin{minipage}[t]{0.30\linewidth}
+  \vspace{0pt}
+  \imgOrPlaceholder[width=\linewidth]{assets/wajih_photo.jpeg}{Photo}
+\end{minipage}%
+\hspace{1em}%
+\begin{minipage}[t]{0.67\linewidth}
+  \vspace{0pt}
+  {\bfseries\color{primary} Wajih-Ur-Raza Asif} \hfill {\small\color{muted} 23i-0819}\\[-2pt]
+  {\small\color{muted} Requirements Architect / Tester / Developer}\\[4pt]
+  A software engineer focused on building practical systems that solve real
+  operational problems. His background spans end-to-end projects across different
+  technologies, with a strong interest in automation, AI-driven workflows, and
+  scalable system design. Currently expanding his understanding of enterprise
+  technology and systems that make processes more efficient and reliable.
+\end{minipage}
+
+\medskip\noindent\color{rule!25}\hrule\color{black}\medskip
+
+% ---- Ali Aan Khowaja ----------------------------------------
+\noindent
+\begin{minipage}[t]{0.30\linewidth}
+  \vspace{0pt}
+  \imgOrPlaceholder[width=\linewidth]{assets/ali_photo.png}{Photo}
+\end{minipage}%
+\hspace{1em}%
+\begin{minipage}[t]{0.67\linewidth}
+  \vspace{0pt}
+  {\bfseries\color{primary} Ali Aan Khowaja} \hfill {\small\color{muted} 23i-0708}\\[-2pt]
+  {\small\color{muted} Developer / UI Designer}\\[4pt]
+  An AI Engineer driven by a simple goal: building applications that work at
+  scale. His expertise lies at the intersection of high-performance backend
+  architecture and agentic systems. He specialises in designing and deploying
+  scalable infrastructures that power intelligent applications. Beyond the code,
+  he is a robotics enthusiast passionate about bringing new ideas to life.
+\end{minipage}
+
+\subsection{Team Agreement (Active Through Sprint 3)}
+
+The agreement below was established in Deliverable~1 and remains active
+for Sprint~3 without modification. It is reproduced here for completeness.
+
+\subsubsection*{Communication}
+\begin{itemize}
+  \item \textbf{WhatsApp} — primary channel for daily coordination; respond within 1 hour.
+  \item \textbf{In-person} — preferred when on campus.
+  \item \textbf{Google Meet} — for remote meetings.
+  \item Urgent issues: tag the team and respond within 20 minutes.
+  \item If unavailable: post an async update in WhatsApp within 24 hours.
+\end{itemize}
+
+\subsubsection*{Meetings}
+\begin{itemize}
+  \item Mandatory: Sprint Planning, Sprint Review, Sprint Retrospective.
+  \item Regular check-ins: 4$\times$ per week (in-person or Google Meet).
+  \item Absence: notify team 24 hours in advance and share an async update.
+  \item Every meeting ends with: decisions + action items + owners.
+  \item Notes: rotating assigned person.
+\end{itemize}
+
+\subsubsection*{Meeting Preparation}
+\begin{itemize}
+  \item \textbf{Sprint Planning:} review backlog, propose task breakdowns.
+  \item \textbf{Review:} prepare demo flow + screenshots.
+  \item \textbf{Retrospective:} each member prepares (1) what went well,
+        (2) what did not, (3) what to change.
+\end{itemize}
+
+\subsubsection*{Version Control}
+\begin{itemize}
+  \item Small, atomic commits; new branch per ticket.
+  \item PR required before merging; do not commit secrets, credentials, or large binaries.
+  \item Commit message format: \texttt{feat:}, \texttt{fix:}, \texttt{docs:}, \texttt{chore:}
+\end{itemize}
+
+\subsubsection*{Division of Work (Unchanged Ownership Model)}
+
+\noindent\textbf{All three team members contribute to development equally}
+on every sprint. The breakdown below lists additional \emph{non-development}
+ownership areas on top of each member's equal development contribution.
+
+\medskip
+\noindent\begin{tabular}{l p{0.72\linewidth}}
+  \toprule
+  \textbf{Owner} & \textbf{Additional Responsibility (on top of equal development)} \\
+  \midrule
+  Wajih    & Requirement ownership: user stories, structured specifications, consistency checks, test planning, and test execution. \\[2pt]
+  Ali      & UI ownership: screen layout, visual design system, and iteration screenshot production. \\[2pt]
+  Ibraheem & Coordination: sprint tracking, board management, packaging, and final submission. \\
+  \bottomrule
+\end{tabular}
+
+\medskip
+\noindent\textbf{Contingency Plan.}
+If a member becomes unavailable or falls behind, the team re-scopes to the
+minimum required deliverable content, redistributes work immediately, and
+prioritises required artefacts. The PM/SM updates the board, assigns new
+owners, and schedules an urgent meeting to unblock progress.
+\textit{Not invoked during Sprint~3.}
+
+\subsubsection*{Submission Protocol (Unchanged)}
+\begin{itemize}
+  \item \textbf{Submission owner:} Wajih.
+  \item \textbf{Internal review:} Ibraheem and Ali.
+  \item \textbf{Internal cutoff:} finalise 24 hours before the deadline.
+\end{itemize}
+
+\end{document}
