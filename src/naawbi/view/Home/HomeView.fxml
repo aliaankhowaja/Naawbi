@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="naawbi.controller.HomeController"
+            prefWidth="1920" prefHeight="1080"
+            stylesheets="@./HomeView.css">
+
+    <top>
+        <HBox styleClass="top-bar" alignment="CENTER_LEFT" spacing="12">
+            <Label text="Naawbi" styleClass="app-title" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="actionButton" text="+ Join Course"
+                    onAction="#handleActionButton" styleClass="action-button" />
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="grid-scroll"
+                    hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+            <FlowPane fx:id="courseGrid"
+                      hgap="16" vgap="16"
+                      styleClass="course-grid">
+                <padding>
+                    <Insets top="24" right="24" bottom="24" left="24" />
+                </padding>
+            </FlowPane>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
