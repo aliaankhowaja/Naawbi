@@ -20,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         String view = DEV_MODE
-                ? "view/CourseCatalog/CourseCatalogView.fxml"
+                ? "view/Home/HomeView.fxml"
                 : "view/Login/LoginView.fxml";
         Parent root = FXMLLoader.load(getClass().getResource(view));
         primaryStage.setTitle("Naawbi");
