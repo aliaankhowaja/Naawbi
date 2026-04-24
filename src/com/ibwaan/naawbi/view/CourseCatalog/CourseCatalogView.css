@@ -762,11 +762,6 @@
     -fx-text-fill: -vc-text;
 }
 
-.assignment-due {
-    -fx-font-size: 12px;
-    -fx-text-fill: -vc-text;
-}
-
 .assignment-pts {
     -fx-font-size: 12px;
     -fx-font-weight: bold;
