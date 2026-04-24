@@ -134,6 +134,20 @@ public class Course {
     }
 
     /**
+     * Enrolls a user as a student in the given course.
+     * Returns true if newly enrolled, false if already enrolled.
+     */
+    public static boolean enrollStudent(int userId, int courseId) throws SQLException {
+        String sql = "INSERT INTO course_enrollments (user_id, course_id, role) " +
+                     "VALUES (?, ?, 'student') ON CONFLICT DO NOTHING";
+        try (PreparedStatement ps = DB.getInstance().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, courseId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    /**
      * Fetches all users enrolled in (or teaching) this course.
      * Returns Object[] per row: [username, email, role]
      */

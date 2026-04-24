@@ -1,7 +1,6 @@
 package naawbi.controller;
 
 import naawbi.model.Course;
-import naawbi.model.DB;
 import naawbi.model.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +21,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -81,6 +79,8 @@ public class HomeController implements Initializable {
         menuBtn.getStyleClass().add("card-menu-btn");
         AnchorPane.setTopAnchor(menuBtn, 6.0);
         AnchorPane.setRightAnchor(menuBtn, 6.0);
+        menuBtn.setMouseTransparent(true);
+        menuBtn.setVisible(false);
 
         header.getChildren().addAll(courseName, courseCode, menuBtn);
 
@@ -156,18 +156,14 @@ public class HomeController implements Initializable {
                 }
                 Course course = found.get();
                 int userId = Session.getInstance().getUserId();
-                String sql = "INSERT INTO course_enrollments (user_id, course_id, role) " +
-                             "VALUES (?, ?, 'student') ON CONFLICT DO NOTHING";
-                try (PreparedStatement ps = DB.getInstance().prepareStatement(sql)) {
-                    ps.setInt(1, userId);
-                    ps.setInt(2, course.getId());
-                    int rows = ps.executeUpdate();
-                    if (rows == 0) {
-                        showAlert(Alert.AlertType.INFORMATION, "Already Enrolled",
-                            "You are already enrolled in \"" + course.getName() + "\".");
-                        return;
-                    }
+                boolean enrolled = Course.enrollStudent(userId, course.getId());
+                if (!enrolled) {
+                    showAlert(Alert.AlertType.INFORMATION, "Already Enrolled",
+                        "You are already enrolled in \"" + course.getName() + "\".");
+                    return;
                 }
+                showAlert(Alert.AlertType.INFORMATION, "Joined!",
+                    "You have joined \"" + course.getName() + "\".");
                 loadCourses();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -183,7 +179,7 @@ public class HomeController implements Initializable {
             Parent root = loader.load();
             CourseCatalogController controller = loader.getController();
             controller.initWithCourse(course);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) courseGrid.getScene().getWindow();
             stage.setTitle("Naawbi");
             stage.getScene().setRoot(root);
         } catch (IOException e) {
