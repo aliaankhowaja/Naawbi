@@ -1,4 +1,5 @@
 .root-pane {
+    -fx-padding: 20;
     -fx-font-family: "Segoe UI", sans-serif;
     -vc-primary: #4b5d4f;
     -vc-secondary: #e7e1d5;

@@ -255,6 +255,8 @@ public class CourseCatalogController implements Initializable {
         createCourseBtn.setManaged(isInstructor);
         postAnnouncementBtn.setVisible(isInstructor);
         postAnnouncementBtn.setManaged(isInstructor);
+        createAssignmentBtn.setVisible(isInstructor);
+        createAssignmentBtn.setManaged(isInstructor);
         todoTab.setVisible(!isInstructor);
         todoTab.setManaged(!isInstructor);
     }
