@@ -89,9 +89,10 @@
                         <HBox spacing="10" alignment="CENTER_LEFT">
                             <Label fx:id="homeCourseTitle" text="Select a course"
                                    styleClass="home-course-title" />
-                            <Label text="CS-401" styleClass="course-code-tag course-code-lg" />
+                            <Label fx:id="homeCourseCode" text=""
+                                   styleClass="course-code-tag course-code-lg" />
                         </HBox>
-                        <Label text="Dr. Aisha Salim  ·  34 students  ·  Spring 2025"
+                        <Label fx:id="homeCourseMeta" text=""
                                styleClass="home-course-meta" />
                     </VBox>
                     <Button fx:id="postAnnouncementBtn" text="+ Post Announcement" styleClass="btn-primary"

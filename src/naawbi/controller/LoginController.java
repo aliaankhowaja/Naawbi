@@ -149,7 +149,7 @@ public class LoginController implements Initializable {
     private void navigateToCatalog(Label activeErrorLabel) {
         try {
             Parent root = FXMLLoader.load(
-                    getClass().getResource("/naawbi/view/CourseCatalog/CourseCatalogView.fxml"));
+                    getClass().getResource("/naawbi/view/Home/HomeView.fxml"));
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
             stage.setTitle("Naawbi");

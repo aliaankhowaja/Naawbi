@@ -74,6 +74,10 @@ public class CourseCatalogController implements Initializable {
     private VBox streamContainer;
     @FXML
     private Label homeCourseTitle;
+    @FXML
+    private Label homeCourseCode;
+    @FXML
+    private Label homeCourseMeta;
 
     /* ── Tabs ────────────────────────────────────────── */
     @FXML
@@ -110,9 +114,9 @@ public class CourseCatalogController implements Initializable {
     public void initWithCourse(Course course) {
         currentSelectedCourse = course;
         currentCourseId = course.getId();
-        if (homeCourseTitle != null) {
-            homeCourseTitle.setText(course.getName());
-        }
+        if (homeCourseTitle != null) homeCourseTitle.setText(course.getName());
+        if (homeCourseCode != null) homeCourseCode.setText(course.getCode());
+        if (homeCourseMeta != null) homeCourseMeta.setText("");
         toDoController = null;
         highlightTab(streamTab);
         showStream();
@@ -866,9 +870,9 @@ public class CourseCatalogController implements Initializable {
         // Store current course
         currentSelectedCourse = course;
         currentCourseId = course.getId();
-        if (homeCourseTitle != null) {
-            homeCourseTitle.setText(course.getName());
-        }
+        if (homeCourseTitle != null) homeCourseTitle.setText(course.getName());
+        if (homeCourseCode != null) homeCourseCode.setText(course.getCode());
+        if (homeCourseMeta != null) homeCourseMeta.setText("");
 
         // Reset to Stream tab and load announcements
         highlightTab(streamTab);
