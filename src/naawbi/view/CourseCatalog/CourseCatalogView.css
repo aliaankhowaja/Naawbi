@@ -730,3 +730,83 @@
     -fx-background-color: derive(-vc-accent, -20%);
     -fx-effect: none;
 }
+
+/* ══════════════════════════════════════════════
+   ASSIGNMENT CARDS
+   ══════════════════════════════════════════════ */
+
+.assignment-card {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-padding: 12;
+    -fx-spacing: 8;
+}
+
+.assignment-card:hover {
+    -fx-border-color: -vc-accent;
+    -fx-background-color: #fafafa;
+}
+
+.assignment-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+    -fx-wrap-text: true;
+}
+
+.assignment-author {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.assignment-pts {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-accent;
+}
+
+/* ══════════════════════════════════════════════
+   PEOPLE / MEMBER CARDS
+   ══════════════════════════════════════════════ */
+
+.member-card {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-padding: 12;
+}
+
+.member-card:hover {
+    -fx-border-color: -vc-accent;
+    -fx-background-color: #fafafa;
+}
+
+.member-name {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -vc-text;
+}
+
+.member-role-badge {
+    -fx-font-size: 11px;
+    -fx-padding: 3 8;
+    -fx-background-color: derive(-vc-primary, 80%);
+    -fx-background-radius: 10;
+    -fx-text-fill: -vc-primary;
+}
+
+.member-role-badge-instructor {
+    -fx-background-color: derive(-vc-accent, 80%);
+    -fx-text-fill: derive(-vc-accent, -40%);
+}
+
+.people-section-header {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #999;
+    -fx-padding: 8 0 4 0;
+}

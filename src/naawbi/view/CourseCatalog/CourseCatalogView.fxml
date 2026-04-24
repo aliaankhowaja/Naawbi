@@ -85,7 +85,7 @@
                 <HBox alignment="CENTER_LEFT" spacing="16">
                     <VBox spacing="4" HBox.hgrow="ALWAYS">
                         <HBox spacing="10" alignment="CENTER_LEFT">
-                            <Label text="Introduction to Machine Learning"
+                            <Label fx:id="homeCourseTitle" text="Select a course"
                                    styleClass="home-course-title" />
                             <Label text="CS-401" styleClass="course-code-tag course-code-lg" />
                         </HBox>

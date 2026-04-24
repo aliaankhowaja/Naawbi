@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class User {
@@ -60,6 +62,28 @@ public class User {
                 throw e;
             }
         }
+    }
+
+    public static List<User> fetchByCourseId(int courseId) throws SQLException {
+        List<User> members = new ArrayList<>();
+        String sql = "SELECT u.id, u.username, u.email, ce.role " +
+                     "FROM users u " +
+                     "JOIN course_enrollments ce ON u.id = ce.user_id " +
+                     "WHERE ce.course_id = ? " +
+                     "ORDER BY ce.role ASC, u.username ASC";
+        try (PreparedStatement stmt = DB.getInstance().prepareStatement(sql)) {
+            stmt.setInt(1, courseId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    members.add(new User(
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            rs.getString("role")));
+                }
+            }
+        }
+        return members;
     }
 
     public int getId()          { return id; }
