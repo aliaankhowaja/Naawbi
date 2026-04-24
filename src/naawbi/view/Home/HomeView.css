@@ -1,7 +1,6 @@
 .top-bar {
     -fx-padding: 12 24 12 24;
     -fx-background-color: #4b5d4f;
-    -fx-spacing: 12;
 }
 
 .app-title {
@@ -20,12 +19,11 @@
 }
 
 .action-button:hover {
-    -fx-background-color: #f0f4f0;
+    -fx-background-color: #e8ece8;
 }
 
 .grid-scroll {
     -fx-background-color: #f9f7f1;
-    -fx-background: #f9f7f1;
 }
 
 .course-grid {
@@ -67,6 +65,7 @@
 .card-menu-btn:hover {
     -fx-background-color: rgba(255,255,255,0.15);
     -fx-background-radius: 4px;
+    -fx-text-fill: white;
 }
 
 .card-avatar {
