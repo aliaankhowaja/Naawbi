@@ -70,6 +70,8 @@ public class CourseCatalogController implements Initializable {
     /* ── Stream ─────────────────────────────────────── */
     @FXML
     private VBox streamContainer;
+    @FXML
+    private Label homeCourseTitle;
 
     /* ── Tabs ────────────────────────────────────────── */
     @FXML
@@ -585,6 +587,9 @@ public class CourseCatalogController implements Initializable {
         // Store current course
         currentSelectedCourse = course;
         currentCourseId = course.getId();
+        if (homeCourseTitle != null) {
+            homeCourseTitle.setText(course.getName());
+        }
 
         // Reset to Stream tab and load announcements
         highlightTab(streamTab);
