@@ -5,13 +5,20 @@ BIN         = bin
 SRC         = src
 MAIN_CLASS  = naawbi.Main
 
+# Classpath separator: ; on Windows, : on Unix (java.exe ignores : because of drive letters)
+ifeq ($(OS),Windows_NT)
+    CP_SEP := ;
+else
+    CP_SEP := :
+endif
+
 MODULE_PATH = --module-path $(LIB)
 ADD_MODULES = --add-modules javafx.controls,javafx.fxml
 CP          = $(LIB)/postgresql-42.7.4.jar
 JAVA_LIB    = -Djava.library.path=$(LIB)
 
 JAVAC_FLAGS = $(MODULE_PATH) $(ADD_MODULES) -cp "$(CP)" -d $(BIN)
-JAVA_FLAGS  = $(MODULE_PATH) $(ADD_MODULES) -cp "$(BIN):$(CP)" $(JAVA_LIB) --enable-native-access=javafx.graphics
+JAVA_FLAGS  = $(MODULE_PATH) $(ADD_MODULES) -cp "$(BIN)$(CP_SEP)$(CP)" $(JAVA_LIB) --enable-native-access=javafx.graphics
 DEV_FLAGS   = $(JAVA_FLAGS) -Dprism.order=sw -Dprism.verbose=true
 
 .PHONY: all compile run dev clean clean-docs sources seed help

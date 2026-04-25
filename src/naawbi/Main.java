@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     // Set to true to skip login and go straight to catalog (development only)
-    private static final boolean DEV_MODE = false;
+    private static final boolean DEV_MODE = true;
     private static final String DEV_ROLE = "instructor"; // "student" or "instructor"
 
     @Override
