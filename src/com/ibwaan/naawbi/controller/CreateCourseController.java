@@ -1,7 +1,6 @@
 package com.ibwaan.naawbi.controller;
 
 import com.ibwaan.naawbi.view.ViewConstants;
-import com.ibwaan.naawbi.model.DB;
 import com.ibwaan.naawbi.model.Course;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -135,10 +133,5 @@ public class CreateCourseController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void closeStage(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
     }
 }

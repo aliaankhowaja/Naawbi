@@ -22,7 +22,8 @@ public class SubmissionComment {
         this.createdAt = LocalDateTime.now();
     }
 
-    public SubmissionComment(int id, int submissionId, int userId, String authorName, String commentText, LocalDateTime createdAt) {
+    public SubmissionComment(int id, int submissionId, int userId, String authorName, String commentText,
+            LocalDateTime createdAt) {
         this.id = id;
         this.submissionId = submissionId;
         this.userId = userId;
@@ -44,10 +45,10 @@ public class SubmissionComment {
     public static List<SubmissionComment> fetchBySubmissionId(int submissionId) throws SQLException {
         List<SubmissionComment> comments = new ArrayList<>();
         String query = "SELECT c.id, c.submission_id, c.user_id, u.username, c.comment_text, c.created_at " +
-                       "FROM submission_comments c " +
-                       "JOIN users u ON c.user_id = u.id " +
-                       "WHERE c.submission_id = ? " +
-                       "ORDER BY c.created_at ASC";
+                "FROM submission_comments c " +
+                "JOIN users u ON c.user_id = u.id " +
+                "WHERE c.submission_id = ? " +
+                "ORDER BY c.created_at ASC";
         try (PreparedStatement pstmt = DB.getInstance().prepareStatement(query)) {
             pstmt.setInt(1, submissionId);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -58,18 +59,34 @@ public class SubmissionComment {
                             rs.getInt("user_id"),
                             rs.getString("username"),
                             rs.getString("comment_text"),
-                            rs.getTimestamp("created_at").toLocalDateTime()
-                    ));
+                            rs.getTimestamp("created_at").toLocalDateTime()));
                 }
             }
         }
         return comments;
     }
 
-    public int getId() { return id; }
-    public int getSubmissionId() { return submissionId; }
-    public int getUserId() { return userId; }
-    public String getAuthorName() { return authorName; }
-    public String getCommentText() { return commentText; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public int getId() {
+        return id;
+    }
+
+    public int getSubmissionId() {
+        return submissionId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public String getCommentText() {
+        return commentText;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

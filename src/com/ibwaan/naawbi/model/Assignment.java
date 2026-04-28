@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Assignment {
-private int id, courseId, createdBy, totalPoints;
+    private int id, courseId, createdBy, totalPoints;
     private String authorName, title, description;
     private boolean lateSubmissionsAllowed;
     private LocalDateTime deadline, createdAt, updatedAt;
 
-    public Assignment(int courseId, int createdBy, String title, String description, LocalDateTime deadline, int totalPoints, boolean lateSubmissionsAllowed) {
+    public Assignment(int courseId, int createdBy, String title, String description, LocalDateTime deadline,
+            int totalPoints, boolean lateSubmissionsAllowed) {
         this.courseId = courseId;
         this.createdBy = createdBy;
         this.title = title;
@@ -24,7 +25,8 @@ private int id, courseId, createdBy, totalPoints;
     }
 
     public Assignment(int id, int courseId, int createdBy, String authorName, String title, String description,
-                            LocalDateTime deadline, LocalDateTime createdAt, LocalDateTime updatedAt, int totalPoints, boolean lateSubmissionsAllowed) {
+            LocalDateTime deadline, LocalDateTime createdAt, LocalDateTime updatedAt, int totalPoints,
+            boolean lateSubmissionsAllowed) {
         this.id = id;
         this.courseId = courseId;
         this.createdBy = createdBy;
@@ -101,6 +103,30 @@ private int id, courseId, createdBy, totalPoints;
             }
         }
         return assignments;
+    }
+
+    public static Assignment getById(int id) throws SQLException {
+        String query = "SELECT a.id, a.course_id, a.created_by, u.username, a.title, a.description, a.deadline, a.created_at, a.updated_at, a.total_points, a.late_submissions_allowed FROM assignments a JOIN users u ON a.created_by = u.id WHERE a.id = ?";
+        try (PreparedStatement pstmt = DB.getInstance().prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Assignment(
+                            rs.getInt("id"),
+                            rs.getInt("course_id"),
+                            rs.getInt("created_by"),
+                            rs.getString("username"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getTimestamp("deadline").toLocalDateTime(),
+                            rs.getTimestamp("created_at").toLocalDateTime(),
+                            rs.getTimestamp("updated_at").toLocalDateTime(),
+                            rs.getInt("total_points"),
+                            rs.getBoolean("late_submissions_allowed"));
+                }
+            }
+        }
+        return null;
     }
 
     public int getId() {

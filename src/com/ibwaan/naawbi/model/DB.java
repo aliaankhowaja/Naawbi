@@ -154,10 +154,33 @@ public class DB {
             statement.execute(submissionCommentsTable);
 
             // Add columns if tables already exist
-            try { statement.execute("ALTER TABLE assignments ADD COLUMN IF NOT EXISTS total_points INTEGER DEFAULT 100;"); } catch (SQLException e) {}
-            try { statement.execute("ALTER TABLE assignments ADD COLUMN IF NOT EXISTS late_submissions_allowed BOOLEAN DEFAULT FALSE;"); } catch (SQLException e) {}
-            try { statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS file_path VARCHAR(500);"); } catch (SQLException e) {}
-            try { statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS status VARCHAR(50);"); } catch (SQLException e) {}
+            try {
+                statement.execute("ALTER TABLE assignments ADD COLUMN IF NOT EXISTS total_points INTEGER DEFAULT 100;");
+            } catch (SQLException e) {
+            }
+            try {
+                statement.execute(
+                        "ALTER TABLE assignments ADD COLUMN IF NOT EXISTS late_submissions_allowed BOOLEAN DEFAULT FALSE;");
+            } catch (SQLException e) {
+            }
+            try {
+                statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS file_path VARCHAR(500);");
+            } catch (SQLException e) {
+            }
+            try {
+                statement.execute("ALTER TABLE submissions ADD COLUMN IF NOT EXISTS status VARCHAR(50);");
+            } catch (SQLException e) {
+            }
+
+            // Insert dummy user if doesn't exist to resolve foreign key constraints
+            try {
+                statement.execute(
+                        "INSERT INTO users (id, username, password, email) VALUES (1, 'Dummy User', 'password', 'dummy@example.com') ON CONFLICT (id) DO NOTHING;");
+                // Reset sequence just in case
+                statement.execute("SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

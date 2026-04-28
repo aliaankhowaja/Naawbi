@@ -60,6 +60,14 @@ public class CourseCatalogController implements Initializable {
     @FXML
     private VBox courseListContainer;
 
+    /* ── Course Home Header ──────────────────────────── */
+    @FXML
+    private Label selectedCourseTitle;
+    @FXML
+    private Label selectedCourseCode;
+    @FXML
+    private Label selectedCourseMeta;
+
     /* ── Stream ─────────────────────────────────────── */
     @FXML
     private VBox streamContainer;
@@ -87,7 +95,7 @@ public class CourseCatalogController implements Initializable {
     /* ── State ───────────────────────────────────────── */
     private Course currentSelectedCourse;
     private int currentCourseId = -1;
-    private int currentUserId = 1; // TODO: Replace with actual logged-in user ID from session
+    private int currentUserId = 2; // TODO: Replace with actual logged-in user ID from session
     private ToDoController toDoController;
 
     /* ── Lifecycle ───────────────────────────────────── */
@@ -503,6 +511,18 @@ public class CourseCatalogController implements Initializable {
         // Store current course
         currentSelectedCourse = course;
         currentCourseId = course.getId();
+
+        // Update header info
+        if (selectedCourseTitle != null) {
+            selectedCourseTitle.setText(course.getName());
+        }
+        if (selectedCourseCode != null) {
+            selectedCourseCode.setText(course.getCode() != null ? course.getCode() : "");
+        }
+        if (selectedCourseMeta != null) {
+            // In a real app, fetch instructor/student count. For now, static placeholder.
+            selectedCourseMeta.setText("Dr. Aisha Salim  ·  34 students  ·  Spring 2025");
+        }
 
         // Reset to Stream tab and load announcements
         highlightTab(streamTab);

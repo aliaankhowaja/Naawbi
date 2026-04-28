@@ -19,7 +19,8 @@ public class Submission {
         this.status = "Missing";
     }
 
-    public Submission(int id, int assignmentId, int userId, boolean submitted, String filePath, String status, LocalDateTime submittedAt,
+    public Submission(int id, int assignmentId, int userId, boolean submitted, String filePath, String status,
+            LocalDateTime submittedAt,
             LocalDateTime updatedAt) {
         this.id = id;
         this.assignmentId = assignmentId;
@@ -53,7 +54,8 @@ public class Submission {
         return getByAssignmentAndUser(assignmentId, userId);
     }
 
-    public static boolean markAsSubmitted(int assignmentId, int userId, String filePath, String status) throws SQLException {
+    public static boolean markAsSubmitted(int assignmentId, int userId, String filePath, String status)
+            throws SQLException {
         String updateSQL = "UPDATE submissions SET submitted = true, file_path = ?, status = ?, submitted_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP WHERE assignment_id = ? AND user_id = ?";
         try (PreparedStatement pstmt = DB.getInstance().prepareStatement(updateSQL)) {
             pstmt.setString(1, filePath);

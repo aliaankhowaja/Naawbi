@@ -2,7 +2,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ibwaan.naawbi.controller.CreateAnnouncementController" spacing="16" padding="20" prefWidth="600" prefHeight="500" styleClass="root-pane" stylesheets="@./CreateAnnouncementView.css">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ibwaan.naawbi.controller.CreateAnnouncementController" spacing="16" prefWidth="600" prefHeight="500" styleClass="root-pane" stylesheets="@./CreateAnnouncementView.css">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
     <Label text="Post Announcement" styleClass="modal-title" />
     <HBox spacing="8" alignment="CENTER_LEFT">
         <Label text="Course:" styleClass="form-label" />

@@ -287,7 +287,8 @@ public class ToDoController implements Initializable {
      */
     private void openAssignmentDetails(Assignment assignment) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ibwaan/naawbi/view/AssignmentDetails/AssignmentDetailsView.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/ibwaan/naawbi/view/AssignmentDetails/AssignmentDetailsView.fxml"));
             Parent root = loader.load();
 
             AssignmentDetailsController controller = loader.getController();
@@ -303,7 +304,7 @@ public class ToDoController implements Initializable {
             controller.setContext(assignment, userId, modalStage);
 
             modalStage.showAndWait();
-            
+
             // Refresh when closed in case submission was altered
             refreshAssignments();
 

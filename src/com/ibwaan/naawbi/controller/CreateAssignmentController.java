@@ -174,7 +174,8 @@ public class CreateAssignmentController implements Initializable {
             boolean lateAllowed = lateAllowedToggle.isSelected();
 
             // Create and save assignment to database
-            Assignment assignment = new Assignment(courseId, userId, title, description, deadline, totalPoints, lateAllowed);
+            Assignment assignment = new Assignment(courseId, userId, title, description, deadline, totalPoints,
+                    lateAllowed);
             assignment.save();
 
             System.out.println("Assignment created: " + title);
