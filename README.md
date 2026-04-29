@@ -63,9 +63,60 @@ make run
 | `make compile` | Compile all Java sources → `bin/` |
 | `make run` | Compile then launch the app |
 | `make dev` | Same as run but with software renderer (no GPU needed) |
-| `make clean` | Delete compiled classes |
+| `make test` | Compile and run JUnit unit tests under `test/` |
+| `make clean` | Delete compiled classes (main + tests) |
+| `make clean-test` | Delete compiled test classes only |
 | `make rebuild` | `clean` then `compile` |
 | `make seed` | Wipe DB and reload test data from `seed.sql` |
+
+## Testing
+
+Unit tests live under `test/` and run with **JUnit 5**. They cover the pure (non-DB) surface of the model layer — `PasswordUtil`, `Session`, and the constructors / getters / setters of every model class. **No database is required to run them.**
+
+### One-time setup for teammates
+
+Drop the JUnit 5 standalone JAR into `lib/` (same place as the JavaFX SDK and Postgres driver):
+
+- File: **`junit-platform-console-standalone-1.11.4.jar`** (~2.8 MB, single fat JAR — includes API, engine, and launcher)
+- Download: [repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.4/](https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.4/)
+
+Direct link:
+```
+https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.4/junit-platform-console-standalone-1.11.4.jar
+```
+
+> `lib/` is gitignored, so every teammate populates it manually — same pattern as the JavaFX SDK and Postgres driver.
+
+### Run the tests
+
+```bash
+make test
+```
+
+Output is a tree-style report from JUnit's console launcher with pass/fail counts. As of the current commit: **9 test classes, 44 tests**, all green.
+
+### Test layout
+
+```
+test/naawbi/model/
+├── PasswordUtilTest.java          # SHA-256 determinism, format, known vectors, unicode, null
+├── SessionTest.java               # Singleton, login/logout, role checks, exception cases
+├── UserTest.java                  # Constructor + getters
+├── CourseTest.java                # Both constructors (id=-1 sentinel), setters
+├── AssignmentTest.java            # Both constructors, setters, userStatus lifecycle
+├── SubmissionTest.java            # All three constructors, defaults, grade nullability
+├── AnnouncementTest.java          # Both constructors, contentType passthrough
+├── AnnouncementAttachmentTest.java # File vs link variants, large file sizes
+└── SubmissionCommentTest.java     # Timestamp stamping, hydrated constructor
+```
+
+### Adding new tests
+
+Drop any `*Test.java` file under `test/naawbi/...` — JUnit auto-discovers them. No registration, no manifest. Use `@Test` from `org.junit.jupiter.api` and the static helpers in `org.junit.jupiter.api.Assertions`.
+
+### What's not yet covered
+
+DAO methods that hit the database (`User.findByEmailAndPassword`, `Course.fetchAll`, `Submission.markAsSubmitted`, etc.) are integration tests, not unit tests, and are tracked separately. They'll require a dedicated `naawbi_test` Postgres database — coming in a follow-up commit.
 
 ## Test Accounts
 
