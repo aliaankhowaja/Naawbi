@@ -24,7 +24,7 @@ JAVAC_FLAGS = $(MODULE_PATH) $(ADD_MODULES) -cp "$(CP)" -d $(BIN)
 JAVA_FLAGS  = $(MODULE_PATH) $(ADD_MODULES) -cp "$(BIN)$(CP_SEP)$(CP)" $(JAVA_LIB) --enable-native-access=javafx.graphics
 DEV_FLAGS   = $(JAVA_FLAGS) -Dprism.order=sw -Dprism.verbose=true
 
-.PHONY: all compile run dev clean clean-docs clean-test sources test test-sources seed help
+.PHONY: all compile run dev clean clean-docs clean-test sources test test-db test-sources seed help
 
 all: compile
 
@@ -49,15 +49,24 @@ dev: compile
 	$(JAVA) $(DEV_FLAGS) $(MAIN_CLASS)
 
 ## Compile and run all unit tests under test/
-test: compile test-sources
+## Tests run with -Dnaawbi.db.url pointing at the dedicated naawbi_test database
+## so DAO integration tests never touch the dev DB.
+test: compile test-db test-sources
 	@echo "Compiling tests..."
 	@mkdir -p $(TEST_BIN)
 	$(JAVAC) $(MODULE_PATH) $(ADD_MODULES) -cp "$(BIN)$(CP_SEP)$(CP)$(CP_SEP)$(JUNIT_JAR)" -d $(TEST_BIN) @$(TEST_BIN)/sources.txt
 	@echo "Running tests..."
-	$(JAVA) $(MODULE_PATH) $(ADD_MODULES) -jar $(JUNIT_JAR) \
+	$(JAVA) $(MODULE_PATH) $(ADD_MODULES) \
+	  -Dnaawbi.db.url=jdbc:postgresql://localhost:5432/naawbi_test \
+	  -jar $(JUNIT_JAR) \
 	  --class-path "$(TEST_BIN)$(CP_SEP)$(BIN)$(CP_SEP)$(CP)" \
 	  --scan-class-path \
 	  --details=tree --disable-banner
+
+## Ensure the naawbi_test database exists (idempotent).
+## Schema itself is created at test startup by DB.createTables().
+test-db:
+	@bash data/db-test-init.sh
 
 ## Regenerate test/sources.txt from all .java files under test/
 test-sources:
@@ -103,7 +112,8 @@ help:
 	@echo "  make compile  - compile all sources"
 	@echo "  make run      - compile + run"
 	@echo "  make dev      - compile + run (software renderer, verbose)"
-	@echo "  make test     - compile + run JUnit unit tests under test/"
+	@echo "  make test     - compile + run JUnit tests (uses naawbi_test DB)"
+	@echo "  make test-db  - create naawbi_test database if missing"
 	@echo "  make clean       - delete compiled classes + docs LaTeX artifacts"
 	@echo "  make clean-docs  - delete docs LaTeX artifacts only"
 	@echo "  make clean-test  - delete compiled test classes only"

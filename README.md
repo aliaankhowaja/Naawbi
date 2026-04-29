@@ -71,52 +71,83 @@ make run
 
 ## Testing
 
-Unit tests live under `test/` and run with **JUnit 5**. They cover the pure (non-DB) surface of the model layer — `PasswordUtil`, `Session`, and the constructors / getters / setters of every model class. **No database is required to run them.**
+Tests live under `test/` and run with **JUnit 5**. There are two kinds:
+
+| Type | Location | Hits the DB? | Examples |
+|---|---|---|---|
+| **Unit tests** | `test/naawbi/model/*Test.java` | No | `PasswordUtilTest`, `SessionTest`, every model's constructor / getter / setter |
+| **DAO integration tests** | `test/naawbi/model/*DAOTest.java` | Yes — `naawbi_test` only | `UserDAOTest`, `CourseDAOTest`, `SubmissionDAOTest` |
+
+Integration tests run against a **dedicated `naawbi_test` database**, never your dev `naawbi`. The base class `IntegrationTestBase` refuses to start unless `-Dnaawbi.db.url` points at a database whose name contains `naawbi_test`, so you cannot accidentally nuke seed data.
 
 ### One-time setup for teammates
 
-Drop the JUnit 5 standalone JAR into `lib/` (same place as the JavaFX SDK and Postgres driver):
+**1. Add the JUnit JAR to `lib/`** (same place as the JavaFX SDK and Postgres driver):
 
 - File: **`junit-platform-console-standalone-1.11.4.jar`** (~2.8 MB, single fat JAR — includes API, engine, and launcher)
-- Download: [repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.4/](https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.4/)
-
-Direct link:
-```
-https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.4/junit-platform-console-standalone-1.11.4.jar
-```
+- Direct link: <https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.4/junit-platform-console-standalone-1.11.4.jar>
 
 > `lib/` is gitignored, so every teammate populates it manually — same pattern as the JavaFX SDK and Postgres driver.
+
+**2. That's it.** `make test` will create the `naawbi_test` database the first time you run it (idempotent — runs `data/db-test-init.sh`, which uses the same psql lookup as `db-seed.sh`). No manual `CREATE DATABASE` needed.
 
 ### Run the tests
 
 ```bash
-make test
+make test         # creates naawbi_test if missing, compiles, runs everything
+make test-db      # just create naawbi_test (rarely needed standalone)
+make clean-test   # delete compiled test classes
 ```
 
-Output is a tree-style report from JUnit's console launcher with pass/fail counts. As of the current commit: **9 test classes, 44 tests**, all green.
+As of the latest commit: **15 test classes, 61 tests**, all green in ~5 seconds.
 
 ### Test layout
 
 ```
-test/naawbi/model/
-├── PasswordUtilTest.java          # SHA-256 determinism, format, known vectors, unicode, null
-├── SessionTest.java               # Singleton, login/logout, role checks, exception cases
-├── UserTest.java                  # Constructor + getters
-├── CourseTest.java                # Both constructors (id=-1 sentinel), setters
-├── AssignmentTest.java            # Both constructors, setters, userStatus lifecycle
-├── SubmissionTest.java            # All three constructors, defaults, grade nullability
-├── AnnouncementTest.java          # Both constructors, contentType passthrough
-├── AnnouncementAttachmentTest.java # File vs link variants, large file sizes
-└── SubmissionCommentTest.java     # Timestamp stamping, hydrated constructor
+test/
+└── naawbi/
+    ├── IntegrationTestBase.java       # @BeforeAll schema setup, @BeforeEach truncate-all
+    └── model/
+        ├── PasswordUtilTest.java          # SHA-256 determinism, format, known vectors, unicode, null
+        ├── SessionTest.java               # Singleton, login/logout, role checks, exception cases
+        ├── UserTest.java                  # Constructor + getters
+        ├── CourseTest.java                # Both constructors (id=-1 sentinel), setters
+        ├── AssignmentTest.java            # Both constructors, setters, userStatus lifecycle
+        ├── SubmissionTest.java            # All three constructors, defaults, grade nullability
+        ├── AnnouncementTest.java          # Both constructors, contentType passthrough
+        ├── AnnouncementAttachmentTest.java # File vs link variants, large file sizes
+        ├── SubmissionCommentTest.java     # Timestamp stamping, hydrated constructor
+        ├── UserDAOTest.java               # register, findByEmailAndPassword, fetchByCourseId  (DB)
+        ├── CourseDAOTest.java             # enrollStudent idempotency, fetchByCode, fetchByUserId  (DB)
+        └── SubmissionDAOTest.java         # findOrCreate, markAsSubmitted, unsubmit, saveGrade  (DB)
 ```
+
+### How DAO tests stay isolated
+
+- `make test` passes `-Dnaawbi.db.url=jdbc:postgresql://localhost:5432/naawbi_test` to the JVM
+- `DB.java` reads that property at startup, so the connection singleton points at the test DB
+- `IntegrationTestBase.@BeforeAll` calls `DB.createTables()` — schema is auto-created, mirrors prod
+- `IntegrationTestBase.@BeforeEach` runs `TRUNCATE ... RESTART IDENTITY CASCADE` on every table — every test starts from an empty DB
+- The dev `naawbi` database is never opened, never queried, never modified
 
 ### Adding new tests
 
-Drop any `*Test.java` file under `test/naawbi/...` — JUnit auto-discovers them. No registration, no manifest. Use `@Test` from `org.junit.jupiter.api` and the static helpers in `org.junit.jupiter.api.Assertions`.
+| You want to test... | Extend... | Annotate with... |
+|---|---|---|
+| Pure logic (no DB) | nothing — plain class | `@Test` |
+| DB-touching methods | `IntegrationTestBase` | `@Test` |
 
-### What's not yet covered
+Drop any `*Test.java` file under `test/naawbi/...` — JUnit auto-discovers them. Use `@Test` from `org.junit.jupiter.api` and the static helpers in `org.junit.jupiter.api.Assertions`.
 
-DAO methods that hit the database (`User.findByEmailAndPassword`, `Course.fetchAll`, `Submission.markAsSubmitted`, etc.) are integration tests, not unit tests, and are tracked separately. They'll require a dedicated `naawbi_test` Postgres database — coming in a follow-up commit.
+### Running tests from your IDE
+
+If you run a test directly from VS Code / IntelliJ rather than via `make test`, **set this VM argument** on the run configuration:
+
+```
+-Dnaawbi.db.url=jdbc:postgresql://localhost:5432/naawbi_test
+```
+
+Without it, integration tests fail fast with a clear error message — by design — so they can never accidentally run against `naawbi`.
 
 ## Test Accounts
 

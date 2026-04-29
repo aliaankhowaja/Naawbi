@@ -10,9 +10,12 @@ import java.sql.PreparedStatement;
 public class DB {
     private static DB instance;
     private Connection connection;
-    private final String url = "jdbc:postgresql://localhost:5432/naawbi";
-    private final String user = "postgres";
-    private final String password = "postgres";
+    // Connection URL is overridable via -Dnaawbi.db.url=... so integration tests
+    // can target a separate database (e.g. jdbc:postgresql://localhost:5432/naawbi_test)
+    // without changing any production code path.
+    private final String url      = System.getProperty("naawbi.db.url",      "jdbc:postgresql://localhost:5432/naawbi");
+    private final String user     = System.getProperty("naawbi.db.user",     "postgres");
+    private final String password = System.getProperty("naawbi.db.password", "postgres");
 
     private DB() {
         try {
@@ -32,6 +35,15 @@ public class DB {
             }
         }
         return instance;
+    }
+
+    /** Test-only: discard the cached singleton so the next getInstance() rereads
+     *  the JVM properties. Used after a test sets `naawbi.db.url` programmatically. */
+    public static synchronized void resetInstanceForTest() {
+        if (instance != null) {
+            instance.closeConnection();
+            instance = null;
+        }
     }
 
     public Connection getConnection() {
