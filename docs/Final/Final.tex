@@ -1,0 +1,1370 @@
+% ==============================================================
+%  Naawbi LMS --- CS3009 Software Engineering (Spring 2026)
+%  FINAL REPORT  |  Team Ibwaan
+%  Combined documentation across Sprints 1, 2, 3 (D1 + D2 + D3)
+% ==============================================================
+\documentclass[12pt, a4paper]{article}
+
+% ── Packages ──────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[top=2.3cm, bottom=2.3cm, left=2.3cm, right=2.3cm, headheight=28pt]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{mdframed}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{marvosym}
+\newcommand{\faGithub}{\raisebox{-0.1ex}{\Keyboard}}
+\usepackage{soul}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[most]{tcolorbox}
+
+% ── Colours ───────────────────────────────────────────────────
+\definecolor{primary}{HTML}{1A237E}
+\definecolor{accent}{HTML}{283593}
+\definecolor{light}{HTML}{E8EAF6}
+\definecolor{rule}{HTML}{5C6BC0}
+\definecolor{muted}{HTML}{546E7A}
+\definecolor{rowalt}{HTML}{F3F4FA}
+\definecolor{boxbg}{HTML}{EEF0FB}
+\definecolor{success}{HTML}{1B5E20}
+\definecolor{warn}{HTML}{B26A00}
+\definecolor{danger}{HTML}{B71C1C}
+
+% ── Hyperref ─────────────────────────────────────────────────
+\hypersetup{
+    colorlinks   = true,
+    linkcolor    = primary,
+    urlcolor     = accent,
+    citecolor    = primary,
+    pdftitle     = {Naawbi LMS — Final Report},
+    pdfauthor    = {Team Ibwaan},
+    pdfsubject   = {CS3009 Software Engineering Spring 2026},
+    pdfkeywords  = {LMS, Software Engineering, Naawbi, Ibwaan, Final Report},
+}
+
+% ── Section formatting ───────────────────────────────────────
+\titleformat{\section}
+  {\Large\bfseries\color{primary}}
+  {\thesection}{1em}{}
+  [\color{rule}\titlerule]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{accent}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{accent}}
+  {\thesubsubsection}{1em}{}
+
+\titlespacing*{\section}{0pt}{1.6ex plus .5ex minus .2ex}{0.8ex}
+\titlespacing*{\subsection}{0pt}{1.0ex plus .3ex minus .1ex}{0.4ex}
+
+% ── Header / Footer ──────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{rule}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\small\color{muted}\textbf{Naawbi LMS} — Final Report}
+\fancyhead[R]{\small\color{muted}CS3009 Spring 2026}
+\fancyfoot[C]{\small\color{muted}\thepage}
+
+% ── Lists ─────────────────────────────────────────────────────
+\setlist[itemize]{leftmargin=1.5em, itemsep=2pt, topsep=4pt}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=2pt, topsep=4pt}
+
+% ── Image fallback ───────────────────────────────────────────
+\newcommand{\imgOrPlaceholder}[3][width=0.85\textwidth]{%
+  \IfFileExists{#2}{%
+    \includegraphics[#1]{#2}%
+  }{%
+    \begin{center}%
+    \fboxsep=8pt\fbox{\parbox{0.7\textwidth}{\centering\color{muted}%
+      \textit{[Placeholder — image not available]}\\[4pt]%
+      \footnotesize #3}}%
+    \end{center}%
+  }%
+}
+
+% ── Custom environments ───────────────────────────────────────
+\tcbuselibrary{skins, breakable}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced, breakable,
+  colback=boxbg, colframe=rule,
+  arc=4pt, boxrule=0.8pt,
+  leftrule=4pt,
+  title=#1,
+  fonttitle=\bfseries\color{primary},
+  #1
+}
+
+\newtcolorbox{userstory}[1][]{
+  enhanced, breakable,
+  colback=white, colframe=rule!40,
+  arc=3pt, boxrule=0.5pt,
+  top=4pt, bottom=4pt, left=8pt, right=8pt,
+  #1
+}
+
+\newcommand{\fcol}[1]{\textbf{\color{primary}{#1}}}
+\newcommand{\fcolplain}[1]{\textbf{#1}}
+
+\begin{document}
+\onehalfspacing
+
+% ═══════════════════════════════════════════════════════════════
+%  TITLE PAGE
+% ═══════════════════════════════════════════════════════════════
+\begin{titlepage}
+  \centering
+
+  \vspace*{2.0cm}
+
+  {\small\scshape\color{muted} National University of Computer and Emerging Sciences}\\[0.4em]
+  {\small\color{muted} CS3009 --- Software Engineering \quad|\quad Spring 2026}
+
+  \vspace{1.2cm}
+  {\color{rule}\hrule height 1.5pt}
+  \vspace{1.2cm}
+
+  {\fontsize{56}{62}\selectfont\bfseries\color{primary} Naawbi}\\[0.6em]
+  {\Large\color{muted} Learning Management System}
+
+  \vspace{1.0cm}
+  {\color{rule!40}\rule{5cm}{0.6pt}}
+  \vspace{1.0cm}
+
+  {\LARGE\bfseries\color{primary} Final Report}\\[0.4em]
+  {\normalsize\color{muted} Combined Project Documentation \,\textbar\, Sprints 1--3}
+
+  \vspace{2cm}
+
+  \begin{tabular}{r@{\quad}l}
+    {\color{muted}\small Team Name}       & {\bfseries Ibwaan} \\[5pt]
+    {\color{muted}\small Team Lead}       & {\bfseries Ibraheem Farooq} \\[5pt]
+    {\color{muted}\small Members}         & 23i-0708 \textbar\ Ali Aan Khowaja \\
+                                          & 23i-0816 \textbar\ Ibraheem Farooq \\
+                                          & 23i-0819 \textbar\ Wajih-Ur-Raza Asif \\[5pt]
+    {\color{muted}\small Submission Date} & 29 April 2026 \\[5pt]
+    {\color{muted}\small Repository}      & \href{https://github.com/aliaankhowaja/Naawbi}{github.com/aliaankhowaja/Naawbi} \\
+  \end{tabular}
+
+  \vfill
+  {\color{rule!40}\hrule height 0.5pt}
+  \vspace{0.6cm}
+  {\footnotesize\color{muted}
+    \href{https://github.com/ibbi1020}{ibbi1020}\enspace\textbullet\enspace
+    \href{https://github.com/wajih-rathore}{wajih-rathore}\enspace\textbullet\enspace
+    \href{https://github.com/aliaankhowaja}{aliaankhowaja}
+  }
+  \vspace{0.6cm}
+\end{titlepage}
+
+% ── Table of Contents ─────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ═══════════════════════════════════════════════════════════════
+%  EXECUTIVE SUMMARY
+% ═══════════════════════════════════════════════════════════════
+\section*{Executive Summary}
+\addcontentsline{toc}{section}{Executive Summary}
+
+Naawbi is a desktop Learning Management System built by Team Ibwaan over three
+sprints between February and April~2026 for the CS3009 Software Engineering
+course. It is a single JavaFX~21 application backed by PostgreSQL~16, designed
+for department-scale academic use --- a few courses with up to roughly 200
+students each. The system delivers the complete academic workflow inside one
+tool: instructors register, create courses, post announcements with file or
+link attachments, create assignments with deadlines and late policies, grade
+submissions, and view a class-wide gradebook; students register, enrol in
+courses with a unique class code, submit work, see live submission status,
+view per-course assignments and rosters, and track all pending work via a
+deadline-aware To-Do list and a personal gradebook. Role-based access control
+is enforced at every protected action so students never reach instructor-only
+flows. Authentication uses SHA-256 password hashing and a session singleton
+that is explicitly cleared on logout.
+
+\medskip
+\noindent\textbf{Status at submission.}
+All 26 user stories scoped across the project (24 from the original D1
+backlog plus the Assignments tab and People tab added during Sprint~3) have
+been delivered and verified. Twenty-five formal black-box test cases were
+executed against the seeded test database and all passed; both critical
+controllers (\texttt{LoginController.handleLogin} and
+\texttt{GradingController.handleSave}) reached 100\% branch coverage. Four
+bugs were found during testing and all four were fixed before submission.
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 1 — INTRODUCTION
+% ═══════════════════════════════════════════════════════════════
+\section{Introduction}
+
+\subsection{Context}
+This project is a Software Engineering team project to build a Learning
+Management System (LMS) end-to-end --- requirements, design, implementation,
+testing, and documentation --- and to deliver a working product covering the
+full academic workflow for a course.
+
+\subsection{Problem Statement}
+Course management for small-to-mid scale classes typically suffers from
+fragmented tools: one place for announcements, another for content, another
+for submissions, another for grading, and yet another for tracking deadlines.
+Students lack a clear, data-driven view of their performance and pending work.
+Instructors need a single workflow to publish content, collect submissions,
+grade, and monitor class progress. Naawbi addresses this fragmentation by
+providing a single application that covers content, assignments, submissions,
+grading, and a deadline-aware student dashboard.
+
+\subsection{Goals}
+\begin{itemize}
+  \item Deliver a usable LMS that supports the end-to-end course workflow:
+        \textbf{content} $\rightarrow$ \textbf{assignments} $\rightarrow$
+        \textbf{submissions} $\rightarrow$ \textbf{grading}.
+  \item Replace external deadline trackers with a built-in, urgency-coded
+        To-Do list that aggregates pending work across all enrolled courses.
+  \item Provide instructors with both a per-assignment grading interface and
+        a class-wide gradebook macro-view, in one place.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 2 — PROJECT VISION
+% ═══════════════════════════════════════════════════════════════
+\section{Project Vision}
+
+Build a clean, reliable, course-centric LMS that instructors use to manage
+content and evaluations, and that students use to track progress and
+performance, without needing any external tool for the core academic workflow.
+
+\medskip
+\noindent The two key differentiators are:
+\begin{itemize}
+  \item \textbf{Submission tracking with status derivation.} Every submission
+        is timestamped server-side and automatically tagged \emph{Submitted /
+        Late / Missing / Not Submitted} based on assignment deadline and
+        instructor late policy.
+  \item \textbf{Aggregated deadline awareness.} A student-facing To-Do list
+        consolidates pending work across every enrolled course, with urgency
+        colour-coding so overdue items and items due within 48~hours are
+        immediately visible.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 3 — TEAM
+% ═══════════════════════════════════════════════════════════════
+\section{Team}
+
+\begin{minipage}[c]{0.65\linewidth}
+  \begin{tabular}{r@{\quad}l}
+    \textbf{Team Name}    & Ibwaan \\
+    \textbf{Project Name} & Naawbi \\
+    \textbf{Team Lead}    & Ibraheem Farooq \\
+  \end{tabular}
+\end{minipage}%
+\begin{minipage}[c]{0.3\linewidth}
+  \raggedleft
+  \imgOrPlaceholder[height=2cm]{../D3/assets/ibwaan_team_logo.png}{Team logo}
+\end{minipage}
+
+\vspace{0.5cm}
+
+\subsection{Team Roles}
+
+\begin{center}
+\begin{tabular}{@{}p{0.28\linewidth}p{0.34\linewidth}p{0.32\linewidth}@{}}
+  \toprule
+  \textbf{Member} & \textbf{Role(s)} & \textbf{GitHub} \\
+  \midrule
+  Ibraheem Farooq    & PM, Scrum Master, Developer              & \href{https://github.com/ibbi1020}{github.com/ibbi1020} \\[4pt]
+  Wajih-Ur-Raza Asif & Requirements Architect, Tester, Developer & \href{https://github.com/wajih-rathore}{github.com/wajih-rathore} \\[4pt]
+  Ali Aan Khowaja    & Lead Developer, UI Designer              & \href{https://github.com/aliaankhowaja}{github.com/aliaankhowaja} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Member Biographies}
+
+\medskip
+
+\noindent
+\begin{minipage}[t]{0.30\linewidth}
+  \vspace{0pt}
+  \imgOrPlaceholder[width=\linewidth]{../D3/assets/ibraheem_photo.png}{Photo}
+\end{minipage}%
+\hspace{1em}%
+\begin{minipage}[t]{0.66\linewidth}
+  \vspace{0pt}
+  {\bfseries\color{primary} Ibraheem Farooq}\\[-2pt]
+  {\small\color{muted} PM / Scrum Master / Developer}\\[4pt]
+  A Computer Science major based in Islamabad who transitioned from designing
+  posters and brand identities to UX and product design. His technical background
+  provides a unique perspective on bridging digital experiences that balance user
+  needs with technical viability. Passionate about solving real problems through
+  thoughtful design and clean, intuitive interfaces.
+\end{minipage}
+
+\medskip\noindent\color{rule!25}\hrule\color{black}\medskip
+
+\noindent
+\begin{minipage}[t]{0.30\linewidth}
+  \vspace{0pt}
+  \imgOrPlaceholder[width=\linewidth]{../D3/assets/wajih_photo.jpeg}{Photo}
+\end{minipage}%
+\hspace{1em}%
+\begin{minipage}[t]{0.66\linewidth}
+  \vspace{0pt}
+  {\bfseries\color{primary} Wajih-Ur-Raza Asif}\\[-2pt]
+  {\small\color{muted} Requirements Architect / Tester / Developer}\\[4pt]
+  A software engineer focused on building practical systems that solve real
+  operational problems. His background spans end-to-end projects across different
+  technologies, with a strong interest in automation, AI-driven workflows, and
+  scalable system design. Currently expanding his understanding of enterprise
+  technology and systems that make processes more efficient and reliable.
+\end{minipage}
+
+\medskip\noindent\color{rule!25}\hrule\color{black}\medskip
+
+\noindent
+\begin{minipage}[t]{0.30\linewidth}
+  \vspace{0pt}
+  \imgOrPlaceholder[width=\linewidth]{../D3/assets/ali_photo.png}{Photo}
+\end{minipage}%
+\hspace{1em}%
+\begin{minipage}[t]{0.66\linewidth}
+  \vspace{0pt}
+  {\bfseries\color{primary} Ali Aan Khowaja}\\[-2pt]
+  {\small\color{muted} Lead Developer / UI Designer}\\[4pt]
+  An AI Engineer driven by a simple goal: building applications that work at
+  scale. His expertise lies at the intersection of high-performance backend
+  architecture and agentic systems. He specialises in designing and deploying
+  scalable infrastructures that power intelligent applications. Beyond the code,
+  he is a robotics enthusiast passionate about bringing new ideas to life.
+\end{minipage}
+
+\subsection{Team Agreement}
+
+The team agreement below was established in Deliverable~1 and remained in force
+unchanged throughout the project.
+
+\subsubsection*{Communication}
+\begin{itemize}
+  \item \textbf{WhatsApp} --- primary channel for daily coordination; respond within 1 hour.
+  \item \textbf{In-person} --- preferred when on campus.
+  \item \textbf{Google Meet} --- for remote meetings.
+  \item Urgent issues: tag the team and respond within 20 minutes.
+  \item If unavailable: post an async update in WhatsApp within 24 hours.
+\end{itemize}
+
+\subsubsection*{Meetings}
+\begin{itemize}
+  \item Mandatory: Sprint Planning, Sprint Review, Sprint Retrospective.
+  \item Regular check-ins: 4$\times$ per week (in-person or Google Meet).
+  \item Absence: notify team 24 hours in advance and share an async update.
+  \item Every meeting ends with: decisions + action items + owners.
+  \item Notes: rotating assigned person.
+\end{itemize}
+
+\subsubsection*{Meeting Preparation}
+\begin{itemize}
+  \item \textbf{Sprint Planning:} review backlog, propose task breakdowns.
+  \item \textbf{Review:} prepare demo flow + screenshots.
+  \item \textbf{Retrospective:} each member prepares (1)~what went well,
+        (2)~what did not, (3)~what to change.
+\end{itemize}
+
+\subsubsection*{Version Control}
+\begin{itemize}
+  \item Small, atomic commits; new branch per ticket.
+  \item PR required before merging; do not commit secrets, credentials, or large binaries.
+  \item Commit message format: \texttt{feat:}, \texttt{fix:}, \texttt{docs:}, \texttt{chore:}
+\end{itemize}
+
+\subsubsection*{Division of Work (Contract)}
+\begin{center}
+\begin{tabular}{@{}p{0.20\linewidth}p{0.74\linewidth}@{}}
+  \toprule
+  \textbf{Owner} & \textbf{Responsibility} \\
+  \midrule
+  Wajih     & Requirements ownership: user stories, structured specs, and consistency checks. Also: testing and QA. \\[3pt]
+  Ali       & Lead UI implementation and feature delivery. \\[3pt]
+  Ibraheem  & Coordination, sprint tracking, packaging, and final submission. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Contingency Plan}
+If a member becomes unavailable or falls behind, the team will re-scope to the
+minimum required deliverable content, redistribute work immediately, and
+prioritise required artefacts. The PM/SM updates the board, assigns new owners,
+and schedules an urgent meeting to unblock progress.
+
+\subsubsection*{Submission Protocol}
+\begin{itemize}
+  \item \textbf{Submission owner:} Wajih.
+  \item \textbf{Internal review:} Ibraheem and Ali.
+  \item \textbf{Internal cutoff:} finalise 24~hours before the deadline.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 4 — INTENDED USE OF THE SYSTEM
+% ═══════════════════════════════════════════════════════════════
+\section{Intended Use of the System}
+
+\subsection{Stakeholders}
+
+\subsubsection*{Students}
+\begin{itemize}
+  \item Register and log in with a verified account; choose Student role at registration.
+  \item Enrol in a course using a unique class code shared by the instructor.
+  \item View enrolled courses, announcements, and deadlines on a course home page.
+  \item Submit assignments via file upload; see submission status (Submitted / Late / Missing / Not Submitted).
+  \item View grades and instructor feedback in a personal gradebook.
+  \item Track all pending work across courses on the To-Do list, with urgency colour-coding.
+  \item View per-course assignment status (Assignments tab) and the course roster (People tab).
+\end{itemize}
+
+\subsubsection*{Instructors}
+\begin{itemize}
+  \item Register and log in with a verified account; choose Instructor role at registration.
+  \item Create and manage courses; share a system-generated unique class code with students.
+  \item Post announcements with optional file and link attachments.
+  \item Create assignments with title, description, total points, due date/time, and configurable late policy.
+  \item Grade submissions with numeric scores and written feedback.
+  \item View a class-wide gradebook (students $\times$ assignments grid).
+  \item View the course roster (People tab) with role badges.
+\end{itemize}
+
+\subsubsection*{System (Cross-Cutting)}
+\begin{itemize}
+  \item Enforces role-based access control at every protected action.
+  \item Logs important events (logins, submissions, grading updates, enrolment changes) for auditability.
+  \item Computes submission status from server-side timestamps, not client time.
+\end{itemize}
+
+\subsection{How the System Helps Users}
+\begin{itemize}
+  \item Consolidates course operations (content, announcements, assessments, grading) into one unified workflow.
+  \item Reduces instructor workload by centralising submission tracking and grading.
+  \item Provides traceability: all academic actions are recorded and auditable (who submitted what and when; who graded what and when).
+  \item Gives students proactive deadline awareness, so missing work is surfaced rather than buried.
+\end{itemize}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 5 — FEATURES AND OVERALL FUNCTIONALITY
+% ═══════════════════════════════════════════════════════════════
+\section{Features and Overall Functionality}
+
+{\sloppy
+The full feature set is grouped below by module. Each module is mapped to its
+backing user stories from Section~\ref{sec:stories}.
+
+\subsection{Authentication and Role-Based Access Control}
+\textit{Backed by US\,1--4.}
+\begin{itemize}
+  \item User self-registration with mandatory role selection (Student or Instructor).
+  \item Login with email and password; SHA-256 password hashing at registration and verification.
+  \item Logout that explicitly clears the session singleton and returns to the login screen.
+  \item RBAC enforced across every protected controller: students never reach
+        instructor-only flows (Create Assignment, Post Announcement, Grade
+        Submissions). Instructor-only buttons are conditionally rendered ---
+        not merely disabled --- so they are invisible to students.
+\end{itemize}
+
+\subsection{Course Management and Enrolment}
+\textit{Backed by US\,5--9.}
+\begin{itemize}
+  \item Instructors create courses with a name and optional description.
+  \item System generates a unique alphanumeric class code per course at creation.
+  \item Students enrol by entering the class code from the catalog view.
+  \item Students see only courses they are enrolled in; instructors see only
+        courses they own (\texttt{courses.created\_by\,=\,userId}).
+  \item Course home page acts as a stream of announcements and assignments.
+\end{itemize}
+
+\subsection{Announcements and Attachments}
+\textit{Backed by US\,10--13.}
+\begin{itemize}
+  \item Instructors post announcements with title, body text, and basic formatting.
+  \item Optional file attachments via the system FileChooser.
+  \item Optional URL attachments for external resources.
+  \item Both attachment types persist in the \texttt{announcement\_attachments} table.
+  \item Course stream shows attachment chips inline: file chips open via
+        \texttt{Desktop.getDesktop()}; link chips open in the default browser.
+  \item A single announcement can carry one file and one link attachment independently.
+\end{itemize}
+
+\subsection{Assignments and Submissions}
+\textit{Backed by US\,14--18.}
+\begin{itemize}
+  \item Instructors create assignments with title, description, total points,
+        due date (DatePicker), due time (hour/minute spinners), and late
+        policy toggle (\emph{Allow late turn-ins} vs.\ \emph{Hard deadline}).
+  \item Students submit work via the FileChooser within the assignment view.
+  \item Server-side timestamp recorded on every submission event.
+  \item Automatic status derivation: \emph{Submitted} (before deadline),
+        \emph{Late} (after deadline if policy allows), \emph{Missing}
+        (deadline passed without upload), \emph{Not Submitted} (deadline
+        still in future).
+  \item Conditional unsubmit/resubmit based on deadline and instructor policy.
+  \item Threaded comment area within the assignment detail view for both students and instructors.
+\end{itemize}
+
+\subsection{Grading and Gradebook}
+\textit{Backed by US\,19--22.}
+\begin{itemize}
+  \item Two-panel \texttt{GradingView} per assignment: ListView of submissions
+        on the left; numeric grade and feedback editor on the right.
+  \item Numeric grade validation against \texttt{total\_points} before save;
+        non-numeric input or grade outside $[0, \texttt{total\_points}]$ is rejected inline.
+  \item Save issues a parameterised UPDATE on \texttt{submissions.grade} and
+        \texttt{submissions.feedback}.
+  \item Student personal gradebook lists every graded item with score,
+        maximum, and feedback.
+  \item Instructor class-wide gradebook is a students $\times$ assignments
+        grid backed by a single-JOIN query (\texttt{fetchGradebookForCourse}),
+        avoiding N+1 round-trips.
+\end{itemize}
+
+\subsection{Course Home: Stream, Assignments, People}
+\textit{Backed by US\,9 (Stream), US\,25 (Assignments tab), US\,26 (People tab).}
+\begin{itemize}
+  \item \textbf{Stream:} reverse-chronological feed of announcements and assignments.
+  \item \textbf{Assignments tab:} all course assignments with role-adaptive
+        cards. Students see status badges (Submitted / Late / Missing / Not
+        Submitted); instructors see a Grade Submissions button per card.
+        Status is derived via a LEFT JOIN in
+        \texttt{Assignment.fetchWithStatusForUser()}.
+  \item \textbf{People tab:} course roster grouped by role badge (Instructor /
+        Student), backed by \texttt{Course.fetchEnrolledUsers()}.
+\end{itemize}
+
+\subsection{To-Do List and Deadline Awareness}
+\textit{Backed by US\,23--24.}
+\begin{itemize}
+  \item Aggregates pending assignments across every enrolled course.
+  \item Partitioned into \emph{Active} (deadline in future) and \emph{Missing} (deadline passed without submission).
+  \item Urgency colour-coding: red (overdue), orange (due within 48~hours), default (more than 48~hours).
+  \item Click an item to open the assignment detail view.
+  \item Items are removed from the active list automatically once submitted.
+\end{itemize}
+\par}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 6 — USER STORIES
+% ═══════════════════════════════════════════════════════════════
+\section{Master User Stories}
+\label{sec:stories}
+
+The system was scoped against 26 user stories: 24 from the original product
+backlog established in Deliverable~1, plus US\,25 and US\,26 (Assignments tab
+and People tab) which were identified during Sprint~3 planning when the
+course-home navigation gap became apparent.
+
+\subsection{Authentication and Role-Based Access Control}
+\begin{enumerate}[label=\textbf{US\,\arabic*}]
+  \item As a \emph{User} (Student/Instructor), I want to log in securely so
+        that I can access my account and authorised system features.
+  \item As a \emph{User}, I want to log out of my account so that my session
+        is secure when I am not using the system.
+  \item As a \emph{User}, I want to select my role (Student or Instructor)
+        during registration so that I can use the platform appropriately.
+  \item As a \emph{User}, I want role-based access control to be enforced
+        across all features so that individuals can only perform actions
+        permitted by their chosen role.
+\end{enumerate}
+
+\subsection{Course Management and Enrolment}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=5]
+  \item As an \emph{Instructor}, I want to create a new course so that I have
+        a dedicated space to manage learning materials and track student
+        progress.
+  \item As a \emph{User}, I want to view a course catalogue/listing so that I
+        can see the courses I am enrolled in or teaching.
+  \item As an \emph{Instructor}, I want the system to generate a unique random
+        code for my course so that I can share it securely with my students.
+  \item As a \emph{Student}, I want to enrol in a course using a unique class
+        code so that I can self-register for the classes I am supposed to take.
+  \item As a \emph{Student}, I want to view a course home page that displays
+        announcements and upcoming items so that I am immediately aware of
+        current course activities.
+\end{enumerate}
+
+\subsection{Announcements and Course Material}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=10]
+  \item As an \emph{Instructor}, I want to post announcements so that I can
+        broadcast important updates or instructions to all enrolled students.
+  \item As a \emph{Student}, I want to see an announcement feed for my course
+        so that I never miss critical information from my instructor.
+  \item As an \emph{Instructor}, I want to attach a file to an announcement so
+        that I can share reference materials directly from the course stream.
+  \item As an \emph{Instructor}, I want to attach a URL to an announcement so
+        that I can share links to external resources without requiring a file
+        upload.
+\end{enumerate}
+
+\subsection{Assignments and Submissions}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=14]
+  \item As an \emph{Instructor}, I want to create assignments with a title,
+        description, and due date/time so that expectations are clear to
+        students.
+  \item As an \emph{Instructor}, I want to define late policies and
+        resubmission rules so that I can enforce grading standards.
+  \item As a \emph{Student}, I want to submit my assignments via file upload
+        so that I can turn in my completed work electronically.
+  \item As an \emph{Instructor}, I want the system to timestamp all
+        submissions so that I can accurately determine their status (submitted,
+        late, missing).
+  \item As a \emph{Student}, I want to see the status of my submissions (e.g.,
+        submitted on time, late, missing) so that I know my work has been
+        received.
+\end{enumerate}
+
+\subsection{Grading, Feedback, and Gradebook}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=19]
+  \item As an \emph{Instructor}, I want to view a list of student submissions
+        for an assignment so that I can review them efficiently.
+  \item As an \emph{Instructor}, I want to assign scores and add comments to
+        student submissions so that I can provide them with constructive
+        feedback.
+  \item As an \emph{Instructor}, I want to view a comprehensive gradebook of
+        all students and their graded items so that I can monitor the overall
+        performance of the class.
+  \item As a \emph{Student}, I want to view my personal gradebook with scores
+        and instructor feedback so that I can track my academic standing and
+        progress.
+\end{enumerate}
+
+\subsection{To-Do List and Deadlines}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=23]
+  \item As a \emph{Student}, I want to view a to-do list within my course
+        catalogue section so that I have complete visibility over my progress
+        (submitted vs.\ missing items).
+  \item As a \emph{Student}, I want the system to highlight upcoming due dates
+        and late/missed items so that I can effectively manage my deadlines and
+        prioritise my workload.
+\end{enumerate}
+
+\subsection{Course Home Navigation \texorpdfstring{\normalfont\small(Added in Sprint 3)}{}}
+\begin{enumerate}[label=\textbf{US\,\arabic*}, start=25]
+  \item As a \emph{User}, I want a dedicated Assignments tab in the course
+        home showing all assignments and their status at a glance, so I do
+        not have to navigate away from the course to see my workload.
+  \item As a \emph{User}, I want a People tab in the course home showing
+        everyone enrolled in the course with their role badge, so I know who
+        is in my class.
+\end{enumerate}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 7 — STRUCTURED SPECIFICATIONS
+% ═══════════════════════════════════════════════════════════════
+\section{Structured Specifications}
+\label{sec:specs}
+
+The structured specifications below define each feature module's behaviour at
+a granularity that makes acceptance testable. Each spec is grouped by the
+module it covers in Section~\ref{sec:stories}.
+
+% ── Spec: Auth
+\begin{userstory}
+  \textbf{Spec 1 --- US\,1--4: Authentication, Registration, and RBAC}
+\end{userstory}
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}@{\hspace{6pt}}p{0.72\linewidth}@{}}
+  \toprule
+  \fcol{Field} & Detail \\
+  \midrule
+  \fcol{Actor} & Any user (Student or Instructor); System (for RBAC enforcement) \\
+  \fcol{Inputs} & \emph{Register:} username, email, password, role (Student / Instructor). \emph{Login:} email, password. \\
+  \fcol{Processing} & Registration: validate all fields non-empty; hash password with SHA-256; \texttt{User.register()} inserts the user and returns an empty \texttt{Optional} on duplicate username/email. Login: hash submitted password and compare to stored hash; populate \texttt{Session} on match. Logout: \texttt{Session.logout()} clears state; navigate to \texttt{LoginView}. RBAC: every protected controller checks \texttt{Session.getInstance().getRole()} before executing instructor-only logic. \\
+  \fcol{Outputs} & On register/login success: user lands on \texttt{CourseCatalogView} with an active session. On logout: session cleared; user returns to \texttt{LoginView}. RBAC: students never see instructor-only buttons (conditionally rendered, not disabled). \\
+  \fcol{Preconditions} & Register: username and email not already in \texttt{users}. Login: account exists with a stored hash. RBAC: user is logged in. \\
+  \fcol{Postconditions} & \texttt{Session} holds \texttt{id, username, email, role}. Logout leaves \texttt{Session} empty; no credentials persist. No student can trigger an instructor action even by direct controller call. \\
+  \fcol{Exceptions} & Wrong password / unknown email $\rightarrow$ ``Incorrect email or password''. Empty fields $\rightarrow$ ``Please fill in all fields''. Duplicate username/email $\rightarrow$ ``Username or email is already taken''. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ── Spec: Course Mgmt
+\begin{userstory}
+  \textbf{Spec 2 --- US\,5--9: Course Creation, Catalogue, and Class-Code Enrolment}
+\end{userstory}
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}@{\hspace{6pt}}p{0.72\linewidth}@{}}
+  \toprule
+  \fcol{Field} & Detail \\
+  \midrule
+  \fcol{Actor} & Instructor (create); Student (enrol, view); Both (catalogue) \\
+  \fcol{Inputs} & \emph{Create course:} name (required), description (optional). \emph{Enrol:} class code. \\
+  \fcol{Processing} & On course creation: generate a unique alphanumeric class code; persist with \texttt{created\_by\,=\,Session.userId}. On enrol: look up course by code; insert into \texttt{course\_enrollments}. Catalogue: students see courses joined to \texttt{course\_enrollments}; instructors see courses where \texttt{created\_by\,=\,userId}. \\
+  \fcol{Outputs} & New course visible on instructor's catalogue. Enrolled course visible on student's catalogue. Course home displays a stream of recent announcements, latest assignments, and immediate deadlines. \\
+  \fcol{Preconditions} & User is logged in. \\
+  \fcol{Postconditions} & Course row persisted with unique code. Enrolment row persisted linking student to course. \\
+  \fcol{Exceptions} & Invalid or unknown class code $\rightarrow$ inline error ``Course not found''. Already enrolled $\rightarrow$ ``Already enrolled''. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ── Spec: Announcements + Attachments
+\begin{userstory}
+  \textbf{Spec 3 --- US\,10--13: Announcements and Attachments}
+\end{userstory}
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}@{\hspace{6pt}}p{0.72\linewidth}@{}}
+  \toprule
+  \fcol{Field} & Detail \\
+  \midrule
+  \fcol{Actor} & Instructor (post); all enrolled users (view) \\
+  \fcol{Inputs} & Title (required), body (required), optional file via FileChooser, optional URL. \\
+  \fcol{Processing} & Validate title and body non-empty; insert announcement with author ID, course ID, and server timestamp. Attachments: file row (\texttt{is\_link\,=\,false}, original filename + path) or link row (\texttt{is\_link\,=\,true}, \texttt{link\_url}) in \texttt{announcement\_attachments}, foreign-keyed to the announcement. A single announcement may carry one file and one link independently. \\
+  \fcol{Outputs} & Announcement appears in the course stream (newest first) for all enrolled students. Attachment chips render inline beneath the body: file chip opens via \texttt{Desktop.getDesktop()}; link chip opens in the default browser. \\
+  \fcol{Preconditions} & Instructor is logged in and owns the course. \\
+  \fcol{Postconditions} & Announcement row persisted; attachment rows (if any) persisted; visible on next stream load. \\
+  \fcol{Exceptions} & Empty title or body $\rightarrow$ inline validation error; form does not submit. No file/URL provided $\rightarrow$ announcement saves with no attachment row. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ── Spec: Assignments + Submissions
+\begin{userstory}
+  \textbf{Spec 4 --- US\,14--18: Assignment Creation, Submission, and Status Tracking}
+\end{userstory}
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}@{\hspace{6pt}}p{0.72\linewidth}@{}}
+  \toprule
+  \fcol{Field} & Detail \\
+  \midrule
+  \fcol{Actor} & Instructor (create); Student (submit); System (status derivation) \\
+  \fcol{Inputs} & \emph{Create:} title, description (optional), total points (numeric), due date, due time, late policy toggle. \emph{Submit:} file via FileChooser. \\
+  \fcol{Processing} & On create: validate title, points, deadline; combine date and time into a \texttt{LocalDateTime}; persist linked to course with late policy flag. On submit: record server-side timestamp; compare to deadline; evaluate late policy; tag status. Status derivation in \texttt{Assignment.fetchWithStatusForUser()} via LEFT JOIN: \emph{Submitted} (before deadline), \emph{Late} (after deadline, policy permits), \emph{Missing} (deadline passed, no upload), \emph{Not Submitted} (deadline still in future). \\
+  \fcol{Outputs} & Assignment appears in course stream and on enrolled students' To-Do lists. Submission row created/updated with file path and timestamp; status badge visible to student and instructor. \\
+  \fcol{Preconditions} & Create: instructor logged in and owns course. Submit: student is enrolled; assignment has a deadline. \\
+  \fcol{Postconditions} & Assignment persisted with policy flag. Submission row stored or updated; status visible. \\
+  \fcol{Exceptions} & Missing title / deadline / non-numeric points $\rightarrow$ validation error. No file selected $\rightarrow$ Submit button inactive. Late submission with hard policy $\rightarrow$ submission blocked. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ── Spec: Grading + Gradebook
+\begin{userstory}
+  \textbf{Spec 5 --- US\,19--22: Grading Interface and Gradebook}
+\end{userstory}
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}@{\hspace{6pt}}p{0.72\linewidth}@{}}
+  \toprule
+  \fcol{Field} & Detail \\
+  \midrule
+  \fcol{Actor} & Instructor (grade, class view); Student (personal view) \\
+  \fcol{Inputs} & Grading: selected submission, numeric grade (required), feedback text (optional). Personal gradebook: none beyond authenticated session. \\
+  \fcol{Processing} & Grading: load all submissions via \texttt{Submission.fetchByAssignmentId()}; pre-fill if previously graded; validate grade is numeric and within $0$--\texttt{total\_points}; \texttt{Submission.saveGrade()} issues a parameterised UPDATE. Gradebook: \texttt{fetchGradedForStudent} for personal view; single-JOIN \texttt{fetchGradebookForCourse} for instructor class grid. \\
+  \fcol{Outputs} & \texttt{submissions.grade} and \texttt{submissions.feedback} updated; ListView reflects graded state; student gradebook shows score and feedback immediately. Instructor sees students $\times$ assignments grid. \\
+  \fcol{Preconditions} & Instructor is logged in and owns the course; assignment exists. \\
+  \fcol{Postconditions} & Submission row has non-null \texttt{grade} and optionally non-null \texttt{feedback}. Original submission timestamp preserved. \\
+  \fcol{Exceptions} & No submissions $\rightarrow$ empty ListView with empty-state label. Non-numeric grade or grade $>$ \texttt{total\_points} $\rightarrow$ inline validation error; Save blocked. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ── Spec: To-Do
+\begin{userstory}
+  \textbf{Spec 6 --- US\,23--24: To-Do List and Deadline Awareness}
+\end{userstory}
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}@{\hspace{6pt}}p{0.72\linewidth}@{}}
+  \toprule
+  \fcol{Field} & Detail \\
+  \midrule
+  \fcol{Actor} & Student \\
+  \fcol{Inputs} & System reads all assignments across enrolled courses on view load. \\
+  \fcol{Processing} & Fetch all assignments for enrolled courses; filter out submitted items; classify remaining as \emph{Active} (deadline in future) or \emph{Missing} (deadline passed without submission); compute urgency relative to current server time. \\
+  \fcol{Outputs} & To-Do view with Active and Missing sections; items colour-coded red (overdue), orange (due within 48~hours), default (more than 48~hours away); clicking opens AssignmentDetails. \\
+  \fcol{Preconditions} & Student is logged in and enrolled in at least one course. \\
+  \fcol{Postconditions} & List reflects current state. Items disappear from Active automatically on submission. \\
+  \fcol{Exceptions} & No pending assignments $\rightarrow$ empty-state message. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ═══════════════════════════════════════════════════════════════
+%  NON-FUNCTIONAL REQUIREMENTS
+% ═══════════════════════════════════════════════════════════════
+\section{Non-Functional Requirements}
+
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}@{\hspace{6pt}}p{0.72\linewidth}@{}}
+  \toprule
+  \fcol{NFR Category} & Requirement \\
+  \midrule
+  Security
+    & Passwords are never stored or compared in plain text --- SHA-256
+      hashing via \texttt{PasswordUtil.hash()} at all registration and
+      login points. Session state held in a singleton, explicitly cleared on
+      logout. RBAC enforced at the controller level before every
+      instructor-only action. All SQL is parameterised; SQL injection at the
+      login boundary is blocked (verified by TC-06). User inputs validated
+      and sanitised. \\[6pt]
+  Performance
+    & Primary pages (course home, assignment list, gradebook, To-Do list)
+      load within 2--3~seconds at typical class sizes ($\sim$200 students per
+      course) on lab hardware. Class-wide gradebook uses a single JOIN, not
+      per-student queries. File uploads complete within reasonable time for
+      typical submission sizes (documents and PDFs up to 10~MB). \\[6pt]
+  Reliability
+    & Submissions are not lost once acknowledged. Grade saves are atomic
+      (single parameterised UPDATE; no partial state). Submission status is
+      computed from server-side timestamps, not client time. Session logout
+      completes synchronously before the login screen is shown. \\[6pt]
+  Usability
+    & Consistent navigation and layout across all views. Status badges
+      (Submitted / Late / Missing / Not Submitted) use both colour and text
+      so they are not colour-only. To-Do list urgency colours are consistent
+      with the status badge palette. Gradebook cells show ``---'' for
+      ungraded items rather than blank or null. Instructor-only buttons are
+      conditionally rendered for students, not merely disabled. \\[6pt]
+  Maintainability
+    & Layered MVC architecture (controller / model / view) enforced across
+      all features. Business logic (deadline evaluation, status tagging,
+      grade validation, RBAC checks) lives in model and controller classes,
+      not in FXML event handlers. New views follow the same FXML + CSS
+      structure as existing ones. \\[6pt]
+  Scalability
+    & Supports multiple courses and concurrent users typical of a
+      department-scale deployment (not enterprise scale). The JOIN-based
+      gradebook query and LEFT JOIN status derivation avoid per-student
+      round-trips that would not scale past a single classroom. \\[6pt]
+  Auditability
+    & Important events (logins, submissions, grading updates, enrolment
+      changes) are logged with server timestamps for traceability. Submission
+      events (upload, unsubmit, resubmit) are logged. Original submission
+      timestamps are preserved alongside grade and feedback fields --- no
+      information is overwritten on grading. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 10 — TESTING & QA
+% ═══════════════════════════════════════════════════════════════
+\section{Testing and Quality Assurance}
+\label{sec:testing}
+
+\begingroup
+\setlength{\tabcolsep}{4pt}
+
+\subsection{Software Test Plan}
+
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}@{\hspace{6pt}}p{0.72\linewidth}@{}}
+  \toprule
+  \fcol{Field} & Detail \\
+  \midrule
+  \fcol{Scope} & Authentication (register/login/logout), RBAC, Announcement Attachments, Assignments Tab, People Tab, Grading Interface, Gradebook, plus regression checks on Sprint~1 and~2 features. \\
+  \fcol{Objectives} & Verify each feature meets its acceptance criteria; detect regressions; validate RBAC enforcement at every protected action. \\
+  \fcol{Test Types} & Black-box functional testing (equivalence partitioning, boundary value analysis, error guessing); white-box structural testing (branch coverage on critical controllers). \\
+  \fcol{Test Environment} & Windows~11, Java~24, JavaFX~21, PostgreSQL~16; seeded via \texttt{data/seed.sql} (3 users: \texttt{ali} = instructor, \texttt{ibbi} + \texttt{sara} = students; 2 courses; 6 assignments; 6 submissions in mixed states). \\
+  \fcol{Entry Criteria} & \texttt{make seed} succeeds; \texttt{make compile} produces zero errors; application launches to \texttt{LoginView}. \\
+  \fcol{Exit Criteria} & All P1 (critical) test cases pass; no unfixed P1 bugs; all identified P2 bugs documented with status. \\
+  \fcol{Tester} & Wajih-Ur-Raza Asif. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Black-Box Test Cases}
+
+\subsubsection*{Module: Authentication --- Login}
+\begin{center}\small
+\begin{tabular}{@{}p{0.06\linewidth}p{0.13\linewidth}p{0.30\linewidth}p{0.33\linewidth}p{0.08\linewidth}@{}}
+  \toprule
+  \textbf{TC \#} & \textbf{Technique} & \textbf{Input} & \textbf{Expected Output} & \textbf{Status} \\
+  \midrule
+  TC-01 & Valid partition   & \texttt{ali@naawbi.edu} / \texttt{password123}    & Login succeeds; catalog loads; role = instructor  & \textcolor{success}{Pass} \\
+  TC-02 & Valid partition   & \texttt{ibbi@naawbi.edu} / \texttt{password123}   & Login succeeds; catalog loads; role = student     & \textcolor{success}{Pass} \\
+  TC-03 & Invalid partition & \texttt{ali@naawbi.edu} / \texttt{wrongpass}      & Inline error ``Incorrect email or password''      & \textcolor{success}{Pass} \\
+  TC-04 & Invalid partition & \texttt{nobody@naawbi.edu} / \texttt{password123} & Inline error ``Incorrect email or password''      & \textcolor{success}{Pass} \\
+  TC-05 & Boundary / empty  & Empty email + empty password                      & Inline error ``Please fill in all fields''        & \textcolor{success}{Pass} \\
+  TC-06 & Error guessing    & \texttt{' OR 1=1 -{}-} / any                      & Login fails --- parameterised query blocks SQLi   & \textcolor{success}{Pass} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Module: Authentication --- Registration}
+\begin{center}\small
+\begin{tabular}{@{}p{0.06\linewidth}p{0.13\linewidth}p{0.30\linewidth}p{0.33\linewidth}p{0.08\linewidth}@{}}
+  \toprule
+  \textbf{TC \#} & \textbf{Technique} & \textbf{Input} & \textbf{Expected Output} & \textbf{Status} \\
+  \midrule
+  TC-07 & Valid partition   & New unique username, email, password, role=Student & Account created; redirected to catalog       & \textcolor{success}{Pass} \\
+  TC-08 & Invalid partition & Username already taken                            & ``Username or email is already taken''        & \textcolor{success}{Pass} \\
+  TC-09 & Invalid partition & Email already taken                                & ``Username or email is already taken''        & \textcolor{success}{Pass} \\
+  TC-10 & Boundary / empty  & Any field left blank                               & ``Please fill in all fields''                 & \textcolor{success}{Pass} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Module: RBAC --- Instructor-Only Guard}
+\begin{center}\small
+\begin{tabular}{@{}p{0.06\linewidth}p{0.13\linewidth}p{0.30\linewidth}p{0.33\linewidth}p{0.08\linewidth}@{}}
+  \toprule
+  \textbf{TC \#} & \textbf{Technique} & \textbf{Input} & \textbf{Expected Output} & \textbf{Status} \\
+  \midrule
+  TC-11 & Invalid partition & Student \texttt{ibbi} clicks ``Create Assignment'' & Access Denied alert; no form opens          & \textcolor{success}{Pass} \\
+  TC-12 & Valid partition   & Instructor \texttt{ali} clicks ``Create Assignment'' & Create Assignment form opens normally       & \textcolor{success}{Pass} \\
+  TC-13 & Valid partition   & Student logs in                                  & Catalog shows only enrolled courses (CS101, CS202) & \textcolor{success}{Pass} \\
+  TC-14 & Valid partition   & Instructor logs in                               & Catalog shows only courses created by \texttt{ali}   & \textcolor{success}{Pass} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Module: Grading Interface}
+\begin{center}\small
+\begin{tabular}{@{}p{0.06\linewidth}p{0.13\linewidth}p{0.30\linewidth}p{0.33\linewidth}p{0.08\linewidth}@{}}
+  \toprule
+  \textbf{TC \#} & \textbf{Technique} & \textbf{Input} & \textbf{Expected Output} & \textbf{Status} \\
+  \midrule
+  TC-15 & Valid partition & grade=85 / total=100 / feedback=``Good work'' & Grade saved; submission shows graded in ListView & \textcolor{success}{Pass} \\
+  TC-16 & Boundary value  & grade = 0                                     & Grade saved as 0; valid                           & \textcolor{success}{Pass} \\
+  TC-17 & Boundary value  & grade = total\_points (e.g.\ 100)             & Grade saved at maximum; valid                     & \textcolor{success}{Pass} \\
+  TC-18 & Boundary value  & grade = total\_points + 1 (e.g.\ 101)         & Inline validation error; Save blocked             & \textcolor{success}{Pass} \\
+  TC-19 & Invalid partition & grade = ``abc'' (non-numeric)               & Inline validation error; Save blocked             & \textcolor{success}{Pass} \\
+  TC-20 & Valid partition & No feedback; grade = 50                       & Grade saved with NULL feedback                    & \textcolor{success}{Pass} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Module: Submission Status Derivation}
+\begin{center}\small
+\begin{tabular}{@{}p{0.06\linewidth}p{0.13\linewidth}p{0.30\linewidth}p{0.33\linewidth}p{0.08\linewidth}@{}}
+  \toprule
+  \textbf{TC \#} & \textbf{Technique} & \textbf{Input} & \textbf{Expected Output} & \textbf{Status} \\
+  \midrule
+  TC-21 & Valid partition   & Submission before deadline                        & Badge: \textbf{Submitted}       & \textcolor{success}{Pass} \\
+  TC-22 & Valid partition   & Submission after deadline; late policy allowed   & Badge: \textbf{Late}            & \textcolor{success}{Pass} \\
+  TC-23 & Valid partition   & Deadline passed; no submission; late allowed      & Badge: \textbf{Missing}         & \textcolor{success}{Pass} \\
+  TC-24 & Valid partition   & Deadline in future; no submission                 & Badge: \textbf{Not Submitted}   & \textcolor{success}{Pass} \\
+  TC-25 & Invalid partition & Deadline passed; hard policy; attempt submit      & Submission blocked              & \textcolor{success}{Pass} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{White-Box Testing}
+
+\subsubsection*{LoginController.handleLogin() --- Branch Coverage}
+\begin{quote}\small\ttfamily
+B1: email or password empty \hfill $\to$ show error, return\\
+B2: User.findByEmail() returns empty \hfill $\to$ show error, return\\
+B3: stored hash does not match input hash \hfill $\to$ show error, return\\
+B4: all checks pass \hfill $\to$ populate Session, navigate
+\end{quote}
+
+\begin{center}
+\begin{tabular}{@{}p{0.28\linewidth}p{0.56\linewidth}p{0.10\linewidth}@{}}
+  \toprule
+  \fcolplain{Branch} & Test Case & Covered \\
+  \midrule
+  \fcolplain{B1 --- empty fields} & TC-05                  & Yes \\
+  \fcolplain{B2 --- unknown email} & TC-04                  & Yes \\
+  \fcolplain{B3 --- wrong password} & TC-03                  & Yes \\
+  \fcolplain{B4 --- successful login} & TC-01, TC-02           & Yes \\
+  \midrule
+  \multicolumn{2}{r}{\textbf{Branch coverage}} & \textbf{4\,/\,4 (100\%)} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{GradingController.handleSave() --- Branch Coverage}
+\begin{quote}\small\ttfamily
+B1: grade empty or non-numeric \hfill $\to$ show error, return\\
+B2: grade $>$ total\_points \hfill $\to$ show error, return\\
+B3: grade $<$ 0 \hfill $\to$ show error, return\\
+B4: all checks pass \hfill $\to$ Submission.saveGrade(), refresh
+\end{quote}
+
+\begin{center}
+\begin{tabular}{@{}p{0.28\linewidth}p{0.56\linewidth}p{0.10\linewidth}@{}}
+  \toprule
+  \fcolplain{Branch} & Test Case & Covered \\
+  \midrule
+  \fcolplain{B1 --- non-numeric input} & TC-19                        & Yes \\
+  \fcolplain{B2 --- grade over maximum} & TC-18                        & Yes \\
+  \fcolplain{B3 --- grade below minimum} & Boundary: grade = $-1$ (manual) & Yes \\
+  \fcolplain{B4 --- valid save} & TC-15, TC-16, TC-17          & Yes \\
+  \midrule
+  \multicolumn{2}{r}{\textbf{Branch coverage}} & \textbf{4\,/\,4 (100\%)} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Assignment.fetchWithStatusForUser() --- Statement Coverage}
+The method executes a LEFT JOIN and derives submission status via conditional
+logic. All four status paths (Submitted, Late, Missing, Not Submitted) are
+exercised by TC-21 through TC-24 against the seeded dataset --- achieving
+statement coverage of every reachable branch in the status derivation block.
+
+\subsection{Automated JUnit Test Suite}
+
+Alongside the manual cases above, the project ships a JUnit~5 test suite
+that runs on \texttt{make test}. It is split into two layers.
+
+\textbf{Unit tests} cover the non-database parts of the model.
+\texttt{PasswordUtilTest} pins the SHA-256 hashing contract (determinism,
+hex format, a known vector for \texttt{password123}, unicode input,
+\texttt{null} handling). \texttt{SessionTest} covers the singleton,
+login and logout, role checks, and the \texttt{IllegalStateException}
+thrown by every getter when no user is logged in. The remaining classes
+do round-trip checks on the constructors, getters, and setters of every
+model.
+
+\textbf{DAO integration tests} run the real JDBC code in \texttt{User},
+\texttt{Course}, and \texttt{Submission} against a dedicated PostgreSQL
+database called \texttt{naawbi\_test}, so the development database is
+never written to. Each test starts from a truncated schema, so order
+does not matter. \texttt{IntegrationTestBase} also refuses to start
+unless the JDBC URL contains the string \texttt{naawbi\_test}, as a
+safety net against accidental runs against \texttt{naawbi}.
+
+\begin{center}
+\small\begin{tabular}{@{}p{0.30\linewidth}p{0.10\linewidth}p{0.50\linewidth}@{}}
+  \toprule
+  \fcolplain{Layer} & Tests & Notes \\
+  \midrule
+  Unit (no database)        & 44 & 9 classes, runs in $\sim$0.6\,s \\
+  DAO integration           & 17 & 3 classes, runs in $\sim$5\,s, hits \texttt{naawbi\_test} \\
+  \midrule
+  \multicolumn{2}{r}{\textbf{Total}} & \textbf{61 tests, all passing} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Setup for teammates is a single extra step on top of the existing
+prerequisites: drop \texttt{junit-platform-console-standalone-1.11.4.jar}
+into \texttt{lib/}. The \texttt{naawbi\_test} database is created
+automatically the first time \texttt{make test} runs (handled by
+\texttt{data/db-test-init.sh}).
+
+\subsection{Bug Report}
+
+\begin{center}\footnotesize\sloppy
+\begin{tabular}{@{}p{0.07\linewidth}p{0.11\linewidth}p{0.60\linewidth}p{0.06\linewidth}p{0.07\linewidth}@{}}
+  \toprule
+  \textbf{Bug ID} & \textbf{Module} & \textbf{Description and Fix} & \textbf{Sev.} & \textbf{Status} \\
+  \midrule
+  BUG-01 & Grading     & \texttt{GradingView} threw NPE on an assignment with zero submissions. \emph{Fix:} empty-list guard before ListView population.                                            & P1 & \textcolor{success}{Fixed} \\
+  BUG-02 & RBAC        & Instructors saw courses they did not create because \texttt{created\_by} was not being set. \emph{Fix:} \texttt{CreateCourseController} now sets it from \texttt{Session}.     & P1 & \textcolor{success}{Fixed} \\
+  BUG-03 & Gradebook   & GridPane column headers misaligned when a student had no submissions for the first assignment. \emph{Fix:} iterate all assignments independent of submission presence.        & P2 & \textcolor{success}{Fixed} \\
+  BUG-04 & Attachments & Attachment chip did not render after stream refresh. \emph{Fix:} stream loader now calls \texttt{fetchByAnnouncementId()} per announcement. & P1 & \textcolor{success}{Fixed} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Test Execution Results}
+
+Testing was performed manually against the seeded database (\texttt{make seed})
+using all three test accounts.
+
+\begin{center}
+\small\begin{tabular}{@{}p{0.24\linewidth}p{0.12\linewidth}p{0.58\linewidth}@{}}
+  \toprule
+  \fcolplain{Account} & Role       & Scenarios Tested \\
+  \midrule
+  \texttt{ali@naawbi.edu}  & Instructor & Login, RBAC guard, create assignment, post announcement with both attachment types, grade all 6 submissions, view class gradebook, People tab, logout. \\
+  \texttt{ibbi@naawbi.edu} & Student    & Login, register, enrolment filtering, submit assignment, view submission status, personal gradebook, To-Do list, logout. \\
+  \texttt{sara@naawbi.edu} & Student    & Login, second-student perspective, verify gradebook isolation, People tab roster. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Summary.} All 25 black-box test cases passed. All 4 identified
+bugs (BUG-01 through BUG-04) were fixed before submission. No unfixed P1 bugs
+remain. One P2 issue (BUG-03) was found and fixed. System behaviour matched
+acceptance criteria across all delivered user stories.
+
+\subsection{How Testing Improved System Quality}
+The four bugs caught in test would all have been user-facing in submission:
+BUG-01 would have crashed the Grading modal for any assignment with zero
+submissions (a common early state); BUG-02 broke the core RBAC invariant
+entirely; BUG-04 made the attachment feature invisible to students. Explicit
+coverage of all four submission-status paths also surfaced a gap in the
+``Not Submitted'' derivation that was corrected before integration.
+
+\endgroup
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 11 — IMPLEMENTATION SCREENSHOTS
+% ═══════════════════════════════════════════════════════════════
+\section{Implementation Screenshots}
+
+Screenshots below are organised by module, showing the system as delivered.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}\centering
+    \imgOrPlaceholder[width=\textwidth]{../D3/assets/login_view.png}{Login View}
+    \subcaption{LoginView --- tabbed Sign In / Register.}
+  \end{minipage}\hfill
+  \begin{minipage}{0.48\textwidth}\centering
+    \imgOrPlaceholder[width=\textwidth]{../D3/assets/course_catalog_role.png}{Course Catalog}
+    \subcaption{Course Catalog filtered by role (instructor).}
+  \end{minipage}
+  \caption{Authentication and role-based catalog filtering.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.72\textwidth]{../D3/assets/announcement_attachments.png}{Announcement Attachments}
+  \caption{Course Stream --- announcement with file and link attachment chips stored in \texttt{announcement\_attachments}.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}\centering
+    \imgOrPlaceholder[width=\textwidth]{../D3/assets/assignments_tab_student.png}{Assignments Tab — Student}
+    \subcaption{Student view with status badges.}
+  \end{minipage}\hfill
+  \begin{minipage}{0.48\textwidth}\centering
+    \imgOrPlaceholder[width=\textwidth]{../D3/assets/assignments_tab_instructor.png}{Assignments Tab — Instructor}
+    \subcaption{Instructor view with Grade Submissions buttons.}
+  \end{minipage}
+  \caption{Assignments Tab --- role-adaptive cards sharing the same FXML backbone.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.72\textwidth]{../D3/assets/grading_modal.png}{Grading Modal}
+  \caption{GradingView --- ListView of submissions on the left; numeric grade and feedback editor on the right.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}\centering
+    \imgOrPlaceholder[width=\textwidth]{../D3/assets/student_gradebook.png}{Student Gradebook}
+    \subcaption{Student personal gradebook (read-only).}
+  \end{minipage}\hfill
+  \begin{minipage}{0.48\textwidth}\centering
+    \imgOrPlaceholder[width=\textwidth]{../D3/assets/instructor_gradebook.png}{Instructor Class Gradebook}
+    \subcaption{Instructor class-wide grid from \texttt{fetchGradebookForCourse()}.}
+  \end{minipage}
+  \caption{Gradebook views --- role-adaptive rendering (table vs.\ GridPane).}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.72\textwidth]{../D3/assets/people_tab.png}{People Tab}
+  \caption{People Tab --- role-grouped roster cards from \texttt{Course.fetchEnrolledUsers()}.}
+\end{figure}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 12 — DEVELOPMENT METHODOLOGY (SCRUM)
+% ═══════════════════════════════════════════════════════════════
+\section{Development Methodology (Scrum)}
+
+The project followed a three-sprint Scrum cadence with mandatory Sprint
+Planning, Sprint Review, and Sprint Retrospective ceremonies. Issue tracking,
+backlog management, and burn-down charts were maintained on GitHub Projects.
+
+\subsection{Sprint Summary}
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.10\linewidth}p{0.20\linewidth}p{0.34\linewidth}p{0.28\linewidth}@{}}
+  \toprule
+  \fcol{Sprint} & \textbf{Duration} & \textbf{Sprint Goal} & \textbf{Modules Delivered} \\
+  \midrule
+  Sprint 1 & Feb 2026
+           & Establish course structure: course creation, catalogue, and class-code enrolment.
+           & Course Creation, Course Catalogue + Home, Class-Code Enrolment. \\[6pt]
+  Sprint 2 & 1 -- 25 March 2026
+           & Implement course announcements, assignment creation with deadlines and late policies, file-based submission tracking, and the student To-Do list.
+           & Announcements, Assignment Creation, File Submissions \& Status, To-Do List. \\[6pt]
+  Sprint 3 & 26 March -- 20 April 2026
+           & Close the platform's remaining gaps: identity, access, and evaluation.
+           & Authentication, RBAC, Announcement Attachments, Assignments Tab, People Tab, Grading, Gradebook. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent As a planning note worth recording: authentication was originally
+scoped into Sprint~1 but was deferred to Sprint~3 where it was retrofitted
+across every existing controller. This is discussed further in
+Section~\ref{sec:retro}.
+
+\subsection{Scrum Boards (GitHub Projects)}
+
+\subsubsection*{Sprint 1 Boards}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.92\textwidth]{assets/github_project_start.png}{Sprint 1 board — start}
+  \caption{Sprint~1 GitHub Projects board at sprint start (Backlog populated).}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.92\textwidth]{assets/github_project_mid.png}{Sprint 1 board — mid}
+  \caption{Sprint~1 GitHub Projects board mid-sprint (work in progress).}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.92\textwidth]{assets/github_project_end.png}{Sprint 1 board — end}
+  \caption{Sprint~1 GitHub Projects board at sprint close (Done column populated).}
+\end{figure}
+
+\subsubsection*{Sprint 2 Boards}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.92\textwidth]{assets/sprint2_board.png}{Sprint 2 GitHub Projects board}
+  \caption{Sprint~2 GitHub Projects board at sprint close --- backlog, ready, in progress, in review, and done columns with all 12 Sprint~2 stories tracked.}
+\end{figure}
+
+\subsubsection*{Sprint 3 Boards}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.92\textwidth]{../D3/assets/sprintboard1.png}{Sprint 3 board — top}
+  \caption{Sprint~3 GitHub Projects board --- top view of the kanban columns.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.92\textwidth]{../D3/assets/sprintboard2.png}{Sprint 3 board — continued}
+  \caption{Sprint~3 GitHub Projects board --- remaining issues and the Done column at sprint close (20~Apr~2026).}
+\end{figure}
+
+\subsection{Burn-Down Charts}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.78\textwidth]{assets/sprint1_burndown.png}{Sprint 1 Burn-Down Chart}
+  \caption{Sprint~1 burn-down chart.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.78\textwidth]{assets/sprint2_burndown.png}{Sprint 2 Burn-Down Chart}
+  \caption{Sprint~2 burn-down chart (planned vs.\ completed story points across 1~--~25~March~2026).}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \imgOrPlaceholder[width=0.78\textwidth]{../D3/assets/burndown-chart.png}{Sprint 3 Burn-Down Chart}
+  \caption{Sprint~3 burn-down chart (26~March~--~20~April~2026).}
+\end{figure}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 13 — WORK DIVISION
+% ═══════════════════════════════════════════════════════════════
+\section{Work Division (Project-Wide)}
+
+{\sloppy
+\subsubsection*{Ibraheem Farooq \normalfont\small\color{muted}(PM / Scrum Master / Developer)}
+Sprint planning, sprint tracking, and team coordination across all three
+sprints. Ownership of the GitHub Projects board, branch and PR review
+discipline, and final packaging of every deliverable. On the implementation
+side: end-to-end authentication and RBAC --- tabbed Login/Register UI,
+\texttt{Session} singleton, \texttt{PasswordUtil}, \texttt{LoginController},
+enrolment-based catalog filtering, and the Access Denied guard on
+instructor-only actions; plus announcement file and link attachments
+(US\,12--13) including the \texttt{announcement\_attachments} table and chip
+rendering in the course stream. Backend support for the course and
+announcement modules in Sprint~2.
+
+\subsubsection*{Wajih-Ur-Raza Asif \normalfont\small\color{muted}(Requirements Architect / Tester / Developer)}
+Requirements ownership across the project: all 26 user stories, sub-story
+breakdowns, and structured specifications, plus consistency verification
+between acceptance criteria and actual implemented behaviour. Authored every
+deliverable document (D1, D2, D3, and this Final Report). Owned the test
+plan, all 25 black-box test cases, white-box branch-coverage analysis on
+\texttt{LoginController.handleLogin()} and \texttt{GradingController.handleSave()},
+and the bug report. Implemented the Assignments tab and People tab
+(US\,25--26): \texttt{Assignment.fetchWithStatusForUser()}, status badge
+rendering, the Grade Submissions button, \texttt{Course.fetchEnrolledUsers()},
+and roster card rendering. Implemented the full grading pipeline
+(US\,19--22): \texttt{grade}/\texttt{feedback} schema additions,
+\texttt{Submission} model extensions
+(\texttt{fetchByAssignmentId}, \texttt{saveGrade}, \texttt{fetchGradedForStudent},
+\texttt{fetchGradebookForCourse}), \texttt{GradingView.fxml} +
+\texttt{GradingController}, and \texttt{GradebookView.fxml} +
+\texttt{GradebookController} with role-adaptive rendering (student personal
+view vs.\ instructor class-wide grid).
+
+\subsubsection*{Ali Aan Khowaja \normalfont\small\color{muted}(Lead Developer / UI Designer)}
+Lead implementation of all Sprint~2 features: Announcements, Assignment
+Creation, AssignmentDetails with file submission flow and threaded comments,
+and the To-Do List with urgency colour-coding. UI design and screen layout
+ownership across the entire project --- every FXML view and CSS sheet ---
+giving Naawbi a consistent visual language from the login screen through to
+the gradebook. Produced implementation screenshots for every deliverable.
+\par}
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 14 — RETROSPECTIVE
+% ═══════════════════════════════════════════════════════════════
+\section{Retrospective and Lessons Learned}
+\label{sec:retro}
+
+\textbf{What went well.} All scoped user stories shipped, including the two
+late additions (Assignments tab and People tab) discovered during Sprint~3
+planning. The layered MVC architecture established at the start absorbed
+every new feature without structural change. The branch-per-feature strategy
+kept code review manageable. The idempotent \texttt{seed.sql} with three test
+accounts and mixed-state submissions accelerated manual testing across all
+three sprints. Single-query gradebook and LEFT-JOIN status derivation
+prevented N+1 patterns from creeping in under deadline pressure.
+
+\textbf{What could have been better.} Authentication should have been
+Sprint~1 work, not Sprint~3 --- by deferring it, RBAC had to be retrofitted
+onto every existing controller late in the project. The grading chain
+(database $\rightarrow$ UI $\rightarrow$ gradebook) serialised work that
+could have run in parallel if scoped earlier. US\,25--26 (Assignments and
+People tabs) should have been identified during Sprint~2 planning when the
+assignment infrastructure was fresh, rather than discovered during Sprint~3.
+
+\textbf{What we would do differently.} Ship authentication and RBAC in
+Sprint~1 so that every subsequent feature is built session-aware from the
+start. Identify course-home navigation tabs (Stream / Assignments / People)
+as part of Sprint~2 planning, alongside the assignment creation work. Use
+an integration branch for feature chains with linear merge dependencies
+instead of waiting on sequential PR reviews.
+
+% ═══════════════════════════════════════════════════════════════
+%  SECTION 15 — FINAL SYSTEM SUMMARY
+% ═══════════════════════════════════════════════════════════════
+\section{Final System Summary}
+
+Naawbi LMS was built across three sprints, each delivering a distinct layer
+of the final product.
+
+\begin{center}
+\begin{tabular}{@{}p{0.18\linewidth}p{0.13\linewidth}p{0.62\linewidth}@{}}
+  \toprule
+  \fcol{Sprint} & Deliverable & Core Contribution \\
+  \midrule
+  \fcol{Sprint 1} & D1 & Course structure --- creation, catalogue, class-code enrolment. \\
+  \fcol{Sprint 2} & D2 & Content and submissions --- announcements, assignments, file uploads, status tracking, To-Do list. \\
+  \fcol{Sprint 3} & D3 & Identity and evaluation --- authentication, RBAC, announcement attachments, Assignments and People tabs, grading interface, gradebook. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The final system fulfils its original vision: a course-centric LMS
+where instructors manage content and evaluations, and students track progress
+and performance, without needing any external tool for the core academic
+workflow. \textbf{All 26 planned user stories have been delivered and
+verified, all 25 formal black-box test cases pass, and all four bugs found
+during testing were fixed before submission.}
+
+\end{document}
